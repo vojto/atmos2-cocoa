@@ -57,7 +57,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 @property (assign) id<ATClientDelegate> delegate;
 
 #pragma mark - Lifecycle
-- (id) initWithAppContext:(NSManagedObjectContext *)context;
+- (id) initWithHost:(NSString *)aHost appContext:(NSManagedObjectContext *)context;
 - (void) connect;
 - (NSManagedObjectContext *) _createContext;
 

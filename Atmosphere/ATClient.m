@@ -41,10 +41,9 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 #pragma mark - Lifecycle
 
-- (id) initWithAppContext:(NSManagedObjectContext *)context {
+- (id) initWithHost:(NSString *)aHost appContext:(NSManagedObjectContext *)context {
     if ((self = [self init])) {
-        _host = @"wss://localhost:4001/";
-        [_host retain];
+        _host = [aHost copy];
         [self _readVersionFromDefaults];
         _context = [self _createContext];
         self.appContext = context;
@@ -88,8 +87,11 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
     NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
     [context setPersistentStoreCoordinator:coordinator];
-    NSArray *libURLs = [[NSFileManager defaultManager] URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
+    NSArray *libURLs = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
+    NSString *executableName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleExecutable"];
     NSURL *libURL = [libURLs lastObject];
+    libURL = [libURL URLByAppendingPathComponent:executableName];
+    [[NSFileManager defaultManager] createDirectoryAtURL:libURL withIntermediateDirectories:YES attributes:nil error:nil];
     NSURL *storeURL = [libURL URLByAppendingPathComponent:@"Atmosphere.xml"];
     NSLog(@"Store URL: %@", storeURL);
     NSPersistentStore *store = [coordinator addPersistentStoreWithType:NSXMLStoreType configuration:nil URL:storeURL options:nil error:nil];
@@ -196,6 +198,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 - (void) _initializeSocketConnection {
     [_connection close];
     [_connection autorelease];
+    NSLog(@"Connecting to host: %@", _host);
     _connection = [[ATWebSocket alloc] initWithURLString:_host delegate:self];
     [_connection open];
 }
