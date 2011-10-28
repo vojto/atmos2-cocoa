@@ -29,6 +29,7 @@ extern NSString * const ATDidUpdateObjectNotification;
     NSDictionary *_attributesMap;
     
     /** State */
+    BOOL _isRunning;
     NSInteger _version;
     NSString *_authKey;
     BOOL _needsSync;
@@ -58,11 +59,12 @@ extern NSString * const ATDidUpdateObjectNotification;
 
 #pragma mark - Lifecycle
 - (id) initWithHost:(NSString *)aHost appContext:(NSManagedObjectContext *)context;
-- (void) connect;
 - (NSManagedObjectContext *) _createContext;
 
-#pragma mark - Authentication
+#pragma mark - Connecting
+- (void) connect;
 - (void) connectWithKey:(NSString *)key;
+- (BOOL)isConnected;
 
 #pragma mark Registering app notifications
 - (void) _registerForAppNotifications;

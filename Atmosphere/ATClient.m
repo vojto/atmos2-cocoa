@@ -100,8 +100,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     return context;
 }
 
-#pragma mark Registering app notifications
-
 - (void) _registerForAppNotifications {
     RKAssert(_appContext, @"App context shouldn't be nil");
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -109,8 +107,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:_appContext];
 }
-
-#pragma mark - Managing version number
 
 - (void) _readVersionFromDefaults {
     _version = [(NSNumber *)[[NSUserDefaults standardUserDefaults] valueForKey:ATVersionDefaultsKey] intValue];
@@ -187,12 +183,17 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark - Connecting
 
 - (void) connect {
+    _isRunning = YES;
     [self _initializeSocketConnection];
 }
 
 - (void)connectWithKey:(NSString *)key {
     _authKey = [key copy];
-    [self _initializeSocketConnection];
+    [self connect];
+}
+
+- (BOOL)isConnected {
+    return [_connection connected];
 }
 
 - (void) _initializeSocketConnection {
@@ -213,16 +214,12 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     RKLog(@"Web Socket connection failed: %@", error);
 }
 
-- (void)webSocketDidClose:(WebSocket *)webSocket {
-    RKLog(@"Connection closed");
-}
-
 - (void) _sendConnectMessage {
     // Send the "Connect Client" message
     ATMessage *connectMessage = [[ATMessage alloc] init];
     connectMessage.type = ATConnectClientMessage;
     connectMessage.content = [NSDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithInt:_version], ATMessageVersionKey,
+                              [NSNumber numberWithLong:_version], ATMessageVersionKey,
                               (_authKey ? (id)_authKey : [NSNull null]), ATMessageAuthKeyKey,
                               nil];
     
@@ -234,9 +231,17 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark - Disconnecting
 
 - (void)disconnect {
+    _isRunning = NO;
     [self _saveContext];
     [self _sync];
     [_connection close];
+}
+
+- (void)webSocketDidClose:(WebSocket *)webSocket {
+    if (_isRunning) {
+        RKLog(@"Disconnected, reconnecting...");
+        [self performSelector:@selector(connect) withObject:nil afterDelay:5];
+    }
 }
 
 #pragma mark - Posting notifications
@@ -298,6 +303,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     
     if (error != nil) RKLog(@"%@", error);
 
+    NSLog(@"Marking object as synchronized: %@", appObject.objectID);
     [object markSynchronized];
     
     if ([self _saveContext]) {
@@ -384,6 +390,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark - Pushing object to server
 
 - (void) _startSync {
+    RKLog(@"Marking client as NEEDING SYNC", nil);
     _needsSync = YES;
     [self performSelectorOnMainThread:@selector(_sync) withObject:nil waitUntilDone:NO];
 }
@@ -407,6 +414,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     NSArray *results = [_context executeFetchRequest:request error:&error];
 
     for (ATObject *metaObject in results) {
+        NSLog(@"Syncing object: %@", metaObject.objectID);
         [self _syncMetaObject:metaObject];
     }
     
@@ -538,6 +546,10 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         if ([key hasPrefix:@"_"]) continue;
         if (value == [NSNull null]) continue;
         NSString *localAttributeName = [self _localAttributeNameFor:key entity:appObject.entity];
+        if (![[appObject.entity propertiesByName] objectForKey:localAttributeName]) {
+            RKLog(@"Internal Inconsistency: Can't find attribute with name %@", localAttributeName);
+            continue;
+        }
         [appObject setStringValue:[data objectForKey:key] forKey:localAttributeName];
     }
 }

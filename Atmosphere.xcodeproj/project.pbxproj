@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9986E5BC145AE83800619A25 /* ATConnectionGuard.h in Headers */ = {isa = PBXBuildFile; fileRef = 9986E5BA145AE83800619A25 /* ATConnectionGuard.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9986E5BD145AE83800619A25 /* ATConnectionGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 9986E5BB145AE83800619A25 /* ATConnectionGuard.m */; };
 		999834301455AB5100F1C436 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9998342F1455AB5100F1C436 /* Cocoa.framework */; };
 		9998343A1455AB5100F1C436 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 999834381455AB5100F1C436 /* InfoPlist.strings */; };
 		999834501455AB6C00F1C436 /* WebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 999834441455AB6C00F1C436 /* WebSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -50,6 +52,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9986E5BA145AE83800619A25 /* ATConnectionGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATConnectionGuard.h; sourceTree = "<group>"; };
+		9986E5BB145AE83800619A25 /* ATConnectionGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATConnectionGuard.m; sourceTree = "<group>"; };
 		9998342C1455AB5100F1C436 /* Atmosphere.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Atmosphere.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9998342F1455AB5100F1C436 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		999834321455AB5100F1C436 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -161,6 +165,8 @@
 				9998344B1455AB6C00F1C436 /* ATMessage.m */,
 				9998344C1455AB6C00F1C436 /* ATObject.h */,
 				9998344D1455AB6C00F1C436 /* ATObject.m */,
+				9986E5BA145AE83800619A25 /* ATConnectionGuard.h */,
+				9986E5BB145AE83800619A25 /* ATConnectionGuard.m */,
 				9998344E1455AB6C00F1C436 /* NSManagedObject+ATAdditions.h */,
 				9998344F1455AB6C00F1C436 /* NSManagedObject+ATAdditions.m */,
 			);
@@ -253,6 +259,7 @@
 				999834681455ABBA00F1C436 /* AsyncUdpSocket.h in Headers */,
 				9998347F1455ABCE00F1C436 /* JSON.h in Headers */,
 				999834801455ABCE00F1C436 /* NSObject+JSON.h in Headers */,
+				9986E5BC145AE83800619A25 /* ATConnectionGuard.h in Headers */,
 				999834821455ABCE00F1C436 /* SBJsonParser.h in Headers */,
 				999834841455ABCE00F1C436 /* SBJsonStreamParser.h in Headers */,
 				999834861455ABCE00F1C436 /* SBJsonStreamParserAdapter.h in Headers */,
@@ -343,6 +350,7 @@
 				9998348D1455ABCE00F1C436 /* SBJsonStreamWriterState.m in Sources */,
 				9998348F1455ABCE00F1C436 /* SBJsonTokeniser.m in Sources */,
 				999834911455ABCE00F1C436 /* SBJsonWriter.m in Sources */,
+				9986E5BD145AE83800619A25 /* ATConnectionGuard.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
