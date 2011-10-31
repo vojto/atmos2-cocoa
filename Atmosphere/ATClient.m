@@ -387,6 +387,28 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     RKLog(@"Marking app object deleted: %@ (%@)", appObject, object);
 }
 
+- (void)addObjectsFromAppContext {
+    NSArray *entities = [[[_appContext persistentStoreCoordinator] managedObjectModel] entities];
+    for (NSEntityDescription *entity in entities) {
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        request.entity = entity;
+        NSError *error = nil;
+        NSArray *result = [_appContext executeFetchRequest:request error:&error];
+        if (error) NSLog(@"Error: %@", error);
+        for (NSManagedObject *object in result) {
+            NSLog(@"Handling object %@ ...", object.objectID);
+            ATObject *metaObject = [self _existingMetaObjectForAppObject:object];
+            if (!metaObject) {
+                NSLog(@"There's no meta object, creating");
+                metaObject = [self _objectForAppObject:object];
+                [metaObject markChanged];
+            }
+        }
+        [request release];
+    }
+    [self _startSync];
+}
+
 #pragma mark - Pushing object to server
 
 - (void) _startSync {
@@ -503,21 +525,23 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 }
 
 - (ATObject *) _objectForAppObject:(NSManagedObject *)appObject {
+    ATObject *object = [self _existingMetaObjectForAppObject:appObject];
+    if (!object) {
+        object = [self _createObject];
+        [object setClientObject:appObject];
+    }
+    return object;
+}
+
+- (ATObject *)_existingMetaObjectForAppObject:(NSManagedObject *)appObject {
     NSError *error = nil;
-    ATObject *object;
     NSString *idURIString = [appObject objectIDString];
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[_objectEntity name]];
     request.predicate = [NSPredicate predicateWithFormat:@"clientURI = %@", idURIString];
     request.fetchLimit = 1;
     NSArray *objects = [_context executeFetchRequest:request error:&error];
     if (error != nil) RKLog(@"%@", error);
-    if ([objects count] == 0) {
-        object = [self _createObject];
-        [object setClientObject:appObject];
-    } else {
-        object = [objects lastObject];
-    }
-    return object;
+    return [objects lastObject];
 }
                                   
 #pragma mark - Managing app objects

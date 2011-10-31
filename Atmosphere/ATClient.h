@@ -109,7 +109,8 @@ extern NSString * const ATDidUpdateObjectNotification;
 - (void) _markAppObjectSynchronized:(NSManagedObject *)appObject;
 - (BOOL) _isAppObjectChanged:(NSManagedObject *)appObject;
 - (void) _markAppObjectDeleted:(NSManagedObject *)appObject;
-
+- (void)addObjectsFromAppContext; /**< Finds objects in app context that are not yet managed by
+                                   Atmosphere, adds them to meta context and marks them as changed. */
 
 #pragma mark - Syncing
 - (void) _startSync;
@@ -122,6 +123,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 - (ATObject *) _createObjectWithATID:(NSString *)atID;
 - (ATObject *) _createObject;
 - (ATObject *) _objectForAppObject:(NSManagedObject *)appObject;
+- (ATObject *)_existingMetaObjectForAppObject:(NSManagedObject *)appObject;
 
 #pragma mark - Managing app objects
 - (NSManagedObject *) _appObjectForObject:(ATObject *)object;
