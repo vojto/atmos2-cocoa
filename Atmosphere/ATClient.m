@@ -314,6 +314,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     
     if (error != nil) RKLog(@"%@", error);
     [object markSynchronized];
+    [object unlock];
     
     if ([self _saveContext]) {
         [self _updateVersion:version];
@@ -694,7 +695,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 - (BOOL)_attributesChangedInAppObject:(NSManagedObject *)appObject {
     NSDictionary *changedValues = [appObject changedValuesForCurrentEvent];
-    NSLog(@"Changed shit: %@", changedValues);
     NSArray *changedKeys = [changedValues allKeys];
     NSArray *attributeNames = [[[appObject entity] attributesByName] allKeys]; // TODO: Check if attributeKeys works
     for (NSString *attributeName in attributeNames) {
