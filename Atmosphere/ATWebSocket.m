@@ -13,7 +13,6 @@
 
 - (void) sendMessage:(ATMessage *)message {
     NSString *jsonString = [message JSONString];
-    RKLog(@"Json string: %@", jsonString);
     [self send:jsonString];
 }
 

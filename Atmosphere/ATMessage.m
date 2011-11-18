@@ -16,8 +16,6 @@
 #pragma mark - Encoding/decoding
 
 - (NSString *) JSONString {
-    NSLog(@"Type: %@", _type);
-    NSLog(@"Content: %@", _content);
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_type, @"type", _content, @"content", nil];
     return [dict JSONRepresentation];
 }

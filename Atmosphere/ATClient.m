@@ -256,9 +256,9 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark - Messaging
 
 - (void)webSocket:(WebSocket *)webSocket didReceiveMessage:(NSString *)JSONString {
-    RKLog(@"Received message: %@", JSONString);
     ATMessage *message = [ATMessage messageFromJSONString:JSONString];
     NSString *type = message.type;
+    RKLog(@"Received message: %@", type);
     NSDictionary *content = message.content;
     if ([type isEqualToString:ATMessageServerPushType]) {
         [self _didReceiveServerPush:content];
@@ -282,7 +282,8 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     NSInteger version = [versionNumber integerValue];
     NSError *error = nil;
     
-    RKLog(@"Received push: %@", content);
+//    RKLog(@"Received push: %@", content);
+    RKLog(@"Received push: %@ %@", atID, versionNumber);
 
     ATObject *object = [self _objectWithATID:atID];
     NSManagedObject *appObject;
@@ -685,7 +686,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         
         [relations addObject:relation];
     }
-    NSLog(@"Relations: %@", relations);
     
     return relations;
 }
