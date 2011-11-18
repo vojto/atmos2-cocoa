@@ -6,6 +6,8 @@
 //  Copyright 2011 CWL. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
+
 #import "ATClient.h"
 #import "ATObject.h"
 #import "NSManagedObject+ATAdditions.h"
@@ -284,10 +286,18 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
     ATObject *object = [self _objectWithATID:atID];
     NSManagedObject *appObject;
-    if (object) {
+    if (object && object.isLocked) {
+        NSLog(@"Received push for locked object: unlocking, it will sync the next cycle.");
+        // At this point we only unlock the object, still marking it as changed
+        // so it would sync the next cycle.
+        [object unlock];
+        [self _startSync];
+        return;
+    } else if (object) {
         appObject = [self _appObjectForObject:object];
         [self _updateAppObject:appObject withData:data relations:relations];
         [_appContext save:&error];
+        
     } else {
         appObject = [self _createAppObjectWithLocalEntityName:localEntityName];
         [self _updateAppObject:appObject withData:data relations:relations];
@@ -302,8 +312,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     }
     
     if (error != nil) RKLog(@"%@", error);
-
-    NSLog(@"Marking object as synchronized: %@", appObject.objectID);
     [object markSynchronized];
     
     if ([self _saveContext]) {
@@ -349,13 +357,21 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 }
 
 #pragma mark Marking objects
-- (void) _markAppObjectChanged:(NSManagedObject *)appObject {
-    // Get the app object
+- (void) _markAppObjectChanged:(NSManagedObject *)appObject {    
+    ATObject *object = [self _objectForAppObject:appObject];
+    
     if ([self _isAppObjectChanged:appObject]) {
+        // This happens, when we change object, that's already changed.
+        // If something like that happens, it means that we are trying
+        // to change an object that hasn't finished syncing yet.
+        
+        // If we lock an object, the *receive* won't apply the changes,
+        // only unlock it, so next sync cycle will send it again with its
+        // last changes.
+        NSLog(@"Object changed while not synced, locking.");
+        [object lock];
         return;
     }
-    
-    ATObject *object = [self _objectForAppObject:appObject];
     
     [object markChanged];
 }
@@ -436,6 +452,10 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     NSArray *results = [_context executeFetchRequest:request error:&error];
 
     for (ATObject *metaObject in results) {
+        if ([metaObject isLocked]) {
+            NSLog(@"Skipping object because it's locked: %@", metaObject.objectID);
+            continue;
+        }
         NSLog(@"Syncing object: %@", metaObject.objectID);
         [self _syncMetaObject:metaObject];
     }

@@ -15,6 +15,11 @@
 @dynamic clientURI;
 @dynamic isChanged;
 @dynamic isMarkedDeleted;
+@synthesize isLocked;
+
+- (void)awakeFromFetch {
+    self.isLocked = NO;
+}
 
 - (void) setClientObject:(NSManagedObject *)object {
     self.clientURI = [object objectIDString];
@@ -42,6 +47,14 @@
 
 - (void)markDeleted {
     self.isMarkedDeleted = [NSNumber numberWithBool:YES];
+}
+
+- (void)lock {
+    self.isLocked = YES;
+}
+
+- (void)unlock {
+    self.isLocked = NO;
 }
 
 @end
