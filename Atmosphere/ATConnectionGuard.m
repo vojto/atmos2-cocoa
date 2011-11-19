@@ -23,12 +23,11 @@
 - (void)_checkConnection {
     if (!isRunning) return;
     
-    RKLog(@"Checking connection");
+    ASLogInfo(@"[Guard] Checking connection");
     
     if ([client isConnected]) {
-        RKLog(@"All good, connected...");
     } else {
-        RKLog(@"Shit! We're not connected! Let's fix that.");
+        ASLogWarning(@"[Guard] Not connected! Connecting.");
         [client connect];
     }
     
