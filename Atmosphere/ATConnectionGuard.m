@@ -33,7 +33,7 @@
     }
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [self performSelector:@selector(_checkConnection) withObject:nil afterDelay:5*60];
+    [self performSelector:@selector(_checkConnection) withObject:nil afterDelay:60];
 }
 
 - (void)stop {
