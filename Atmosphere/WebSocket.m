@@ -8,6 +8,7 @@
 
 #import "WebSocket.h"
 #import "AsyncSocket.h"
+#import <RNUtil/RNUtil.h>
 
 
 NSString* const WebSocketErrorDomain = @"WebSocketErrorDomain";
@@ -114,7 +115,7 @@ enum {
 }
 
 -(void)onSocket:(AsyncSocket *)sock willDisconnectWithError:(NSError *)err {
-    RKLog(@"Connection failed: %@", err);
+    ASLogInfo(@"Connection failed: %@", err);
     if (!connected) {
         [self _dispatchFailure:[NSNumber numberWithInt:WebSocketErrorConnectionFailed]];
     } else {

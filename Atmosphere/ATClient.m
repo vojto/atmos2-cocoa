@@ -95,9 +95,9 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     libURL = [libURL URLByAppendingPathComponent:executableName];
     [[NSFileManager defaultManager] createDirectoryAtURL:libURL withIntermediateDirectories:YES attributes:nil error:nil];
     NSURL *storeURL = [libURL URLByAppendingPathComponent:@"Atmosphere.xml"];
-    NSLog(@"Store URL: %@", storeURL);
+    ASLogInfo(@"Store URL: %@", storeURL);
     NSPersistentStore *store = [coordinator addPersistentStoreWithType:NSXMLStoreType configuration:nil URL:storeURL options:nil error:nil];
-    RKLog(@"Store: %@", store);
+    ASLogInfo(@"Store: %@", store);
     
     return context;
 }
@@ -132,7 +132,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     NSError *error = nil;
     [_context save:&error];
     if (error != nil) {
-        RKLog(@"%@", error);
+        ASLogInfo(@"%@", error);
         return NO;
     } else {
         return YES;
@@ -201,19 +201,19 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 - (void) _initializeSocketConnection {
     [_connection close];
     [_connection autorelease];
-    NSLog(@"Connecting to host: %@", _host);
+    ASLogInfo(@"Connecting to host: %@", _host);
     _connection = [[ATWebSocket alloc] initWithURLString:_host delegate:self];
     [_connection open];
 }
 
 - (void)webSocketDidOpen:(WebSocket *)webSocket {
-    RKLog(@"Web Socket connection opened");
+    ASLogInfo(@"Web Socket connection opened");
     [self _sendConnectMessage];
     [self _startSync];
 }
 
 - (void)webSocket:(WebSocket *)webSocket didFailWithError:(NSError *)error {
-    RKLog(@"Web Socket connection failed: %@", error);
+    ASLogInfo(@"Web Socket connection failed: %@", error);
 }
 
 - (void) _sendConnectMessage {
@@ -241,7 +241,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 - (void)webSocketDidClose:(WebSocket *)webSocket {
     if (_isRunning) {
-        RKLog(@"Disconnected, reconnecting...");
+        ASLogInfo(@"Disconnected, reconnecting...");
         [self performSelector:@selector(connect) withObject:nil afterDelay:5];
     }
 }
@@ -258,7 +258,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 - (void)webSocket:(WebSocket *)webSocket didReceiveMessage:(NSString *)JSONString {
     ATMessage *message = [ATMessage messageFromJSONString:JSONString];
     NSString *type = message.type;
-    RKLog(@"Received message: %@", type);
+    ASLogInfo(@"Received message: %@", type);
     NSDictionary *content = message.content;
     if ([type isEqualToString:ATMessageServerPushType]) {
         [self _didReceiveServerPush:content];
@@ -282,13 +282,13 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     NSInteger version = [versionNumber integerValue];
     NSError *error = nil;
     
-//    RKLog(@"Received push: %@", content);
-    RKLog(@"Received push: %@ %@", atID, versionNumber);
+//    ASLogInfo(@"Received push: %@", content);
+    ASLogInfo(@"Received push: %@ %@", atID, versionNumber);
 
     ATObject *object = [self _objectWithATID:atID];
     NSManagedObject *appObject;
     if (object && object.isLocked) {
-        NSLog(@"Received push for locked object: unlocking, it will sync the next cycle.");
+        ASLogInfo(@"Received push for locked object: unlocking, it will sync the next cycle.");
         // At this point we only unlock the object, still marking it as changed
         // so it would sync the next cycle.
         [object unlock];
@@ -312,7 +312,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         [self _deleteAppObject:appObject];
     }
     
-    if (error != nil) RKLog(@"%@", error);
+    if (error != nil) ASLogInfo(@"%@", error);
     [object markSynchronized];
     [object unlock];
     
@@ -336,7 +336,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark - Responding to changes in app objects
 
 - (void) _didChangeAppObject:(NSNotification *)notification {
-    RKLog(@"App object just changed. %d", (int)[_appContext hasChanges]);
+    ASLogInfo(@"App object just changed. %d", (int)[_appContext hasChanges]);
     NSDictionary *userInfo = [notification userInfo];
     for (NSManagedObject *updatedObject in [userInfo valueForKey:NSUpdatedObjectsKey]) {
         if (![self _attributesChangedInAppObject:updatedObject]) continue;
@@ -345,7 +345,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     NSSet *insertedObjects = [userInfo valueForKey:NSInsertedObjectsKey];
     NSError *error = nil;
     [_appContext obtainPermanentIDsForObjects:[insertedObjects allObjects] error:&error];
-    if (error) RKLog(@"Error obtaining permanent IDs: %@", error);
+    if (error) ASLogInfo(@"Error obtaining permanent IDs: %@", error);
     for (NSManagedObject *insertedObject in insertedObjects) {
 //        ATObject *metaObject = [self _objectForAppObject:insertedObject];
         (void)[self _objectForAppObject:insertedObject];
@@ -370,7 +370,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         // If we lock an object, the *receive* won't apply the changes,
         // only unlock it, so next sync cycle will send it again with its
         // last changes.
-        NSLog(@"Object changed while not synced, locking.");
+        ASLogInfo(@"Object changed while not synced, locking.");
         [object lock];
         return;
     }
@@ -402,7 +402,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     ATObject *object = [self _objectForAppObject:appObject];
     [object markDeleted];
     [object markChanged];
-    RKLog(@"Marking app object deleted: %@ (%@)", appObject, object);
+    ASLogInfo(@"Marking app object deleted: %@ (%@)", appObject, object);
 }
 
 - (void)addObjectsFromAppContext {
@@ -412,12 +412,12 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         request.entity = entity;
         NSError *error = nil;
         NSArray *result = [_appContext executeFetchRequest:request error:&error];
-        if (error) NSLog(@"Error: %@", error);
+        if (error) ASLogInfo(@"Error: %@", error);
         for (NSManagedObject *object in result) {
-            NSLog(@"Handling object %@ ...", object.objectID);
+            ASLogInfo(@"Handling object %@ ...", object.objectID);
             ATObject *metaObject = [self _existingMetaObjectForAppObject:object];
             if (!metaObject) {
-                NSLog(@"There's no meta object, creating");
+                ASLogInfo(@"There's no meta object, creating");
                 metaObject = [self _objectForAppObject:object];
                 [metaObject markChanged];
             }
@@ -430,7 +430,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark - Pushing object to server
 
 - (void) _startSync {
-    RKLog(@"Marking client as NEEDING SYNC", nil);
+    ASLogInfo(@"Marking client as NEEDING SYNC", nil);
     _needsSync = YES;
     [self performSelectorOnMainThread:@selector(_sync) withObject:nil waitUntilDone:NO];
 }
@@ -439,10 +439,10 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     if (!_needsSync)
         return;
     
-    RKLog(@"Syncing");
+    ASLogInfo(@"Syncing");
 
     if (![_connection connected]) {
-        NSLog(@"Not syncing because we're not connceted");
+        ASLogInfo(@"Not syncing because we're not connceted");
         return;
     }
     
@@ -455,10 +455,10 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
     for (ATObject *metaObject in results) {
         if ([metaObject isLocked]) {
-            NSLog(@"Skipping object because it's locked: %@", metaObject.objectID);
+            ASLogInfo(@"Skipping object because it's locked: %@", metaObject.objectID);
             continue;
         }
-        NSLog(@"Syncing object: %@", metaObject.objectID);
+        ASLogInfo(@"Syncing object: %@", metaObject.objectID);
         [self _syncMetaObject:metaObject];
     }
     
@@ -472,14 +472,14 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     id atID = metaObject.ATID ? metaObject.ATID : (id)[NSNull null];
     NSDictionary *content, *object;
     if ([metaObject.isMarkedDeleted boolValue]) {
-        RKLog(@"Object is deleted: ", metaObject);
+        ASLogInfo(@"Object is deleted: ", metaObject);
         NSNumber *deleted = [NSNumber numberWithBool:YES];
         object = [NSDictionary dictionaryWithObjectsAndKeys:deleted, @"deleted", nil];
     } else {
         NSManagedObject *appObject = [self _appObjectForObject:metaObject];
-        RKLog(@"Object is not deleted: ", appObject);
+        ASLogInfo(@"Object is not deleted: ", appObject);
         if (!appObject) {
-            RKLog(@"App object not found, meta object is not marked as deleted, %@", metaObject);
+            ASLogInfo(@"App object not found, meta object is not marked as deleted, %@", metaObject);
             return;
         }
         id entity, data, relations, deleted;
@@ -517,7 +517,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     NSError *error = nil;
     RKAssert(_context, @"Context shouldn't be nil");
     NSArray *results = [_context executeFetchRequest:request error:&error];
-    if (error != nil) RKLog(@"Error: %@", error);
+    if (error != nil) ASLogInfo(@"Error: %@", error);
     if ([results count] > 0)
         return [results lastObject];
     else
@@ -562,7 +562,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     request.predicate = [NSPredicate predicateWithFormat:@"clientURI = %@", idURIString];
     request.fetchLimit = 1;
     NSArray *objects = [_context executeFetchRequest:request error:&error];
-    if (error != nil) RKLog(@"%@", error);
+    if (error != nil) ASLogInfo(@"%@", error);
     return [objects lastObject];
 }
                                   
@@ -593,7 +593,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         if (value == [NSNull null]) continue;
         NSString *localAttributeName = [self _localAttributeNameFor:key entity:appObject.entity];
         if (![[appObject.entity propertiesByName] objectForKey:localAttributeName]) {
-            RKLog(@"Internal Inconsistency: Can't find attribute with name %@", localAttributeName);
+            ASLogInfo(@"Internal Inconsistency: Can't find attribute with name %@", localAttributeName);
             continue;
         }
         [appObject setStringValue:[data objectForKey:key] forKey:localAttributeName];
@@ -621,7 +621,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 }
 
 - (void) _applyRelations {
-    RKLog(@"Applying relations: %d", [_relationsQueue count]);
+    ASLogInfo(@"Applying relations: %d", [_relationsQueue count]);
     NSMutableArray *trash = [NSMutableArray array];
     for (NSDictionary *relationDescription in _relationsQueue) {
         NSDictionary *relation = [relationDescription objectForKey:@"relation"];
@@ -630,12 +630,12 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         NSString *atid = [relation objectForKey:@"target"];
         ATObject *targetMetaObject = [self _objectWithATID:atid];
         if (!targetMetaObject) {
-            RKLog(@"Internal Inconsistency: Can't find meta object with atid %@ referenced in relation", atid);
+            ASLogInfo(@"Internal Inconsistency: Can't find meta object with atid %@ referenced in relation", atid);
             continue;
         }
         NSManagedObject *targetAppObject = [self _appObjectForObject:targetMetaObject];
         if (!targetAppObject) {
-            RKLog(@"Internal Inconsistency: Can't find app object with atid %@ referenced in relation", atid);
+            ASLogInfo(@"Internal Inconsistency: Can't find app object with atid %@ referenced in relation", atid);
             continue;
         }
         [appObject setValue:targetAppObject forKey:name];
@@ -675,12 +675,12 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         if ([relationDescription isToMany]) continue;
         id targetAppObject = [appObject valueForKey:relationName];
         if (!targetAppObject) {
-            NSLog(@"Relation is not connected: %@", relationName);
+            ASLogInfo(@"Relation is not connected: %@", relationName);
             continue;
         }
         ATObject *targetMetaObject = [self _objectForAppObject:targetAppObject];
         if (!targetMetaObject) {
-            NSLog(@"[Internal Inconsistency] Couldn't find meta object for object %@", targetAppObject);
+            ASLogInfo(@"[Internal Inconsistency] Couldn't find meta object for object %@", targetAppObject);
             continue;
         }
         NSDictionary *relation = [NSMutableDictionary dictionaryWithObjectsAndKeys:serverRelationName, @"name", [metaObject ATID], @"source", [targetMetaObject ATID], @"target", nil];
