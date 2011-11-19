@@ -224,7 +224,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
                               [NSNumber numberWithLong:_version], ATMessageVersionKey,
                               (_authKey ? (id)_authKey : [NSNull null]), ATMessageAuthKeyKey,
                               nil];
-    
+    ASLogInfo(@"Sending connect message with version %d and auth key %@", (int)_version, _authKey);
     [_connection sendMessage:connectMessage];
     
     // [connectMessage release];
@@ -241,8 +241,8 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 - (void)webSocketDidClose:(WebSocket *)webSocket {
     if (_isRunning) {
-        ASLogInfo(@"Disconnected, reconnecting...");
-        [self performSelector:@selector(connect) withObject:nil afterDelay:5];
+//        ASLogInfo(@"Disconnected, reconnecting...");
+//        [self performSelector:@selector(connect) withObject:nil afterDelay:5];
     }
 }
 
