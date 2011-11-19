@@ -213,7 +213,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 }
 
 - (void)webSocket:(WebSocket *)webSocket didFailWithError:(NSError *)error {
-    ASLogInfo(@"Web Socket connection failed: %@", error);
+    ASLogWarning(@"Web Socket connection failed: %@", error);
 }
 
 - (void) _sendConnectMessage {
@@ -430,7 +430,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark - Pushing object to server
 
 - (void) _startSync {
-    ASLogInfo(@"Marking client as NEEDING SYNC", nil);
+    ASLogInfo(@"Scheduling sync for next run loop", nil);
     _needsSync = YES;
     [self performSelectorOnMainThread:@selector(_sync) withObject:nil waitUntilDone:NO];
 }
@@ -458,7 +458,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
             ASLogInfo(@"Skipping object because it's locked: %@", metaObject.objectID);
             continue;
         }
-        ASLogInfo(@"Syncing object: %@", metaObject.objectID);
+        ASLogInfo(@"Syncing object: %@", metaObject.ATID);
         [self _syncMetaObject:metaObject];
     }
     
@@ -587,13 +587,14 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 }
 
 - (void)_updateAppObject:(NSManagedObject *)appObject withData:(NSDictionary *)data {
+    ASLogInfo(@"Updating object with data");
     for (NSString *key in [data allKeys]) {
         id value = [data objectForKey:key];
         if ([key hasPrefix:@"_"]) continue;
         if (value == [NSNull null]) continue;
         NSString *localAttributeName = [self _localAttributeNameFor:key entity:appObject.entity];
         if (![[appObject.entity propertiesByName] objectForKey:localAttributeName]) {
-            ASLogInfo(@"Internal Inconsistency: Can't find attribute with name %@", localAttributeName);
+            ASLogWarning(@"Can't find attribute with name %@", localAttributeName);
             continue;
         }
         [appObject setStringValue:[data objectForKey:key] forKey:localAttributeName];
@@ -621,7 +622,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 }
 
 - (void) _applyRelations {
-    ASLogInfo(@"Applying relations: %d", [_relationsQueue count]);
+    ASLogInfo(@"Applying %d relations", [_relationsQueue count]);
     NSMutableArray *trash = [NSMutableArray array];
     for (NSDictionary *relationDescription in _relationsQueue) {
         NSDictionary *relation = [relationDescription objectForKey:@"relation"];
@@ -630,12 +631,12 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         NSString *atid = [relation objectForKey:@"target"];
         ATObject *targetMetaObject = [self _objectWithATID:atid];
         if (!targetMetaObject) {
-            ASLogInfo(@"Internal Inconsistency: Can't find meta object with atid %@ referenced in relation", atid);
+            ASLogWarning(@"Can't find meta object with atid %@ referenced in relation", atid);
             continue;
         }
         NSManagedObject *targetAppObject = [self _appObjectForObject:targetMetaObject];
         if (!targetAppObject) {
-            ASLogInfo(@"Internal Inconsistency: Can't find app object with atid %@ referenced in relation", atid);
+            ASLogWarning(@"Can't find app object with atid %@ referenced in relation", atid);
             continue;
         }
         [appObject setValue:targetAppObject forKey:name];
@@ -680,7 +681,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         }
         ATObject *targetMetaObject = [self _objectForAppObject:targetAppObject];
         if (!targetMetaObject) {
-            ASLogInfo(@"[Internal Inconsistency] Couldn't find meta object for object %@", targetAppObject);
+            ASLogWarning(@"Couldn't find meta object for object %@ referenced in relation", targetAppObject);
             continue;
         }
         NSDictionary *relation = [NSMutableDictionary dictionaryWithObjectsAndKeys:serverRelationName, @"name", [metaObject ATID], @"source", [targetMetaObject ATID], @"target", nil];
