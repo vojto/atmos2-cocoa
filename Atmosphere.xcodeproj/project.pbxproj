@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		991DBC491477A19C00E084C5 /* RNUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 991DBC2F14779F4600E084C5 /* RNUtil.framework */; };
+		991DBCA51477BA0700E084C5 /* RNUtil.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 991DBCA31477B9FA00E084C5 /* RNUtil.framework */; };
+		991DBCC91477BB3600E084C5 /* RNUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 991DBCA31477B9FA00E084C5 /* RNUtil.framework */; };
 		9986E5BC145AE83800619A25 /* ATConnectionGuard.h in Headers */ = {isa = PBXBuildFile; fileRef = 9986E5BA145AE83800619A25 /* ATConnectionGuard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9986E5BD145AE83800619A25 /* ATConnectionGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 9986E5BB145AE83800619A25 /* ATConnectionGuard.m */; };
 		999834301455AB5100F1C436 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9998342F1455AB5100F1C436 /* Cocoa.framework */; };
@@ -52,17 +53,37 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		991DBC2E14779F4600E084C5 /* PBXContainerItemProxy */ = {
+		991DBCA21477B9FA00E084C5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 991DBC2A14779F4600E084C5 /* RNUtil.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 991DBBF014779EED00E084C5;
 			remoteInfo = RNUtil;
 		};
+		9950A5AD1477BC0000C58052 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 991DBC2A14779F4600E084C5 /* RNUtil.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 991DBBEF14779EED00E084C5;
+			remoteInfo = RNUtil;
+		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		991DBC981477B9DE00E084C5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				991DBCA51477BA0700E084C5 /* RNUtil.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		991DBC2A14779F4600E084C5 /* RNUtil.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNUtil.xcodeproj; path = ../RNUtil/RNUtil.xcodeproj; sourceTree = "<group>"; };
+		991DBC2A14779F4600E084C5 /* RNUtil.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNUtil.xcodeproj; path = ../RNUtil/RNUtil.xcodeproj; sourceTree = SOURCE_ROOT; };
 		9986E5BA145AE83800619A25 /* ATConnectionGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATConnectionGuard.h; sourceTree = "<group>"; };
 		9986E5BB145AE83800619A25 /* ATConnectionGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATConnectionGuard.m; sourceTree = "<group>"; };
 		9998342C1455AB5100F1C436 /* Atmosphere.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Atmosphere.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,18 +138,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				991DBC491477A19C00E084C5 /* RNUtil.framework in Frameworks */,
 				999834301455AB5100F1C436 /* Cocoa.framework in Frameworks */,
+				991DBCC91477BB3600E084C5 /* RNUtil.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		991DBC2B14779F4600E084C5 /* Products */ = {
+		991DBC9F1477B9FA00E084C5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				991DBC2F14779F4600E084C5 /* RNUtil.framework */,
+				991DBCA31477B9FA00E084C5 /* RNUtil.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -289,14 +310,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 999834411455AB5100F1C436 /* Build configuration list for PBXNativeTarget "Atmosphere" */;
 			buildPhases = (
-				999834271455AB5100F1C436 /* Sources */,
 				999834281455AB5100F1C436 /* Frameworks */,
+				999834271455AB5100F1C436 /* Sources */,
 				999834291455AB5100F1C436 /* Headers */,
 				9998342A1455AB5100F1C436 /* Resources */,
+				991DBC981477B9DE00E084C5 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				9950A5AE1477BC0000C58052 /* PBXTargetDependency */,
 			);
 			name = Atmosphere;
 			productName = Atmosphere;
@@ -320,7 +343,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 991DBC2B14779F4600E084C5 /* Products */;
+					ProductGroup = 991DBC9F1477B9FA00E084C5 /* Products */;
 					ProjectRef = 991DBC2A14779F4600E084C5 /* RNUtil.xcodeproj */;
 				},
 			);
@@ -332,11 +355,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		991DBC2F14779F4600E084C5 /* RNUtil.framework */ = {
+		991DBCA31477B9FA00E084C5 /* RNUtil.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = RNUtil.framework;
-			remoteRef = 991DBC2E14779F4600E084C5 /* PBXContainerItemProxy */;
+			remoteRef = 991DBCA21477B9FA00E084C5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -381,6 +404,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9950A5AE1477BC0000C58052 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RNUtil;
+			targetProxy = 9950A5AD1477BC0000C58052 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		999834381455AB5100F1C436 /* InfoPlist.strings */ = {
