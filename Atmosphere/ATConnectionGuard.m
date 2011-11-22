@@ -23,7 +23,7 @@
 - (void)_checkConnection {
     if (!isRunning) return;
     
-    ASLogInfo(@"[Guard] Checking connection");
+    // ASLogInfo(@"[Guard] Checking connection");
     
     if ([client isConnected]) {
     } else {
