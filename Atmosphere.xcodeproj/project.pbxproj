@@ -48,18 +48,25 @@
 		9998348F1455ABCE00F1C436 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9998347C1455ABCE00F1C436 /* SBJsonTokeniser.m */; };
 		999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 9998347D1455ABCE00F1C436 /* SBJsonWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		999834911455ABCE00F1C436 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9998347E1455ABCE00F1C436 /* SBJsonWriter.m */; };
-		99BDBDE81483730700906F37 /* RNUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99BDBDE7148372F500906F37 /* RNUtil.framework */; };
+		99BDBE371483A0AD00906F37 /* RNUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE351483A0AD00906F37 /* RNUtil.h */; };
+		99BDBE381483A0AD00906F37 /* RNUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE361483A0AD00906F37 /* RNUtil.m */; };
+		99BDBE431483A0EF00906F37 /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE3D1483A0EF00906F37 /* NSData+Base64.h */; };
+		99BDBE441483A0EF00906F37 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE3E1483A0EF00906F37 /* NSData+Base64.m */; };
+		99BDBE451483A0EF00906F37 /* NSObject+Properties.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE3F1483A0EF00906F37 /* NSObject+Properties.h */; };
+		99BDBE461483A0EF00906F37 /* NSObject+Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE401483A0EF00906F37 /* NSObject+Properties.m */; };
+		99BDBE471483A0EF00906F37 /* NSString+PropertyKVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE411483A0EF00906F37 /* NSString+PropertyKVC.h */; };
+		99BDBE481483A0EF00906F37 /* NSString+PropertyKVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE421483A0EF00906F37 /* NSString+PropertyKVC.m */; };
+		99BDBE511483A0F600906F37 /* ASLMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE491483A0F600906F37 /* ASLMessage.h */; };
+		99BDBE521483A0F600906F37 /* ASLMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE4A1483A0F600906F37 /* ASLMessage.m */; };
+		99BDBE531483A0F600906F37 /* ASLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE4B1483A0F600906F37 /* ASLogger.h */; };
+		99BDBE541483A0F600906F37 /* ASLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE4C1483A0F600906F37 /* ASLogger.m */; };
+		99BDBE551483A0F600906F37 /* ASLQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE4D1483A0F600906F37 /* ASLQuery.h */; };
+		99BDBE561483A0F600906F37 /* ASLQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE4E1483A0F600906F37 /* ASLQuery.m */; };
+		99BDBE571483A0F600906F37 /* ASLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE4F1483A0F600906F37 /* ASLResponse.h */; };
+		99BDBE581483A0F600906F37 /* ASLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE501483A0F600906F37 /* ASLResponse.m */; };
+		99BDBE5B1483A10000906F37 /* b64.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE591483A10000906F37 /* b64.h */; };
+		99BDBE5C1483A10000906F37 /* b64.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE5A1483A10000906F37 /* b64.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		99BDBDE6148372F500906F37 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 991DBC2A14779F4600E084C5 /* RNUtil.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 991DBBF014779EED00E084C5;
-			remoteInfo = RNUtil;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		991DBC981477B9DE00E084C5 /* CopyFiles */ = {
@@ -74,7 +81,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		991DBC2A14779F4600E084C5 /* RNUtil.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNUtil.xcodeproj; path = "../rnutil-cocoa/RNUtil.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		9986E5BA145AE83800619A25 /* ATConnectionGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATConnectionGuard.h; sourceTree = "<group>"; };
 		9986E5BB145AE83800619A25 /* ATConnectionGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATConnectionGuard.m; sourceTree = "<group>"; };
 		9998342C1455AB5100F1C436 /* Atmosphere.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Atmosphere.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,6 +128,24 @@
 		9998347C1455ABCE00F1C436 /* SBJsonTokeniser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonTokeniser.m; sourceTree = "<group>"; };
 		9998347D1455ABCE00F1C436 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		9998347E1455ABCE00F1C436 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		99BDBE351483A0AD00906F37 /* RNUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNUtil.h; sourceTree = "<group>"; };
+		99BDBE361483A0AD00906F37 /* RNUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNUtil.m; sourceTree = "<group>"; };
+		99BDBE3D1483A0EF00906F37 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		99BDBE3E1483A0EF00906F37 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		99BDBE3F1483A0EF00906F37 /* NSObject+Properties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Properties.h"; sourceTree = "<group>"; };
+		99BDBE401483A0EF00906F37 /* NSObject+Properties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Properties.m"; sourceTree = "<group>"; };
+		99BDBE411483A0EF00906F37 /* NSString+PropertyKVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+PropertyKVC.h"; sourceTree = "<group>"; };
+		99BDBE421483A0EF00906F37 /* NSString+PropertyKVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+PropertyKVC.m"; sourceTree = "<group>"; };
+		99BDBE491483A0F600906F37 /* ASLMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASLMessage.h; sourceTree = "<group>"; };
+		99BDBE4A1483A0F600906F37 /* ASLMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASLMessage.m; sourceTree = "<group>"; };
+		99BDBE4B1483A0F600906F37 /* ASLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASLogger.h; sourceTree = "<group>"; };
+		99BDBE4C1483A0F600906F37 /* ASLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASLogger.m; sourceTree = "<group>"; };
+		99BDBE4D1483A0F600906F37 /* ASLQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASLQuery.h; sourceTree = "<group>"; };
+		99BDBE4E1483A0F600906F37 /* ASLQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASLQuery.m; sourceTree = "<group>"; };
+		99BDBE4F1483A0F600906F37 /* ASLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASLResponse.h; sourceTree = "<group>"; };
+		99BDBE501483A0F600906F37 /* ASLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASLResponse.m; sourceTree = "<group>"; };
+		99BDBE591483A10000906F37 /* b64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b64.h; sourceTree = "<group>"; };
+		99BDBE5A1483A10000906F37 /* b64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = b64.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,7 +153,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99BDBDE81483730700906F37 /* RNUtil.framework in Frameworks */,
 				999834301455AB5100F1C436 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,7 +163,6 @@
 		999834201455AB5100F1C436 = {
 			isa = PBXGroup;
 			children = (
-				991DBC2A14779F4600E084C5 /* RNUtil.xcodeproj */,
 				9998345C1455AB7400F1C436 /* Vendor */,
 				999834361455AB5100F1C436 /* Supporting Files */,
 				999834351455AB5100F1C436 /* Atmosphere */,
@@ -211,6 +233,8 @@
 		9998345C1455AB7400F1C436 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				99BDBE3C1483A0E300906F37 /* ASLogger */,
+				99BDBE341483A09300906F37 /* RNUtil */,
 				9998346B1455ABC700F1C436 /* JSON */,
 				9998345E1455ABB400F1C436 /* AsyncSocket */,
 			);
@@ -257,12 +281,36 @@
 			name = JSON;
 			sourceTree = "<group>";
 		};
-		99BDBDE3148372F500906F37 /* Products */ = {
+		99BDBE341483A09300906F37 /* RNUtil */ = {
 			isa = PBXGroup;
 			children = (
-				99BDBDE7148372F500906F37 /* RNUtil.framework */,
+				99BDBE351483A0AD00906F37 /* RNUtil.h */,
+				99BDBE361483A0AD00906F37 /* RNUtil.m */,
 			);
-			name = Products;
+			name = RNUtil;
+			sourceTree = "<group>";
+		};
+		99BDBE3C1483A0E300906F37 /* ASLogger */ = {
+			isa = PBXGroup;
+			children = (
+				99BDBE591483A10000906F37 /* b64.h */,
+				99BDBE5A1483A10000906F37 /* b64.m */,
+				99BDBE3D1483A0EF00906F37 /* NSData+Base64.h */,
+				99BDBE3E1483A0EF00906F37 /* NSData+Base64.m */,
+				99BDBE3F1483A0EF00906F37 /* NSObject+Properties.h */,
+				99BDBE401483A0EF00906F37 /* NSObject+Properties.m */,
+				99BDBE411483A0EF00906F37 /* NSString+PropertyKVC.h */,
+				99BDBE421483A0EF00906F37 /* NSString+PropertyKVC.m */,
+				99BDBE491483A0F600906F37 /* ASLMessage.h */,
+				99BDBE4A1483A0F600906F37 /* ASLMessage.m */,
+				99BDBE4B1483A0F600906F37 /* ASLogger.h */,
+				99BDBE4C1483A0F600906F37 /* ASLogger.m */,
+				99BDBE4D1483A0F600906F37 /* ASLQuery.h */,
+				99BDBE4E1483A0F600906F37 /* ASLQuery.m */,
+				99BDBE4F1483A0F600906F37 /* ASLResponse.h */,
+				99BDBE501483A0F600906F37 /* ASLResponse.m */,
+			);
+			name = ASLogger;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -291,6 +339,15 @@
 				9998348C1455ABCE00F1C436 /* SBJsonStreamWriterState.h in Headers */,
 				9998348E1455ABCE00F1C436 /* SBJsonTokeniser.h in Headers */,
 				999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */,
+				99BDBE371483A0AD00906F37 /* RNUtil.h in Headers */,
+				99BDBE431483A0EF00906F37 /* NSData+Base64.h in Headers */,
+				99BDBE451483A0EF00906F37 /* NSObject+Properties.h in Headers */,
+				99BDBE471483A0EF00906F37 /* NSString+PropertyKVC.h in Headers */,
+				99BDBE511483A0F600906F37 /* ASLMessage.h in Headers */,
+				99BDBE531483A0F600906F37 /* ASLogger.h in Headers */,
+				99BDBE551483A0F600906F37 /* ASLQuery.h in Headers */,
+				99BDBE571483A0F600906F37 /* ASLResponse.h in Headers */,
+				99BDBE5B1483A10000906F37 /* b64.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,28 +388,12 @@
 			mainGroup = 999834201455AB5100F1C436;
 			productRefGroup = 9998342D1455AB5100F1C436 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 99BDBDE3148372F500906F37 /* Products */;
-					ProjectRef = 991DBC2A14779F4600E084C5 /* RNUtil.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				9998342B1455AB5100F1C436 /* Atmosphere */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		99BDBDE7148372F500906F37 /* RNUtil.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = RNUtil.framework;
-			remoteRef = 99BDBDE6148372F500906F37 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9998342A1455AB5100F1C436 /* Resources */ = {
@@ -372,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99BDBE521483A0F600906F37 /* ASLMessage.m in Sources */,
 				999834511455AB6C00F1C436 /* WebSocket.m in Sources */,
 				999834531455AB6C00F1C436 /* ATWebSocket.m in Sources */,
 				999834551455AB6C00F1C436 /* ATClient.m in Sources */,
@@ -390,6 +432,14 @@
 				9998348F1455ABCE00F1C436 /* SBJsonTokeniser.m in Sources */,
 				999834911455ABCE00F1C436 /* SBJsonWriter.m in Sources */,
 				9986E5BD145AE83800619A25 /* ATConnectionGuard.m in Sources */,
+				99BDBE381483A0AD00906F37 /* RNUtil.m in Sources */,
+				99BDBE441483A0EF00906F37 /* NSData+Base64.m in Sources */,
+				99BDBE461483A0EF00906F37 /* NSObject+Properties.m in Sources */,
+				99BDBE481483A0EF00906F37 /* NSString+PropertyKVC.m in Sources */,
+				99BDBE541483A0F600906F37 /* ASLogger.m in Sources */,
+				99BDBE561483A0F600906F37 /* ASLQuery.m in Sources */,
+				99BDBE581483A0F600906F37 /* ASLResponse.m in Sources */,
+				99BDBE5C1483A10000906F37 /* b64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
