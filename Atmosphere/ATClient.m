@@ -285,7 +285,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     NSDictionary *data = [content objectForKey:ATMessageObjectDataKey];
     NSNumber *deleted = [content objectForKey:ATMessageObjectDeletedKey];
     NSArray *relations = [content objectForKey:ATMessageObjectRelationsKey];
-    NSString *serverEntityName = [data objectForKey:@"_entity"];
+    NSString *serverEntityName = [content objectForKey:@"object_entity"];
     NSString *localEntityName = [self _localEntityNameFor:serverEntityName];
     NSNumber *versionNumber = [content objectForKey:ATMessageVersionKey];
     NSInteger version = [versionNumber integerValue];
@@ -669,8 +669,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         [data setValue:stringValue forKey:serverAttributeName];
     }
     
-    
-    [data setObject:entity forKey:@"_entity"];
     return data;
 }
 
