@@ -8,7 +8,6 @@
 
 #import "WebSocket.h"
 #import "AsyncSocket.h"
-#import <RNUtil/RNUtil.h>
 
 
 NSString* const WebSocketErrorDomain = @"WebSocketErrorDomain";
@@ -128,7 +127,6 @@ enum {
     if (!requestOrigin) requestOrigin = [NSString stringWithFormat:@"http://%@",url.host];
         
     NSString *requestPath = url.path;
-    NSLog(@"Request Path: %@", requestPath);
     if (url.query) {
       requestPath = [requestPath stringByAppendingFormat:@"?%@", url.query];
     }
@@ -139,7 +137,6 @@ enum {
                                                        "Origin: %@\r\n"
                                                        "\r\n",
                                                         requestPath,url.host,requestOrigin];
-    NSLog(@"Request: %@", getRequest);
     [socket writeData:[getRequest dataUsingEncoding:NSASCIIStringEncoding] withTimeout:20 tag:WebSocketTagHandshake];
 }
 

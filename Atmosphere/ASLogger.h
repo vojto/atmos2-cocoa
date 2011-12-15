@@ -39,9 +39,9 @@
 #import <Foundation/Foundation.h>
 #import <asl.h>
 
-// #import "ASLMessage.h"
-//#import "ASLQuery.h"
-//#import "ASLResponse.h"
+#import "ASLMessage.h"
+#import "ASLQuery.h"
+#import "ASLResponse.h"
 
 @interface ASLogger : NSObject
 {

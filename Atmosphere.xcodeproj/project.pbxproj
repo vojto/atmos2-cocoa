@@ -48,23 +48,23 @@
 		9998348F1455ABCE00F1C436 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9998347C1455ABCE00F1C436 /* SBJsonTokeniser.m */; };
 		999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 9998347D1455ABCE00F1C436 /* SBJsonWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		999834911455ABCE00F1C436 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9998347E1455ABCE00F1C436 /* SBJsonWriter.m */; };
-		99BDBE371483A0AD00906F37 /* RNUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE351483A0AD00906F37 /* RNUtil.h */; };
+		99BDBE371483A0AD00906F37 /* RNUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE351483A0AD00906F37 /* RNUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE381483A0AD00906F37 /* RNUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE361483A0AD00906F37 /* RNUtil.m */; };
-		99BDBE431483A0EF00906F37 /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE3D1483A0EF00906F37 /* NSData+Base64.h */; };
+		99BDBE431483A0EF00906F37 /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE3D1483A0EF00906F37 /* NSData+Base64.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE441483A0EF00906F37 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE3E1483A0EF00906F37 /* NSData+Base64.m */; };
-		99BDBE451483A0EF00906F37 /* NSObject+Properties.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE3F1483A0EF00906F37 /* NSObject+Properties.h */; };
+		99BDBE451483A0EF00906F37 /* NSObject+Properties.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE3F1483A0EF00906F37 /* NSObject+Properties.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE461483A0EF00906F37 /* NSObject+Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE401483A0EF00906F37 /* NSObject+Properties.m */; };
-		99BDBE471483A0EF00906F37 /* NSString+PropertyKVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE411483A0EF00906F37 /* NSString+PropertyKVC.h */; };
+		99BDBE471483A0EF00906F37 /* NSString+PropertyKVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE411483A0EF00906F37 /* NSString+PropertyKVC.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE481483A0EF00906F37 /* NSString+PropertyKVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE421483A0EF00906F37 /* NSString+PropertyKVC.m */; };
-		99BDBE511483A0F600906F37 /* ASLMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE491483A0F600906F37 /* ASLMessage.h */; };
+		99BDBE511483A0F600906F37 /* ASLMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE491483A0F600906F37 /* ASLMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE521483A0F600906F37 /* ASLMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE4A1483A0F600906F37 /* ASLMessage.m */; };
-		99BDBE531483A0F600906F37 /* ASLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE4B1483A0F600906F37 /* ASLogger.h */; };
+		99BDBE531483A0F600906F37 /* ASLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE4B1483A0F600906F37 /* ASLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE541483A0F600906F37 /* ASLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE4C1483A0F600906F37 /* ASLogger.m */; };
-		99BDBE551483A0F600906F37 /* ASLQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE4D1483A0F600906F37 /* ASLQuery.h */; };
+		99BDBE551483A0F600906F37 /* ASLQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE4D1483A0F600906F37 /* ASLQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE561483A0F600906F37 /* ASLQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE4E1483A0F600906F37 /* ASLQuery.m */; };
-		99BDBE571483A0F600906F37 /* ASLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE4F1483A0F600906F37 /* ASLResponse.h */; };
+		99BDBE571483A0F600906F37 /* ASLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE4F1483A0F600906F37 /* ASLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE581483A0F600906F37 /* ASLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE501483A0F600906F37 /* ASLResponse.m */; };
-		99BDBE5B1483A10000906F37 /* b64.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE591483A10000906F37 /* b64.h */; };
+		99BDBE5B1483A10000906F37 /* b64.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE591483A10000906F37 /* b64.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE5C1483A10000906F37 /* b64.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE5A1483A10000906F37 /* b64.m */; };
 /* End PBXBuildFile section */
 
@@ -337,8 +337,6 @@
 				999834881455ABCE00F1C436 /* SBJsonStreamParserState.h in Headers */,
 				9998348A1455ABCE00F1C436 /* SBJsonStreamWriter.h in Headers */,
 				9998348C1455ABCE00F1C436 /* SBJsonStreamWriterState.h in Headers */,
-				9998348E1455ABCE00F1C436 /* SBJsonTokeniser.h in Headers */,
-				999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */,
 				99BDBE371483A0AD00906F37 /* RNUtil.h in Headers */,
 				99BDBE431483A0EF00906F37 /* NSData+Base64.h in Headers */,
 				99BDBE451483A0EF00906F37 /* NSObject+Properties.h in Headers */,
@@ -348,6 +346,8 @@
 				99BDBE551483A0F600906F37 /* ASLQuery.h in Headers */,
 				99BDBE571483A0F600906F37 /* ASLResponse.h in Headers */,
 				99BDBE5B1483A10000906F37 /* b64.h in Headers */,
+				9998348E1455ABCE00F1C436 /* SBJsonTokeniser.h in Headers */,
+				999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

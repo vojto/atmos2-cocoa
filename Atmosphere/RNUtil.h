@@ -15,7 +15,7 @@
  02111-1307, USA.
  */
 
-// #import "ASLogger.h"
+#import "ASLogger.h"
 
 #define RKLog(format, ...) NSLog(@"[%@] %@", [self class], [NSString stringWithFormat:format, ## __VA_ARGS__]);
 

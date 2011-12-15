@@ -6,4 +6,8 @@
     #import <Cocoa/Cocoa.h>
 #endif
 
-#import <RNUtil/RNUtil.h>
+#import "RNUtil.h"
+#import "ASLMessage.h"
+#import "ASLogger.h"
+#import "ASLQuery.h"
+#import "ASLResponse.h"
