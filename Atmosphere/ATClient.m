@@ -636,7 +636,9 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     for (NSDictionary *relationDescription in _relationsQueue) {
         NSDictionary *relation = [relationDescription objectForKey:@"relation"];
         NSManagedObject *appObject = [relationDescription objectForKey:@"appObject"];
-        NSString *name = [self _localEntityNameFor:[relation objectForKey:@"name"]];
+        NSString *name = [relation objectForKey:@"name"];
+        // Use this to find target entity. Don't forget to translate it using the entity map.
+        // NSString *targetEntity = [relation objectForKey:@"target_entity"]; 
         NSString *atid = [relation objectForKey:@"target"];
         ATObject *targetMetaObject = [self _objectWithATID:atid];
         if (!targetMetaObject) {
