@@ -15,7 +15,7 @@
  02111-1307, USA.
  */
 
-#import "ATWebSocket.h"
+#import "SocketIO.h"
 #import "ATMessage.h"
 #import "ATObject.h"
 
@@ -30,7 +30,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 
 @end
 
-@interface ATClient : NSObject <WebSocketDelegate> {
+@interface ATClient : NSObject <SocketIODelegate> {
    
     /** App */
     NSManagedObjectContext *_appContext;
@@ -50,8 +50,8 @@ extern NSString * const ATDidUpdateObjectNotification;
     
     
     /** Connection */
-    NSString *_host;
-    ATWebSocket *_connection;
+    NSString *_URL;
+    SocketIO *_connection;
     
     /** Delegate */
     id<ATClientDelegate> delegate;
@@ -67,7 +67,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 @property (assign) id<ATClientDelegate> delegate;
 
 #pragma mark - Lifecycle
-- (id) initWithHost:(NSString *)aHost appContext:(NSManagedObjectContext *)context;
+- (id) initWithURL:(NSString *)aHost appContext:(NSManagedObjectContext *)context;
 - (NSManagedObjectContext *) _createContext;
 
 #pragma mark - Connecting
@@ -104,6 +104,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 - (void) _postObjectUpdateNotification:(NSManagedObject *)object;
 
 #pragma mark - Messaging
+- (void)sendMessage:(ATMessage *)message;
 #pragma mark Responding to server push
 - (void) _didReceiveServerPush:(NSDictionary *)data;
 #pragma mark Responding to authentication message

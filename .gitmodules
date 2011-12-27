@@ -1,0 +1,6 @@
+[submodule "SocketIO"]
+	path = SocketIO
+	url = https://github.com/pkyeck/socket.IO-objc.git
+[submodule "ASIHTTPRequest"]
+	path = ASIHTTPRequest
+	url = https://github.com/pokeb/asi-http-request.git

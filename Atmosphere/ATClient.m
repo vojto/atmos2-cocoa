@@ -52,9 +52,9 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 #pragma mark - Lifecycle
 
-- (id) initWithHost:(NSString *)aHost appContext:(NSManagedObjectContext *)context {
+- (id) initWithURL:(NSString *)aURL appContext:(NSManagedObjectContext *)context {
     if ((self = [self init])) {
-        _host = [aHost copy];
+        _URL = [aURL copy];
         [self _readVersionFromDefaults];
         _context = [self _createContext];
         self.appContext = context;
@@ -204,25 +204,28 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 }
 
 - (BOOL)isConnected {
-    return [_connection connected];
+    return [_connection isConnected];
 }
 
 - (void) _initializeSocketConnection {
-    [_connection close];
+    [_connection disconnect];
     [_connection autorelease];
-    ASLogInfo(@"Connecting to host: %@", _host);
-    _connection = [[ATWebSocket alloc] initWithURLString:_host delegate:self];
-    [_connection open];
+    ASLogInfo(@"Connecting to host: %@", _URL);
+    NSString *url = [_URL stringByReplacingOccurrencesOfString:@"ws:" withString:@""];
+    url = [url stringByReplacingOccurrencesOfString:@"wss:" withString:@""];
+    url = [url stringByReplacingOccurrencesOfString:@"/" withString:@""];
+    NSArray *components = [url componentsSeparatedByString:@":"];
+    NSString *hostname = [components objectAtIndex:0];
+    NSString *port = [components objectAtIndex:1];
+    
+    _connection = [[SocketIO alloc] initWithDelegate:self];
+    [_connection connectToHost:hostname onPort:[port integerValue]];
 }
 
-- (void)webSocketDidOpen:(WebSocket *)webSocket {
+- (void)socketIODidConnect:(SocketIO *)socket {
     ASLogInfo(@"Web Socket connection opened");
     [self _sendConnectMessage];
     [self _startSync];
-}
-
-- (void)webSocket:(WebSocket *)webSocket didFailWithError:(NSError *)error {
-    ASLogWarning(@"Web Socket connection failed: %@", error);
 }
 
 - (void) _sendConnectMessage {
@@ -234,7 +237,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
                               (_authKey ? (id)_authKey : [NSNull null]), ATMessageAuthKeyKey,
                               nil];
     ASLogInfo(@"Sending connect message with version %d and auth key %@", (int)_version, _authKey);
-    [_connection sendMessage:connectMessage];
+    [self sendMessage:connectMessage];
     
     // [connectMessage release];
 }
@@ -264,8 +267,12 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 #pragma mark - Messaging
 
-- (void)webSocket:(WebSocket *)webSocket didReceiveMessage:(NSString *)JSONString {
-    ATMessage *message = [ATMessage messageFromJSONString:JSONString];
+- (void)sendMessage:(ATMessage *)message {
+    [_connection sendMessage:[message JSONString]];
+}
+
+- (void)socketIO:(SocketIO *)socket didReceiveMessage:(SocketIOPacket *)packet {
+    ATMessage *message = [ATMessage messageFromJSONString:packet.data];
     NSString *type = message.type;
     ASLogInfo(@"Received message: %@", type);
     NSDictionary *content = message.content;
@@ -450,7 +457,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     
     ASLogInfo(@"Syncing");
 
-    if (![_connection connected]) {
+    if (![self isConnected]) {
         ASLogInfo(@"Not syncing because we're not connceted");
         return;
     }
@@ -506,7 +513,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
                atID, ATMessageATIDKey, nil];
 
     message.content = content;
-    [_connection sendMessage:message];
+    [self sendMessage:message];
     [message release];
 }
 
@@ -716,7 +723,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 - (void) dealloc {
     [_connection release];
-    [_host release];
+    [_URL release];
     [_appContext release];
     [_authKey release];
     [_relationsQueue release];
