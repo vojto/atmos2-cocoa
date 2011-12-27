@@ -248,7 +248,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     _isRunning = NO;
     [self _saveContext];
     [self _sync];
-    [_connection close];
+    [_connection disconnect];
 }
 
 - (void)webSocketDidClose:(WebSocket *)webSocket {
