@@ -50,7 +50,8 @@ extern NSString * const ATDidUpdateObjectNotification;
     
     
     /** Connection */
-    NSString *_URL;
+    NSString *_host;
+    NSInteger _port;
     SocketIO *_connection;
     
     /** Delegate */
@@ -67,16 +68,17 @@ extern NSString * const ATDidUpdateObjectNotification;
 @property (assign) id<ATClientDelegate> delegate;
 
 #pragma mark - Lifecycle
-- (id) initWithURL:(NSString *)aHost appContext:(NSManagedObjectContext *)context;
+- (id) initWithHost:(NSString *)aHost port:(NSInteger)aPort appContext:(NSManagedObjectContext *)context;
 - (NSManagedObjectContext *) _createContext;
+- (void)_registerForAppNotifications;
 
 #pragma mark - Connecting
 - (void) connect;
 - (void) connectWithKey:(NSString *)key;
 - (BOOL)isConnected;
-
-#pragma mark Registering app notifications
-- (void) _registerForAppNotifications;
+#pragma mark Auth
+- (void)_didReceiveServerAuthFailure:(NSDictionary *)data;
+- (void)_didReceiveServerAuthSuccess:(NSDictionary *)data;
 
 #pragma mark - Managing version number
 - (void) _readVersionFromDefaults;
@@ -100,16 +102,16 @@ extern NSString * const ATDidUpdateObjectNotification;
 #pragma mark - Disconnecting
 - (void) disconnect;
 
-#pragma mark - Posting notifications
-- (void) _postObjectUpdateNotification:(NSManagedObject *)object;
-
 #pragma mark - Messaging
 - (void)sendMessage:(ATMessage *)message;
-#pragma mark Responding to server push
 - (void) _didReceiveServerPush:(NSDictionary *)data;
-#pragma mark Responding to authentication message
-- (void) _didReceiveServerAuthFailure:(NSDictionary *)data;
-- (void) _didReceiveServerAuthSuccess:(NSDictionary *)data;
+
+#pragma mark - Requests
+- (void)get;
+
+#pragma mark - Objects
+- (void)_applyObjectMessage:(NSDictionary *)content;
+- (void)_postObjectUpdateNotification:(NSManagedObject *)object;
 
 
 #pragma mark - Responding to changes in app objects

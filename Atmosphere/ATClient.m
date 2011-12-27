@@ -20,7 +20,8 @@
 #import "ATClient.h"
 #import "ATObject.h"
 #import "NSManagedObject+ATAdditions.h"
-#import "WebSocket.h"
+#import "ASIHTTPRequest.h"
+#import "NSObject+JSON.h"
 
 NSString * const ATVersionDefaultsKey = @"ATVersion";
 
@@ -52,9 +53,10 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 #pragma mark - Lifecycle
 
-- (id) initWithURL:(NSString *)aURL appContext:(NSManagedObjectContext *)context {
+- (id) initWithHost:(NSString *)aHost port:(NSInteger)aPort appContext:(NSManagedObjectContext *)context {
     if ((self = [self init])) {
-        _URL = [aURL copy];
+        _host = [aHost copy];
+        _port = aPort;
         [self _readVersionFromDefaults];
         _context = [self _createContext];
         self.appContext = context;
@@ -210,16 +212,10 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 - (void) _initializeSocketConnection {
     [_connection disconnect];
     [_connection autorelease];
-    ASLogInfo(@"Connecting to host: %@", _URL);
-    NSString *url = [_URL stringByReplacingOccurrencesOfString:@"ws:" withString:@""];
-    url = [url stringByReplacingOccurrencesOfString:@"wss:" withString:@""];
-    url = [url stringByReplacingOccurrencesOfString:@"/" withString:@""];
-    NSArray *components = [url componentsSeparatedByString:@":"];
-    NSString *hostname = [components objectAtIndex:0];
-    NSString *port = [components objectAtIndex:1];
+    ASLogInfo(@"Connecting to host: %@:%d", _host, _port);
     
     _connection = [[SocketIO alloc] initWithDelegate:self];
-    [_connection connectToHost:hostname onPort:[port integerValue]];
+    [_connection connectToHost:_host onPort:_port];
 }
 
 - (void)socketIODidConnect:(SocketIO *)socket {
@@ -242,7 +238,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     // [connectMessage release];
 }
 
-#pragma mark - Disconnecting
+#pragma mark Disconnecting
 
 - (void)disconnect {
     _isRunning = NO;
@@ -253,16 +249,21 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 - (void)webSocketDidClose:(WebSocket *)webSocket {
     if (_isRunning) {
-//        ASLogInfo(@"Disconnected, reconnecting...");
-//        [self performSelector:@selector(connect) withObject:nil afterDelay:5];
+        //        ASLogInfo(@"Disconnected, reconnecting...");
+        //        [self performSelector:@selector(connect) withObject:nil afterDelay:5];
     }
 }
 
-#pragma mark - Posting notifications
-//
-- (void)_postObjectUpdateNotification:(NSManagedObject *)object {
-    NSNotification *notification = [NSNotification notificationWithName:ATDidUpdateObjectNotification object:object];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
+#pragma mark Authentication
+
+- (void)_didReceiveServerAuthSuccess:(NSDictionary *)data {
+    [delegate clientAuthDidSucceed:self];
+    [self get];
+    [self _startSync];
+}
+
+- (void)_didReceiveServerAuthFailure:(NSDictionary *)data {
+    [delegate clientAuthDidFail:self];
 }
 
 #pragma mark - Messaging
@@ -285,9 +286,31 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     }
 }
 
-#pragma mark Handling server push
+#pragma mark - Requests
 
-- (void) _didReceiveServerPush:(NSDictionary *)content {
+- (void)get {
+    NSString *path = [NSString stringWithFormat:@"http://%@:%d/client-get?version=%d&auth_key=%@", _host, _port, _version, _authKey];
+    NSURL *url = [NSURL URLWithString:path];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    [request setCompletionBlock:^{
+        NSString *responseString = [request responseString];
+        NSArray *updates = [responseString JSONValue];
+        for(NSDictionary *update in updates) {
+            [self _applyObjectMessage:update];
+        }
+    }];
+    [request startAsynchronous];
+}
+
+#pragma mark - Messages
+
+#pragma mark - Objects
+
+- (void)_didReceiveServerPush:(NSDictionary *)content {
+    [self _applyObjectMessage:content];
+}
+
+- (void)_applyObjectMessage:(NSDictionary *)content {
     NSString *atID = [content objectForKey:ATMessageATIDKey];
     NSDictionary *data = [content objectForKey:ATMessageObjectDataKey];
     NSNumber *deleted = [content objectForKey:ATMessageObjectDeletedKey];
@@ -298,9 +321,8 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     NSInteger version = [versionNumber integerValue];
     NSError *error = nil;
     
-//    ASLogInfo(@"Received push: %@", content);
     ASLogInfo(@"Received push: %@ %@", atID, versionNumber);
-
+    
     ATObject *object = [self _objectWithATID:atID];
     NSManagedObject *appObject;
     if (object && object.isLocked) {
@@ -338,15 +360,9 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     }
 }
 
-#pragma mark Responding to authentication messages
-
-- (void)_didReceiveServerAuthSuccess:(NSDictionary *)data {
-    [delegate clientAuthDidSucceed:self];
-    [self _startSync];
-}
-
-- (void)_didReceiveServerAuthFailure:(NSDictionary *)data {
-    [delegate clientAuthDidFail:self];
+- (void)_postObjectUpdateNotification:(NSManagedObject *)object {
+    NSNotification *notification = [NSNotification notificationWithName:ATDidUpdateObjectNotification object:object];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 #pragma mark - Responding to changes in app objects
@@ -375,7 +391,8 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 }
 
 #pragma mark Marking objects
-- (void) _markAppObjectChanged:(NSManagedObject *)appObject {    
+
+- (void)_markAppObjectChanged:(NSManagedObject *)appObject {    
     ATObject *object = [self _objectForAppObject:appObject];
     
     if ([self _isAppObjectChanged:appObject]) {
@@ -394,7 +411,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [object markChanged];
 }
      
-- (void) _markAppObjectSynchronized:(NSManagedObject *)appObject {
+- (void)_markAppObjectSynchronized:(NSManagedObject *)appObject {
     if ([self _isAppObjectChanged:appObject]) {
         return;
     }
@@ -404,7 +421,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [object markSynchronized];
 }
 
-- (BOOL) _isAppObjectChanged:(NSManagedObject *)appObject {
+- (BOOL)_isAppObjectChanged:(NSManagedObject *)appObject {
     ATObject *object = [self _objectForAppObject:appObject];
     
     if ([object.isChanged boolValue]) {
@@ -414,7 +431,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     }
 }
 
-- (void) _markAppObjectDeleted:(NSManagedObject *)appObject {
+- (void)_markAppObjectDeleted:(NSManagedObject *)appObject {
     ATObject *object = [self _objectForAppObject:appObject];
     [object markDeleted];
     [object markChanged];
@@ -723,7 +740,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 - (void) dealloc {
     [_connection release];
-    [_URL release];
+    [_host release];
     [_appContext release];
     [_authKey release];
     [_relationsQueue release];
