@@ -486,7 +486,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         object = [NSDictionary dictionaryWithObjectsAndKeys:deleted, @"deleted", nil];
     } else {
         NSManagedObject *appObject = [self _appObjectForObject:metaObject];
-        ASLogInfo(@"Object is not deleted: ", appObject);
         if (!appObject) {
             ASLogInfo(@"App object not found, meta object is not marked as deleted, %@", metaObject);
             return;
