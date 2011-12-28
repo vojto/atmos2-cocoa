@@ -23,16 +23,8 @@
 #import "ASIHTTPRequest.h"
 #import "NSObject+JSON.h"
 
-NSString * const ATVersionDefaultsKey = @"ATVersion";
-
-NSString * const ATConnectClientMessage = @"client-connect";
-
 NSString * const ATObjectEntityName = @"Object";
 
-NSString * const ATMessageServerPushType = @"server-push";
-NSString * const ATMessageClientPushType = @"client-push";
-NSString * const ATMessageServerAuthFailureType = @"server-auth-failure";
-NSString * const ATMessageServerAuthSuccessType = @"server-auth-success";
 
 NSString * const ATMessageVersionKey = @"version";
 NSString * const ATMessageATIDKey = @"object_atid";
@@ -41,76 +33,36 @@ NSString * const ATMessageObjectDataKey = @"object_data";
 NSString * const ATMessageObjectDeletedKey = @"object_deleted";
 NSString * const ATMessageObjectRelationsKey = @"object_relations";
 NSString * const ATMessageAuthKeyKey = @"auth_key";
+
 // NSString * const ATMessageEntityKey = @"entity";
 
 NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification";
 
 @implementation ATClient
 
+@synthesize metaContext=_metaContext, mappingHelper=_mappingHelper;
+@synthesize messageClient=_messageClient, resourceClient=_resourceClient;
+@synthesize authKey=_authKey;
 @synthesize appContext=_appContext;
-@synthesize entitiesMap=_entitiesMap, attributesMap=_attributesMap;
 @synthesize delegate;
 
 #pragma mark - Lifecycle
 
 - (id) initWithHost:(NSString *)aHost port:(NSInteger)aPort appContext:(NSManagedObjectContext *)context {
     if ((self = [self init])) {
-        _host = [aHost copy];
-        _port = aPort;
-        [self _readVersionFromDefaults];
-        _context = [self _createContext];
-        self.appContext = context;
-        [self _registerForAppNotifications];
         _needsSync = YES;
         _relationsQueue = [[NSMutableArray alloc] init];
+        
+        self.metaContext = [[[ATMetaContext alloc] init] autorelease];
+        self.appContext = context;
+        self.mappingHelper = [[[ATMappingHelper alloc] init] autorelease];
+        self.messageClient = [[[ATMessageClient alloc] initWithHost:aHost port:aPort synchronizer:self] autorelease];
+        self.resourceClient = [[[ATResourceClient alloc] init] autorelease];
+        
+        [self _registerForAppNotifications];
+        [self.metaContext readVersionFromDefaults];
     }
     return self;
-}
-
-- (NSManagedObjectContext *)_createContext {
-    NSManagedObjectModel *model = [[[NSManagedObjectModel alloc] init] autorelease];
-    _objectEntity = [[[NSEntityDescription alloc] init] autorelease];
-    _objectEntity.name = ATObjectEntityName;
-    _objectEntity.managedObjectClassName = @"ATObject";
-    NSAttributeDescription *clientURI = [[[NSAttributeDescription alloc] init] autorelease];
-    clientURI.name = @"clientURI";
-    [clientURI setAttributeType:NSStringAttributeType];
-    [clientURI setOptional:NO];
-    NSAttributeDescription *atID = [[[NSAttributeDescription alloc] init] autorelease];
-    atID.name = @"ATID";
-    atID.attributeType = NSStringAttributeType;
-    [atID setOptional:YES];
-    
-    NSAttributeDescription *isChanged = [[[NSAttributeDescription alloc] init] autorelease];
-    isChanged.name = @"isChanged";
-    [isChanged setAttributeType:NSBooleanAttributeType];
-    [isChanged setDefaultValue:[NSNumber numberWithBool:NO]];
-    [isChanged setOptional:YES];
-    
-    NSAttributeDescription *isMarkedDeleted = [[[NSAttributeDescription alloc] init] autorelease];
-    isMarkedDeleted.name = @"isMarkedDeleted";
-    [isMarkedDeleted setAttributeType:NSBooleanAttributeType];
-    [isMarkedDeleted setDefaultValue:[NSNumber numberWithBool:NO]];
-    [isMarkedDeleted setOptional:YES];
-    
-    NSArray *properties = [NSArray arrayWithObjects:clientURI, atID, isChanged, isMarkedDeleted, nil];
-    [_objectEntity setProperties:properties];
-    [model setEntities:[NSArray arrayWithObjects:_objectEntity, nil]];
-    
-    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
-    NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
-    [context setPersistentStoreCoordinator:coordinator];
-    NSArray *libURLs = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
-    NSString *executableName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleExecutable"];
-    NSURL *libURL = [libURLs lastObject];
-    libURL = [libURL URLByAppendingPathComponent:executableName];
-    [[NSFileManager defaultManager] createDirectoryAtURL:libURL withIntermediateDirectories:YES attributes:nil error:nil];
-    NSURL *storeURL = [libURL URLByAppendingPathComponent:@"Atmosphere.xml"];
-    ASLogInfo(@"Store URL: %@", storeURL);
-    NSPersistentStore *store = [coordinator addPersistentStoreWithType:NSXMLStoreType configuration:nil URL:storeURL options:nil error:nil];
-    ASLogInfo(@"Store: %@", store);
-    
-    return context;
 }
 
 - (void) _registerForAppNotifications {
@@ -121,20 +73,29 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
                                                object:_appContext];
 }
 
-- (void) _readVersionFromDefaults {
-    _version = [(NSNumber *)[[NSUserDefaults standardUserDefaults] valueForKey:ATVersionDefaultsKey] intValue];
+- (void)close {
+    [self _saveContext];
+    [self _sync];
+    [self.messageClient disconnect];
 }
 
-- (void) _writeVersionToDefaults {
-    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:_version] forKey:ATVersionDefaultsKey];
+#pragma mark Memory Management
+
+- (void) dealloc {
+    [_appContext release];
+    [_authKey release];
+    [_relationsQueue release];
+    self.metaContext = nil;
+    self.mappingHelper = nil;
+    self.messageClient = nil;
+    self.resourceClient = nil;
+    [super dealloc];
 }
 
-- (void) _updateVersion:(NSInteger)version
-{
-    if (version > _version) {
-        _version = version;
-        [self _writeVersionToDefaults];
-    }
+#pragma mark - Authentication
+
+- (NSString *)authKeyOrNull {
+    return (_authKey ? (id)_authKey : [NSNull null]);
 }
 
 #pragma mark - Working with contexts
@@ -150,173 +111,14 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     }
 }
 
-#pragma mark - Mapping
 
-- (NSString *) _localEntityNameFor:(NSString *)serverEntityName {
-    NSString *name = [_entitiesMap objectForKey:serverEntityName];
-    return name ? name : serverEntityName;
-}
-
-- (NSString *) _serverEntityNameFor:(NSString *)localEntityName {
-    for (NSString *serverName in [_entitiesMap allKeys]) {
-        if ([localEntityName isEqualToString:[self _localEntityNameFor:serverName]]) {
-            return serverName;
-        }
-    }
-    return localEntityName;
-}
-
-- (NSString *)_serverEntityNameForAppObject:(NSManagedObject *)appObject {
-    NSEntityDescription *entityDescription = [appObject entity];
-    return [self _serverEntityNameFor:[entityDescription name]];
-}
-
-- (NSString *)_serverAttributeNameFor:(NSString *)localName entity:(NSEntityDescription *)entity {
-    NSDictionary *map = [_attributesMap objectForKey:entity.name];
-    
-    for (NSString *serverName in [map allKeys]) {
-        NSString *someLocalName = [map objectForKey:serverName];
-        if ([someLocalName isEqualToString:localName])
-            return serverName;
-    }
-    
-    return localName;
-}
-
-- (NSString *)_localAttributeNameFor:(NSString *)serverName entity:(NSEntityDescription *)entity {
-    NSDictionary *map = [_attributesMap objectForKey:entity.name];
-    NSString *localName = [map objectForKey:serverName];
-    if (localName) {
-        return localName;
-    } else {
-        return serverName;
-    }
-}
-
-#pragma mark - Connecting
-
-- (void) connect {
-    _isRunning = YES;
-    [self _initializeSocketConnection];
-}
-
-- (void)connectWithKey:(NSString *)key {
-    _authKey = [key copy];
-    [self connect];
-}
-
-- (BOOL)isConnected {
-    return [_connection isConnected];
-}
-
-- (void) _initializeSocketConnection {
-    [_connection disconnect];
-    [_connection autorelease];
-    ASLogInfo(@"Connecting to host: %@:%d", _host, _port);
-    
-    _connection = [[SocketIO alloc] initWithDelegate:self];
-    [_connection connectToHost:_host onPort:_port];
-}
-
-- (void)socketIODidConnect:(SocketIO *)socket {
-    ASLogInfo(@"Web Socket connection opened");
-    [self _sendConnectMessage];
-    [self _startSync];
-}
-
-- (void) _sendConnectMessage {
-    // Send the "Connect Client" message
-    ATMessage *connectMessage = [[ATMessage alloc] init];
-    connectMessage.type = ATConnectClientMessage;
-    connectMessage.content = [NSDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithLong:_version], ATMessageVersionKey,
-                              (_authKey ? (id)_authKey : [NSNull null]), ATMessageAuthKeyKey,
-                              nil];
-    ASLogInfo(@"Sending connect message with version %d and auth key %@", (int)_version, _authKey);
-    [self sendMessage:connectMessage];
-    
-    // [connectMessage release];
-}
-
-#pragma mark Disconnecting
-
-- (void)disconnect {
-    _isRunning = NO;
-    [self _saveContext];
-    [self _sync];
-    [_connection disconnect];
-}
-
-- (void)webSocketDidClose:(WebSocket *)webSocket {
-    if (_isRunning) {
-        //        ASLogInfo(@"Disconnected, reconnecting...");
-        //        [self performSelector:@selector(connect) withObject:nil afterDelay:5];
-    }
-}
-
-#pragma mark Authentication
-
-- (void)_didReceiveServerAuthSuccess:(NSDictionary *)data {
-    [delegate clientAuthDidSucceed:self];
-    [self get];
-    [self _startSync];
-}
-
-- (void)_didReceiveServerAuthFailure:(NSDictionary *)data {
-    [delegate clientAuthDidFail:self];
-}
-
-#pragma mark - Messaging
-
-- (void)sendMessage:(ATMessage *)message {
-    [_connection sendMessage:[message JSONString]];
-}
-
-- (void)socketIO:(SocketIO *)socket didReceiveMessage:(SocketIOPacket *)packet {
-    ATMessage *message = [ATMessage messageFromJSONString:packet.data];
-    NSString *type = message.type;
-    ASLogInfo(@"Received message: %@", type);
-    NSDictionary *content = message.content;
-    if ([type isEqualToString:ATMessageServerPushType]) {
-        [self _didReceiveServerPush:content];
-    } else if ([type isEqualToString:ATMessageServerAuthFailureType]) {
-        [self _didReceiveServerAuthFailure:content];
-    } else if ([type isEqualToString:ATMessageServerAuthSuccessType]) {
-        [self _didReceiveServerAuthSuccess:content];
-    }
-}
-
-#pragma mark - Requests
-
-- (void)get {
-    NSString *path = [NSString stringWithFormat:@"http://%@:%d/client-get?version=%d&auth_key=%@", _host, _port, _version, _authKey];
-    NSURL *url = [NSURL URLWithString:path];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    [request setCompletionBlock:^{
-        NSString *responseString = [request responseString];
-        NSArray *updates = [responseString JSONValue];
-        for(NSDictionary *update in updates) {
-            [self _applyObjectMessage:update];
-        }
-    }];
-    [request startAsynchronous];
-}
-
-#pragma mark - Messages
-
-#pragma mark - Objects
-
-- (void)_didReceiveServerPush:(NSDictionary *)content {
-    [self _applyObjectMessage:content];
-}
-
-- (void)_applyObjectMessage:(NSDictionary *)content {
+- (void)applyObjectMessage:(NSDictionary *)content {
     NSString *atID = [content objectForKey:ATMessageATIDKey];
     NSDictionary *data = [content objectForKey:ATMessageObjectDataKey];
     NSNumber *deleted = [content objectForKey:ATMessageObjectDeletedKey];
     NSArray *relations = [content objectForKey:ATMessageObjectRelationsKey];
     NSString *serverEntityName = [content objectForKey:@"object_entity"];
-    NSString *localEntityName = [self _localEntityNameFor:serverEntityName];
+    NSString *localEntityName = [self.mappingHelper localEntityNameFor:serverEntityName];
     NSNumber *versionNumber = [content objectForKey:ATMessageVersionKey];
     NSInteger version = [versionNumber integerValue];
     NSError *error = nil;
@@ -330,7 +132,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         // At this point we only unlock the object, still marking it as changed
         // so it would sync the next cycle.
         [object unlock];
-        [self _startSync];
+        [self startSync];
         return;
     } else if (object) {
         appObject = [self _appObjectForObject:object];
@@ -355,7 +157,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [object unlock];
     
     if ([self _saveContext]) {
-        [self _updateVersion:version];
+        [self.metaContext updateVersion:version];
         [self _postObjectUpdateNotification:appObject];
     }
 }
@@ -387,7 +189,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     for (NSManagedObject *deletedObject in [userInfo valueForKey:NSDeletedObjectsKey]) {
         [self _markAppObjectDeleted:deletedObject];
     }
-    [self _startSync];
+    [self startSync];
 }
 
 #pragma mark Marking objects
@@ -457,18 +259,20 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         }
         [request release];
     }
-    [self _startSync];
+    [self startSync];
 }
 
 #pragma mark - Pushing object to server
 
-- (void) _startSync {
+- (void)startSync {
     ASLogInfo(@"Scheduling sync for next run loop", nil);
     _needsSync = YES;
     [self performSelectorOnMainThread:@selector(_sync) withObject:nil waitUntilDone:NO];
 }
 
-- (void) _sync {
+// This will be refactored to use ResourceClient instead of MessageClient, so 
+// whatever is in here doesn't matter.
+- (void)_sync {
     if (!_needsSync)
         return;
     
@@ -734,17 +538,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         if ([changedKeys containsObject:attributeName]) return YES;
     }
     return NO;
-}
-
-#pragma mark - Memory Management
-
-- (void) dealloc {
-    [_connection release];
-    [_host release];
-    [_appContext release];
-    [_authKey release];
-    [_relationsQueue release];
-    [super dealloc];
 }
 
 @end
