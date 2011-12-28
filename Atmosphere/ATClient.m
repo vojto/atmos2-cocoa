@@ -273,69 +273,11 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 // This will be refactored to use ResourceClient instead of MessageClient, so 
 // whatever is in here doesn't matter.
 - (void)_sync {
-    if (!_needsSync)
-        return;
-    
-    ASLogInfo(@"Syncing");
-
-    if (![self isConnected]) {
-        ASLogInfo(@"Not syncing because we're not connceted");
-        return;
-    }
-    
-    [self _saveContext];
-    
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ATObjectEntityName];
-    request.predicate = [NSPredicate predicateWithFormat:@"isChanged = YES"];
-    NSError *error = nil;
-    NSArray *results = [_context executeFetchRequest:request error:&error];
-
-    for (ATObject *metaObject in results) {
-        if ([metaObject isLocked]) {
-            ASLogInfo(@"Skipping object because it's locked: %@", metaObject.objectID);
-            continue;
-        }
-        ASLogInfo(@"Syncing object: %@", metaObject.ATID);
-        [self _syncMetaObject:metaObject];
-    }
-    
-    _needsSync = NO;
+    ASLogError(@"Not implemented yet");
 }
 
 - (void) _syncMetaObject:(ATObject *)metaObject {
-    ATMessage *message = [[ATMessage alloc] init];
-    message.type = ATMessageClientPushType;
-    
-    id atID = metaObject.ATID ? metaObject.ATID : (id)[NSNull null];
-    NSDictionary *content, *object;
-    if ([metaObject.isMarkedDeleted boolValue]) {
-        ASLogInfo(@"Object is deleted: ", metaObject);
-        NSNumber *deleted = [NSNumber numberWithBool:YES];
-        object = [NSDictionary dictionaryWithObjectsAndKeys:deleted, @"deleted", nil];
-    } else {
-        NSManagedObject *appObject = [self _appObjectForObject:metaObject];
-        if (!appObject) {
-            ASLogInfo(@"App object not found, meta object is not marked as deleted, %@", metaObject);
-            return;
-        }
-        id entity, data, relations, deleted;
-        entity = [self _serverEntityNameForAppObject:appObject];
-        data = [self _dataForAppObject:appObject];
-        relations = [self _relationsForAppObject:appObject];
-        deleted = [NSNumber numberWithBool:NO];
-        
-        object = [NSDictionary dictionaryWithObjectsAndKeys:entity, @"entity", 
-                  data, @"data",
-                  relations, @"relations", nil];
-        [data release];
-    }
-    
-    content = [NSDictionary dictionaryWithObjectsAndKeys:object, ATMessageObjectKey, 
-               atID, ATMessageATIDKey, nil];
-
-    message.content = content;
-    [self sendMessage:message];
-    [message release];
+    ASLogError(@"Not implemented yet");
 }
 
 #pragma mark - Managing meta objects
