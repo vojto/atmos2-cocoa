@@ -7,7 +7,7 @@
 //
 
 #import "ATMessageClient.h"
-#import "ATClient.h"
+#import "ATSynchronizer.h"
 
 NSString * const ATConnectClientMessage = @"client-connect";
 
@@ -30,7 +30,7 @@ NSString * const ATMessageAuthKeyKey = @"auth_key";
 
 #pragma mark - Lifecycle
 
-- (id)initWithHost:(NSString *)aHost port:(NSInteger)aPort synchronizer:(ATClient *)aSync {
+- (id)initWithHost:(NSString *)aHost port:(NSInteger)aPort synchronizer:(ATSynchronizer *)aSync {
     if ((self = [super init])) {
         self.sync = aSync;
         self.host = [[aHost copy] autorelease];

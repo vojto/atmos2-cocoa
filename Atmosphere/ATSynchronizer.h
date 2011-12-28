@@ -24,16 +24,16 @@
 
 extern NSString * const ATDidUpdateObjectNotification;
 
-@class ATClient;
+@class ATSynchronizer;
 
 @protocol ATClientDelegate <NSObject>
 
-- (void) clientAuthDidSucceed:(ATClient *)client;
-- (void) clientAuthDidFail:(ATClient *)client;
+- (void) clientAuthDidSucceed:(ATSynchronizer *)client;
+- (void) clientAuthDidFail:(ATSynchronizer *)client;
 
 @end
 
-@interface ATClient : NSObject {
+@interface ATSynchronizer : NSObject {
    
     /** Atmosphere */
     ATMetaContext *_metaContext;

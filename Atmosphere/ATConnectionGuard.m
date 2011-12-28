@@ -16,7 +16,7 @@
  */
 
 #import "ATConnectionGuard.h"
-#import "ATClient.h"
+#import "ATSynchronizer.h"
 
 @implementation ATConnectionGuard
 

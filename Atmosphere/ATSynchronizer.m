@@ -17,7 +17,7 @@
 
 #import <CoreData/CoreData.h>
 
-#import "ATClient.h"
+#import "ATSynchronizer.h"
 #import "ATObject.h"
 #import "NSManagedObject+ATAdditions.h"
 #import "ASIHTTPRequest.h"
@@ -28,7 +28,7 @@
 
 NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification";
 
-@implementation ATClient
+@implementation ATSynchronizer
 
 @synthesize metaContext=_metaContext, mappingHelper=_mappingHelper;
 @synthesize messageClient=_messageClient, resourceClient=_resourceClient;

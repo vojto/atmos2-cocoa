@@ -17,7 +17,7 @@ extern NSString * const ATMessageObjectRelationsKey;
 extern NSString * const ATMessageVersionKey;
 extern NSString * const ATMessageAuthKeyKey;
 
-@class ATClient;
+@class ATSynchronizer;
 
 /**
  * ATMessageClient is responsible for dealing with live connection
@@ -26,7 +26,7 @@ extern NSString * const ATMessageAuthKeyKey;
 @interface ATMessageClient : NSObject <SocketIODelegate> {
     BOOL _isRunning;
     
-    ATClient *_sync;
+    ATSynchronizer *_sync;
     
     /** Connection */
     NSString *_host;
@@ -34,13 +34,13 @@ extern NSString * const ATMessageAuthKeyKey;
     SocketIO *_connection;
 }
 
-@property (assign) ATClient *sync;
+@property (assign) ATSynchronizer *sync;
 @property (nonatomic, retain) NSString *host;
 @property (assign) NSInteger port;
 @property (nonatomic, retain) SocketIO *connection;
 
 #pragma mark - Lifecycle
-- (id)initWithHost:(NSString *)aHost port:(NSInteger)aPort synchronizer:(ATClient *)aSync;
+- (id)initWithHost:(NSString *)aHost port:(NSInteger)aPort synchronizer:(ATSynchronizer *)aSync;
 
 #pragma mark - Connecting
 - (void)connect;

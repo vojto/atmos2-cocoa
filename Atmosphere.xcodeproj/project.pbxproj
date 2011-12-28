@@ -28,8 +28,8 @@
 		9998343A1455AB5100F1C436 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 999834381455AB5100F1C436 /* InfoPlist.strings */; };
 		999834501455AB6C00F1C436 /* WebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 999834441455AB6C00F1C436 /* WebSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		999834511455AB6C00F1C436 /* WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 999834451455AB6C00F1C436 /* WebSocket.m */; };
-		999834541455AB6C00F1C436 /* ATClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 999834481455AB6C00F1C436 /* ATClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		999834551455AB6C00F1C436 /* ATClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 999834491455AB6C00F1C436 /* ATClient.m */; };
+		999834541455AB6C00F1C436 /* ATSynchronizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 999834481455AB6C00F1C436 /* ATSynchronizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		999834551455AB6C00F1C436 /* ATSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 999834491455AB6C00F1C436 /* ATSynchronizer.m */; };
 		999834561455AB6C00F1C436 /* ATMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 9998344A1455AB6C00F1C436 /* ATMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		999834571455AB6C00F1C436 /* ATMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9998344B1455AB6C00F1C436 /* ATMessage.m */; };
 		999834581455AB6C00F1C436 /* ATObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 9998344C1455AB6C00F1C436 /* ATObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -229,8 +229,8 @@
 		9998343B1455AB5100F1C436 /* Atmosphere-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Atmosphere-Prefix.pch"; sourceTree = "<group>"; };
 		999834441455AB6C00F1C436 /* WebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocket.h; sourceTree = "<group>"; };
 		999834451455AB6C00F1C436 /* WebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSocket.m; sourceTree = "<group>"; };
-		999834481455AB6C00F1C436 /* ATClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATClient.h; sourceTree = "<group>"; };
-		999834491455AB6C00F1C436 /* ATClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATClient.m; sourceTree = "<group>"; };
+		999834481455AB6C00F1C436 /* ATSynchronizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATSynchronizer.h; sourceTree = "<group>"; };
+		999834491455AB6C00F1C436 /* ATSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATSynchronizer.m; sourceTree = "<group>"; };
 		9998344A1455AB6C00F1C436 /* ATMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATMessage.h; sourceTree = "<group>"; };
 		9998344B1455AB6C00F1C436 /* ATMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATMessage.m; sourceTree = "<group>"; };
 		9998344C1455AB6C00F1C436 /* ATObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATObject.h; sourceTree = "<group>"; };
@@ -426,8 +426,8 @@
 		999834351455AB5100F1C436 /* Atmosphere */ = {
 			isa = PBXGroup;
 			children = (
-				999834481455AB6C00F1C436 /* ATClient.h */,
-				999834491455AB6C00F1C436 /* ATClient.m */,
+				999834481455AB6C00F1C436 /* ATSynchronizer.h */,
+				999834491455AB6C00F1C436 /* ATSynchronizer.m */,
 				992628E614AB9B4D00F0DD79 /* ATMappingHelper.h */,
 				992628E714AB9B4D00F0DD79 /* ATMappingHelper.m */,
 				9926290414AB9E4300F0DD79 /* Message Client */,
@@ -595,7 +595,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				999834541455AB6C00F1C436 /* ATClient.h in Headers */,
+				999834541455AB6C00F1C436 /* ATSynchronizer.h in Headers */,
 				999834501455AB6C00F1C436 /* WebSocket.h in Headers */,
 				999834561455AB6C00F1C436 /* ATMessage.h in Headers */,
 				999834581455AB6C00F1C436 /* ATObject.h in Headers */,
@@ -671,6 +671,9 @@
 /* Begin PBXProject section */
 		999834221455AB5100F1C436 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0410;
+			};
 			buildConfigurationList = 999834251455AB5100F1C436 /* Build configuration list for PBXProject "Atmosphere" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -795,7 +798,7 @@
 			files = (
 				99BDBE521483A0F600906F37 /* ASLMessage.m in Sources */,
 				999834511455AB6C00F1C436 /* WebSocket.m in Sources */,
-				999834551455AB6C00F1C436 /* ATClient.m in Sources */,
+				999834551455AB6C00F1C436 /* ATSynchronizer.m in Sources */,
 				999834571455AB6C00F1C436 /* ATMessage.m in Sources */,
 				999834591455AB6C00F1C436 /* ATObject.m in Sources */,
 				9998345B1455AB6C00F1C436 /* NSManagedObject+ATAdditions.m in Sources */,

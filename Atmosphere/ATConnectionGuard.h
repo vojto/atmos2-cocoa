@@ -17,14 +17,14 @@
 
 #import <Foundation/Foundation.h>
 
-@class ATClient;
+@class ATSynchronizer;
 
 @interface ATConnectionGuard : NSObject {
-    ATClient *client;
+    ATSynchronizer *client;
     BOOL isRunning;
 }
 
-@property (assign) ATClient *client;
+@property (assign) ATSynchronizer *client;
 
 - (void)start;
 - (void)stop;
