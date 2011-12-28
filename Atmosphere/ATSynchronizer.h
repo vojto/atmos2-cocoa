@@ -26,7 +26,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 
 @class ATSynchronizer;
 
-@protocol ATClientDelegate <NSObject>
+@protocol ATSynchronizerDelegate <NSObject>
 
 - (void) clientAuthDidSucceed:(ATSynchronizer *)client;
 - (void) clientAuthDidFail:(ATSynchronizer *)client;
@@ -54,7 +54,7 @@ extern NSString * const ATDidUpdateObjectNotification;
     NSMutableArray *_relationsQueue;
     
     /** Delegate */
-    id<ATClientDelegate> delegate;
+    id<ATSynchronizerDelegate> delegate;
 }
 
 @property (nonatomic, retain) ATMetaContext *metaContext;
@@ -65,7 +65,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 @property (nonatomic, retain) NSString *authKey;
 
 @property (nonatomic, assign) NSManagedObjectContext *appContext;
-@property (assign) id<ATClientDelegate> delegate;
+@property (assign) id<ATSynchronizerDelegate> delegate;
 
 #pragma mark - Lifecycle
 - (id) initWithHost:(NSString *)aHost port:(NSInteger)aPort appContext:(NSManagedObjectContext *)context;
