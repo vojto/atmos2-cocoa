@@ -22,17 +22,7 @@
 #import "NSManagedObject+ATAdditions.h"
 #import "ASIHTTPRequest.h"
 #import "NSObject+JSON.h"
-
-NSString * const ATObjectEntityName = @"Object";
-
-
-NSString * const ATMessageVersionKey = @"version";
-NSString * const ATMessageATIDKey = @"object_atid";
-NSString * const ATMessageObjectKey = @"object";
-NSString * const ATMessageObjectDataKey = @"object_data";
-NSString * const ATMessageObjectDeletedKey = @"object_deleted";
-NSString * const ATMessageObjectRelationsKey = @"object_relations";
-NSString * const ATMessageAuthKeyKey = @"auth_key";
+#import "ATMetaContext.h"
 
 // NSString * const ATMessageEntityKey = @"entity";
 
@@ -100,15 +90,8 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 #pragma mark - Working with contexts
 
-- (BOOL) _saveContext {
-    NSError *error = nil;
-    [_context save:&error];
-    if (error != nil) {
-        ASLogInfo(@"%@", error);
-        return NO;
-    } else {
-        return YES;
-    }
+- (BOOL)_saveContext {
+    return [self.metaContext save];
 }
 
 
@@ -125,7 +108,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     
     ASLogInfo(@"Received push: %@ %@", atID, versionNumber);
     
-    ATObject *object = [self _objectWithATID:atID];
+    ATObject *object = [self.metaContext objectWithATID:atID];
     NSManagedObject *appObject;
     if (object && object.isLocked) {
         ASLogInfo(@"Received push for locked object: unlocking, it will sync the next cycle.");
@@ -143,7 +126,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         appObject = [self _createAppObjectWithLocalEntityName:localEntityName];
         [self _updateAppObject:appObject withData:data relations:relations];
         [_appContext save:&error];
-        object = [self _objectForAppObject:appObject];
+        object = [self.metaContext objectForAppObject:appObject];
         object.ATID = atID;
     }
     
@@ -182,7 +165,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     if (error) ASLogInfo(@"Error obtaining permanent IDs: %@", error);
     for (NSManagedObject *insertedObject in insertedObjects) {
 //        ATObject *metaObject = [self _objectForAppObject:insertedObject];
-        (void)[self _objectForAppObject:insertedObject];
+        (void)[self.metaContext objectForAppObject:insertedObject];
         [self _markAppObjectChanged:insertedObject];
 //        [self _saveContext];
     }
@@ -195,7 +178,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark Marking objects
 
 - (void)_markAppObjectChanged:(NSManagedObject *)appObject {    
-    ATObject *object = [self _objectForAppObject:appObject];
+    ATObject *object = [self.metaContext objectForAppObject:appObject];
     
     if ([self _isAppObjectChanged:appObject]) {
         // This happens, when we change object, that's already changed.
@@ -218,13 +201,13 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         return;
     }
     
-    ATObject *object = [self _objectForAppObject:appObject];
+    ATObject *object = [self.metaContext objectForAppObject:appObject];
     
     [object markSynchronized];
 }
 
 - (BOOL)_isAppObjectChanged:(NSManagedObject *)appObject {
-    ATObject *object = [self _objectForAppObject:appObject];
+    ATObject *object = [self.metaContext objectForAppObject:appObject];
     
     if ([object.isChanged boolValue]) {
         return YES;
@@ -234,7 +217,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 }
 
 - (void)_markAppObjectDeleted:(NSManagedObject *)appObject {
-    ATObject *object = [self _objectForAppObject:appObject];
+    ATObject *object = [self.metaContext objectForAppObject:appObject];
     [object markDeleted];
     [object markChanged];
     ASLogInfo(@"Marking app object deleted: %@ (%@)", appObject, object);
@@ -250,10 +233,10 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         if (error) ASLogInfo(@"Error: %@", error);
         for (NSManagedObject *object in result) {
             ASLogInfo(@"Handling object %@ ...", object.objectID);
-            ATObject *metaObject = [self _existingMetaObjectForAppObject:object];
+            ATObject *metaObject = [self.metaContext existingMetaObjectForAppObject:object];
             if (!metaObject) {
                 ASLogInfo(@"There's no meta object, creating");
-                metaObject = [self _objectForAppObject:object];
+                metaObject = [self.metaContext objectForAppObject:object];
                 [metaObject markChanged];
             }
         }
@@ -280,69 +263,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     ASLogError(@"Not implemented yet");
 }
 
-#pragma mark - Managing meta objects
-
-- (ATObject *) _findOrCreateObjectWithID:(NSString *)atID {
-    ATObject *object = [self _objectWithATID:atID];
-    if (object == nil) object = [self _createObjectWithATID:atID];
-    return object;
-}
-
-- (ATObject *) _objectWithATID:(NSString *)atID {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ATObjectEntityName];
-    request.predicate = [NSPredicate predicateWithFormat:@"ATID = %@", atID];
-    request.fetchLimit = 1;
-    NSError *error = nil;
-    RKAssert(_context, @"Context shouldn't be nil");
-    NSArray *results = [_context executeFetchRequest:request error:&error];
-    if (error != nil) ASLogInfo(@"Error: %@", error);
-    if ([results count] > 0)
-        return [results lastObject];
-    else
-        return nil;
-}
-
-- (NSString*) stringWithUUID {
-    CFUUIDRef	uuidObj = CFUUIDCreate(nil);//create a new UUID
-    //get the string representation of the UUID
-    NSString	*uuidString = (NSString*)CFUUIDCreateString(nil, uuidObj);
-    CFRelease(uuidObj);
-    [uuidString autorelease];
-    return [uuidString lowercaseString];
-}
-
-- (ATObject *) _createObjectWithATID:(NSString *)atID {
-    ATObject *object = [self _createObject];
-    object.ATID = atID;
-    return object;
-}
-
-- (ATObject *) _createObject {
-    ATObject *object = (ATObject *)[NSEntityDescription insertNewObjectForEntityForName:[_objectEntity name] inManagedObjectContext:_context];
-    RKAssert(object != nil, @"Created object shouldn't be nil");
-    object.ATID = [self stringWithUUID];
-    return object;
-}
-
-- (ATObject *) _objectForAppObject:(NSManagedObject *)appObject {
-    ATObject *object = [self _existingMetaObjectForAppObject:appObject];
-    if (!object) {
-        object = [self _createObject];
-        [object setClientObject:appObject];
-    }
-    return object;
-}
-
-- (ATObject *)_existingMetaObjectForAppObject:(NSManagedObject *)appObject {
-    NSError *error = nil;
-    NSString *idURIString = [appObject objectIDString];
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[_objectEntity name]];
-    request.predicate = [NSPredicate predicateWithFormat:@"clientURI = %@", idURIString];
-    request.fetchLimit = 1;
-    NSArray *objects = [_context executeFetchRequest:request error:&error];
-    if (error != nil) ASLogInfo(@"%@", error);
-    return [objects lastObject];
-}
                                   
 #pragma mark - Managing app objects
 
@@ -370,7 +290,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         id value = [data objectForKey:key];
         if ([key hasPrefix:@"_"]) continue;
         if (value == [NSNull null]) continue;
-        NSString *localAttributeName = [self _localAttributeNameFor:key entity:appObject.entity];
+        NSString *localAttributeName = [self.mappingHelper localAttributeNameFor:key entity:appObject.entity];
         if (![[appObject.entity propertiesByName] objectForKey:localAttributeName]) {
             ASLogWarning(@"Can't find attribute with name %@", localAttributeName);
             continue;
@@ -409,7 +329,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         // Use this to find target entity. Don't forget to translate it using the entity map.
         // NSString *targetEntity = [relation objectForKey:@"target_entity"]; 
         NSString *atid = [relation objectForKey:@"target"];
-        ATObject *targetMetaObject = [self _objectWithATID:atid];
+        ATObject *targetMetaObject = [self.metaContext objectWithATID:atid];
         if (!targetMetaObject) {
             ASLogWarning(@"Can't find meta object with atid %@ referenced in relation", atid);
             continue;

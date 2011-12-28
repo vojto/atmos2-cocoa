@@ -9,6 +9,14 @@
 #import "SocketIO.h"
 #import "ATMessage.h"
 
+extern NSString * const ATMessageATIDKey;
+extern NSString * const ATMessageObjectKey;
+extern NSString * const ATMessageObjectDataKey;
+extern NSString * const ATMessageObjectDeletedKey;
+extern NSString * const ATMessageObjectRelationsKey;
+extern NSString * const ATMessageVersionKey;
+extern NSString * const ATMessageAuthKeyKey;
+
 @class ATClient;
 
 /**

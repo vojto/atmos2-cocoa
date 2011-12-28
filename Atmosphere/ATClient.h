@@ -53,10 +53,6 @@ extern NSString * const ATDidUpdateObjectNotification;
     BOOL _needsSync;
     NSMutableArray *_relationsQueue;
     
-    /** Schema */
-    NSManagedObjectContext *_context;
-    NSEntityDescription *_objectEntity;
-    
     /** Delegate */
     id<ATClientDelegate> delegate;
 }
@@ -105,13 +101,6 @@ extern NSString * const ATDidUpdateObjectNotification;
 - (void)_sync;
 - (void)_syncMetaObject:(ATObject *)metaObject;
 
-#pragma mark - Managing local objects
-// - (ATObject *) _findOrCreateObjectWithATID:(NSString *)atID;
-- (ATObject *) _objectWithATID:(NSString *)atID;
-- (ATObject *) _createObjectWithATID:(NSString *)atID;
-- (ATObject *) _createObject;
-- (ATObject *) _objectForAppObject:(NSManagedObject *)appObject;
-- (ATObject *)_existingMetaObjectForAppObject:(NSManagedObject *)appObject;
 
 #pragma mark - Managing app objects
 - (NSManagedObject *) _appObjectForObject:(ATObject *)object;

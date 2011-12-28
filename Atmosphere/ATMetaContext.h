@@ -6,18 +6,31 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "ATObject.h"
 
 @interface ATMetaContext : NSObject {
     NSInteger _version;
+    NSManagedObjectContext *_managedContext;
+    NSEntityDescription *_objectEntity;
 }
 
-#pragma mark - Managing version number
+@property (nonatomic, retain) NSManagedObjectContext *managedContext;
 
+#pragma mark - Saving
+- (BOOL)save;
+
+#pragma mark - Managing version number
 - (void)readVersionFromDefaults;
 - (void)writeVersionToDefaults;
 - (void)updateVersion:(NSInteger)version;
-
 - (NSNumber *)versionAsNumber;
+
+#pragma mark - Managing local objects
+// - (ATObject *) _findOrCreateObjectWithATID:(NSString *)atID;
+- (ATObject *)objectWithATID:(NSString *)atID;
+- (ATObject *)createObjectWithATID:(NSString *)atID;
+- (ATObject *)createObject;
+- (ATObject *)objectForAppObject:(NSManagedObject *)appObject;
+- (ATObject *)existingMetaObjectForAppObject:(NSManagedObject *)appObject;
 
 @end

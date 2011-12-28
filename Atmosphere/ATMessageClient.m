@@ -16,6 +16,14 @@ NSString * const ATMessageClientPushType = @"client-push";
 NSString * const ATMessageServerAuthFailureType = @"server-auth-failure";
 NSString * const ATMessageServerAuthSuccessType = @"server-auth-success";
 
+NSString * const ATMessageATIDKey = @"object_atid";
+NSString * const ATMessageObjectKey = @"object";
+NSString * const ATMessageObjectDataKey = @"object_data";
+NSString * const ATMessageObjectDeletedKey = @"object_deleted";
+NSString * const ATMessageObjectRelationsKey = @"object_relations";
+NSString * const ATMessageVersionKey = @"version";
+NSString * const ATMessageAuthKeyKey = @"auth_key";
+
 @implementation ATMessageClient
 
 @synthesize sync=_sync, host=_host, port=_port, connection=_connection;
