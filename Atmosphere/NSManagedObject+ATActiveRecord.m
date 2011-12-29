@@ -16,7 +16,7 @@
 static NSUInteger const kActiveRecordDefaultBatchSize = 10;
 static NSNumber *defaultBatchSize = nil;
 
-@implementation NSManagedObject (ActiveRecord)
+@implementation NSManagedObject (ATActiveRecord)
 
 // TODO: Not sure that we even need the objectStore...
 + (NSManagedObjectContext*)managedObjectContext {

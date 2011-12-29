@@ -67,14 +67,28 @@ static ATAppContext* _sharedAppContext = nil;
 #pragma mark - Managing App Objects
 
 - (NSManagedObject *)appObjectAtURI:(ATObjectURI)uri {
+    Class managedClass = [self _managedClassForURI:uri];
+    NSManagedObject *managedObject = [managedClass findFirstByAttribute:@"identifier" withValue:uri.identifier];
+
+    return managedObject;
+}
+
+- (NSManagedObject *)createAppObjectAtURI:(ATObjectURI)uri {
+    NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:uri.entity inManagedObjectContext:self.managedContext];
+    [object setValue:uri.identifier forKey:@"identifier"];
+    // TODO: Apply attributes (we might create a helper object for this, something like
+    // ATAttributeMapper
+    return object;
+}
+
+- (Class)_managedClassForURI:(ATObjectURI)uri {
     NSEntityDescription *entity = [NSEntityDescription entityForName:uri.entity inManagedObjectContext:self.managedContext];
     NSString *className = [entity managedObjectClassName];
     RKAssert(className, @"Entity %@ has no class", uri.entity);
-    Class managedClass = NSClassFromString(className);
-    NSManagedObject *managedObject = [managedClass findFirstByAttribute:@"identifier" withValue:uri.identifier];
-    NSLog(@"Managed object: %@", managedObject);
-    return nil;
+    return NSClassFromString(className);
 }
+
+#pragma mark - Managing app objects
 
 - (NSManagedObject *)appObjectForObject:(ATObject *)object {
     return [object clientObjectInContext:self.managedContext];

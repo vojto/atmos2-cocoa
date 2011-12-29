@@ -96,6 +96,11 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 - (void)updateObjectAtURI:(ATObjectURI)uri withDictionary:(NSDictionary *)data {
     NSManagedObject *object = [self.appContext appObjectAtURI:uri];
+    if (!object) {
+        object = [self.appContext createAppObjectAtURI:uri];
+        NSLog(@"Created object: %@", object);
+    }
+    NSLog(@"Object: %@", object);
 }
 
 - (void)applyObjectMessage:(NSDictionary *)content {
