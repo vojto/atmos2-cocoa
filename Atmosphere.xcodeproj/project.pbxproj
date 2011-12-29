@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9921BA4814AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 9921BA4614AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h */; };
+		9921BA4814AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 9921BA4614AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9921BA4914AC8629000A6D5F /* NSManagedObject+ATActiveRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 9921BA4714AC8629000A6D5F /* NSManagedObject+ATActiveRecord.m */; };
+		9921BA5814AC9B19000A6D5F /* ATAttributeMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9921BA5614AC9B19000A6D5F /* ATAttributeMapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9921BA5914AC9B19000A6D5F /* ATAttributeMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9921BA5714AC9B19000A6D5F /* ATAttributeMapper.m */; };
 		992628C114AB959D00F0DD79 /* libRestKitJSONParserYAJL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 992628B014AB94C900F0DD79 /* libRestKitJSONParserYAJL.a */; };
 		992628C214AB959D00F0DD79 /* libRestKitNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 992628A814AB94C900F0DD79 /* libRestKitNetwork.a */; };
 		992628C314AB959D00F0DD79 /* libRestKitObjectMapping.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 992628AA14AB94C900F0DD79 /* libRestKitObjectMapping.a */; };
@@ -23,7 +25,7 @@
 		9926290914ABA00600F0DD79 /* ATAppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9926290714ABA00600F0DD79 /* ATAppContext.m */; };
 		9926290C14ABA06300F0DD79 /* ATResourceClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 9926290A14ABA06300F0DD79 /* ATResourceClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9926290D14ABA06300F0DD79 /* ATResourceClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9926290B14ABA06300F0DD79 /* ATResourceClient.m */; };
-		997213CC14AC79490044B92B /* ATEntityFetchRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 997213CA14AC79490044B92B /* ATEntityFetchRequest.h */; };
+		997213CC14AC79490044B92B /* ATEntityFetchRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 997213CA14AC79490044B92B /* ATEntityFetchRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		997213CD14AC79490044B92B /* ATEntityFetchRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 997213CB14AC79490044B92B /* ATEntityFetchRequest.m */; };
 		9986E5BC145AE83800619A25 /* ATConnectionGuard.h in Headers */ = {isa = PBXBuildFile; fileRef = 9986E5BA145AE83800619A25 /* ATConnectionGuard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9986E5BD145AE83800619A25 /* ATConnectionGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 9986E5BB145AE83800619A25 /* ATConnectionGuard.m */; };
@@ -211,6 +213,8 @@
 /* Begin PBXFileReference section */
 		9921BA4614AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ATActiveRecord.h"; sourceTree = "<group>"; };
 		9921BA4714AC8629000A6D5F /* NSManagedObject+ATActiveRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ATActiveRecord.m"; sourceTree = "<group>"; };
+		9921BA5614AC9B19000A6D5F /* ATAttributeMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATAttributeMapper.h; sourceTree = "<group>"; };
+		9921BA5714AC9B19000A6D5F /* ATAttributeMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATAttributeMapper.m; sourceTree = "<group>"; };
 		9926289314AB94C900F0DD79 /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = RestKit/RestKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		992628D614AB999A00F0DD79 /* ATMetaContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATMetaContext.h; sourceTree = "<group>"; };
 		992628D714AB999A00F0DD79 /* ATMetaContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATMetaContext.m; sourceTree = "<group>"; };
@@ -369,6 +373,8 @@
 			children = (
 				9926290614ABA00600F0DD79 /* ATAppContext.h */,
 				9926290714ABA00600F0DD79 /* ATAppContext.m */,
+				9921BA5614AC9B19000A6D5F /* ATAttributeMapper.h */,
+				9921BA5714AC9B19000A6D5F /* ATAttributeMapper.m */,
 				9998344C1455AB6C00F1C436 /* ATObject.h */,
 				9998344D1455AB6C00F1C436 /* ATObject.m */,
 				9921BA4614AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h */,
@@ -645,13 +651,14 @@
 				99BDBE471483A0EF00906F37 /* NSString+PropertyKVC.h in Headers */,
 				99BDBE511483A0F600906F37 /* ASLMessage.h in Headers */,
 				99BDBE531483A0F600906F37 /* ASLogger.h in Headers */,
+				997213CC14AC79490044B92B /* ATEntityFetchRequest.h in Headers */,
+				9921BA4814AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h in Headers */,
+				9921BA5814AC9B19000A6D5F /* ATAttributeMapper.h in Headers */,
 				99BDBE551483A0F600906F37 /* ASLQuery.h in Headers */,
 				99BDBE571483A0F600906F37 /* ASLResponse.h in Headers */,
 				99BDBE5B1483A10000906F37 /* b64.h in Headers */,
 				9998348E1455ABCE00F1C436 /* SBJsonTokeniser.h in Headers */,
 				999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */,
-				997213CC14AC79490044B92B /* ATEntityFetchRequest.h in Headers */,
-				9921BA4814AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -850,6 +857,7 @@
 				9926290D14ABA06300F0DD79 /* ATResourceClient.m in Sources */,
 				997213CD14AC79490044B92B /* ATEntityFetchRequest.m in Sources */,
 				9921BA4914AC8629000A6D5F /* NSManagedObject+ATActiveRecord.m in Sources */,
+				9921BA5914AC9B19000A6D5F /* ATAttributeMapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

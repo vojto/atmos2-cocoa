@@ -26,6 +26,7 @@ static ATAppContext* _sharedAppContext = nil;
 
 @synthesize sync=_sync;
 @synthesize managedContext=_managedContext;
+@synthesize attributeMapper=_attributeMapper;
 
 #pragma mark - Lifecycle
 
@@ -37,6 +38,7 @@ static ATAppContext* _sharedAppContext = nil;
     if ((self = [super init])) {
         self.sync = aSync;
         self.managedContext = anAppContext;
+        self.attributeMapper = [[[ATAttributeMapper alloc] initWithMappingHelper:self.sync.mappingHelper] autorelease];
         
         _relationsQueue = [[NSMutableArray alloc] init];
         
@@ -47,6 +49,7 @@ static ATAppContext* _sharedAppContext = nil;
 
 - (void)dealloc {
     [_relationsQueue release];
+    self.attributeMapper = nil;
     [super dealloc];
 }
 
@@ -77,6 +80,7 @@ static ATAppContext* _sharedAppContext = nil;
     NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:uri.entity inManagedObjectContext:self.managedContext];
     [object setValue:uri.identifier forKey:@"identifier"];
     // TODO: Apply attributes (we might create a helper object for this, something like
+    
     // ATAttributeMapper
     return object;
 }
@@ -88,27 +92,9 @@ static ATAppContext* _sharedAppContext = nil;
     return NSClassFromString(className);
 }
 
-#pragma mark - Managing app objects
-
-- (NSManagedObject *)appObjectForObject:(ATObject *)object {
-    return [object clientObjectInContext:self.managedContext];
-}
-
-- (NSManagedObject *)createAppObjectWithLocalEntityName:(NSString *)localEntityName {
-    NSManagedObject *appObject = [NSEntityDescription insertNewObjectForEntityForName:localEntityName inManagedObjectContext:self.managedContext];
-    RKAssert(appObject, @"App object shouldn't be nil");
-    return appObject;
-}
-
 #pragma mark Updating
 
-- (void)updateAppObject:(NSManagedObject *)appObject withData:(NSDictionary *)data relations:(NSArray *)relations {
-    [self updateAppObject:appObject withData:data];
-    [self updateAppObject:appObject withRelations:relations];
-    [self _applyRelations];
-}
-
-- (void)updateAppObject:(NSManagedObject *)appObject withData:(NSDictionary *)data {
+- (void)updateAppObject:(NSManagedObject *)appObject withDictionary:(NSDictionary *)data {
     ASLogInfo(@"Updating object with data");
     for (NSString *key in [data allKeys]) {
         id value = [data objectForKey:key];
@@ -121,11 +107,6 @@ static ATAppContext* _sharedAppContext = nil;
         }
         [appObject setStringValue:[data objectForKey:key] forKey:localAttributeName];
     }
-}
-
-- (void)updateAppObject:(NSManagedObject *)appObject withRelations:(NSArray *)relations {
-    for (NSDictionary *relation in relations)
-        [self _enqueueRelation:relation forAppObject:appObject];
 }
 
 - (void)deleteAppObject:(NSManagedObject *)appObject {

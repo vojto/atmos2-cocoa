@@ -8,6 +8,7 @@
 
 #import <CoreData/CoreData.h>
 #import "ATObject.h"
+#import "ATAttributeMapper.h"
 
 @class ATSynchronizer;
 
@@ -27,6 +28,7 @@ ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier);
 
 @property (assign) ATSynchronizer *sync;
 @property (assign) NSManagedObjectContext *managedContext;
+@property (retain) ATAttributeMapper *attributeMapper;
 
 #pragma mark - Lifecycle
 + (id)sharedAppContext;
@@ -37,14 +39,8 @@ ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier);
 - (NSManagedObject *)createAppObjectAtURI:(ATObjectURI)uri;
 - (Class)_managedClassForURI:(ATObjectURI)uri;
 
-#pragma mark - Managing app objects
-- (NSManagedObject *)appObjectForObject:(ATObject *)object;
-- (NSManagedObject *)createAppObjectWithLocalEntityName:(NSString *)localEntityName;
-
 #pragma mark - Updating
-- (void)updateAppObject:(NSManagedObject *)appObject withData:(NSDictionary *)data relations:(NSArray *)relations;
-- (void)updateAppObject:(NSManagedObject *)appObject withData:(NSDictionary *)data;
-- (void)updateAppObject:(NSManagedObject *)appObject withRelations:(NSArray *)relations;
+- (void)updateAppObject:(NSManagedObject *)appObject withDictionary:(NSDictionary *)data;
 - (void)deleteAppObject:(NSManagedObject *)appObject;
 
 #pragma mark - Relations queue

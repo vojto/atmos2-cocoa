@@ -98,9 +98,11 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     NSManagedObject *object = [self.appContext appObjectAtURI:uri];
     if (!object) {
         object = [self.appContext createAppObjectAtURI:uri];
-        NSLog(@"Created object: %@", object);
+        ASLogInfo(@"Created object %@", uri.identifier);
+    } else {
+        ASLogInfo(@"Found existing object %@", uri.identifier);
     }
-    NSLog(@"Object: %@", object);
+    [self.appContext updateAppObject:object withDictionary:data];
 }
 
 - (void)applyObjectMessage:(NSDictionary *)content {
