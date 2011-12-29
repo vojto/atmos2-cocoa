@@ -6,20 +6,30 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
 #import "ATMappingHelper.h"
 
 @implementation ATMappingHelper
 
-@synthesize entitiesMap=_entitiesMap, attributesMap=_attributesMap;
+@synthesize entitiesMap=_entitiesMap, attributesMap=_attributesMap, relationsMap=_relationsMap;
 
 #pragma mark - Loading maps
 
 - (void)loadEntitiesMapFromResource:(NSString *)resourceName {
-    self.entitiesMap = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:resourceName ofType:@"plist"]];
+    [self _loadResource:resourceName intoDictionary:&_entitiesMap];
 }
 
 - (void)loadAttributesMapFromResource:(NSString *)resourceName {
-    self.attributesMap = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:resourceName ofType:@"plist"]];
+    [self _loadResource:resourceName intoDictionary:&_attributesMap];
+}
+
+- (void)loadRelationsMapFromResource:(NSString *)resourceName {
+    [self _loadResource:resourceName intoDictionary:&_relationsMap];
+}
+
+- (void)_loadResource:(NSString *)resourceName intoDictionary:(NSDictionary **)dict {
+    *dict = ([NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:resourceName ofType:@"plist"]]);
+    [(*dict) retain];
 }
 
 #pragma mark - Mapping
@@ -63,6 +73,16 @@
     } else {
         return serverName;
     }
+}
+
+#pragma mark - Relations
+
+- (NSDictionary *)relationsForObject:(NSManagedObject *)appObject {
+    return [self relationsForEntity:appObject.entity];
+}
+
+- (NSDictionary *)relationsForEntity:(NSEntityDescription *)entity {
+    return [self.relationsMap objectForKey:entity.name];
 }
 
 @end

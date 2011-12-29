@@ -43,9 +43,8 @@ ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier);
 - (void)updateAppObject:(NSManagedObject *)appObject withDictionary:(NSDictionary *)data;
 - (void)deleteAppObject:(NSManagedObject *)appObject;
 
-#pragma mark - Relations queue
-- (void)_enqueueRelation:(NSDictionary *)relation forAppObject:(NSManagedObject *)appObject;
-- (void)_applyRelations;
+#pragma mark - Resolving relations
+- (void)_resolveRelations:(NSManagedObject *)appObject withDictionary:(NSDictionary *)data;
 
 #pragma mark Serializing
 - (NSDictionary *)dataForAppObject:(NSManagedObject *)appObject;

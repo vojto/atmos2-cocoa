@@ -89,13 +89,19 @@ static ATAppContext* _sharedAppContext = nil;
     NSEntityDescription *entity = [NSEntityDescription entityForName:uri.entity inManagedObjectContext:self.managedContext];
     NSString *className = [entity managedObjectClassName];
     RKAssert(className, @"Entity %@ has no class", uri.entity);
-    return NSClassFromString(className);
+    Class managedClass = NSClassFromString(className);
+    NSEntityDescription *backReferenceToEntity = [managedClass entityDescriptionInContext:self.managedContext];
+    RKAssert(backReferenceToEntity, @"Entity class for %@ doesn't return back reference (use entityName, entityInManagedObjectContext:)", entity.name);
+    NSPropertyDescription *identifier = [[entity propertiesByName] objectForKey:@"identifier"];
+    RKAssert(identifier, @"Entity %@ doesn't have an identifier field. This is required to store primary keys of remote objects.", entity.name);
+    return managedClass;
 }
 
 #pragma mark Updating
 
 - (void)updateAppObject:(NSManagedObject *)appObject withDictionary:(NSDictionary *)data {
     ASLogInfo(@"Updating object with data");
+    // TODO: Go through attributes in map instead of in incoming dictionary
     for (NSString *key in [data allKeys]) {
         id value = [data objectForKey:key];
         if ([key hasPrefix:@"_"]) continue;
@@ -107,6 +113,12 @@ static ATAppContext* _sharedAppContext = nil;
         }
         [appObject setStringValue:[data objectForKey:key] forKey:localAttributeName];
     }
+    
+    [self _resolveRelations:appObject withDictionary:data];
+    
+    NSError *error = nil;
+    [self save:&error];
+    if (error) ASLogError(@"%@", error);
 }
 
 - (void)deleteAppObject:(NSManagedObject *)appObject {
@@ -115,42 +127,36 @@ static ATAppContext* _sharedAppContext = nil;
     }
 }
 
-#pragma mark - Relations queue
+#pragma mark - Resolving relations
 
-- (void) _enqueueRelation:(NSDictionary *)relation forAppObject:(NSManagedObject *)appObject {
-    NSDictionary *relationDescription =
-    [NSDictionary dictionaryWithObjectsAndKeys:appObject, @"appObject",
-     relation, @"relation", nil];
-    [_relationsQueue addObject:relationDescription];
-}
-
-- (void) _applyRelations {
-    ASLogInfo(@"Applying %d relations", [_relationsQueue count]);
-    NSMutableArray *trash = [NSMutableArray array];
-    for (NSDictionary *relationDescription in _relationsQueue) {
-        NSDictionary *relation = [relationDescription objectForKey:@"relation"];
-        NSManagedObject *appObject = [relationDescription objectForKey:@"appObject"];
-        NSString *name = [relation objectForKey:@"name"];
-        // Use this to find target entity. Don't forget to translate it using the entity map.
-        // NSString *targetEntity = [relation objectForKey:@"target_entity"]; 
-        NSString *atid = [relation objectForKey:@"target"];
-        ATObject *targetMetaObject = [self.sync.metaContext objectWithATID:atid];
-        if (!targetMetaObject) {
-            ASLogWarning(@"Can't find meta object with atid %@ referenced in relation", atid);
+- (void)_resolveRelations:(NSManagedObject *)appObject withDictionary:(NSDictionary *)data {
+    // "relation"    is remote
+    // "association" is local
+    NSEntityDescription *entity = appObject.entity;
+    NSDictionary *relations = [self.sync.mappingHelper relationsForEntity:entity];
+    for (NSString *key in [relations allKeys]) {
+        NSString *name = [relations objectForKey:key];
+        NSRelationshipDescription *relation = [[entity relationshipsByName] objectForKey:name];
+        RKAssert(relation, @"No relation %@ found for entity", name, entity);
+        NSString *targetId = [data objectForKey:key];
+        if (!targetId) {
+            ASLogWarning(@"Relation %@ not found in data %@", key, data);
             continue;
         }
-        NSManagedObject *targetAppObject = [self appObjectForObject:targetMetaObject];
-        if (!targetAppObject) {
-            ASLogWarning(@"Can't find app object with atid %@ referenced in relation", atid);
+        // Find the target
+        NSString *targetEntityName = relation.destinationEntity.name;
+        ATObjectURI targetURI = ATObjectURIMake(targetEntityName , targetId);
+        NSManagedObject *targetObject = [self appObjectAtURI:targetURI];
+        if (!targetObject) {
+            ASLogWarning(@"Target object %@/%@ referenced in relation %@ of %@ not found", targetURI.entity, targetURI.identifier, key, entity.name);
             continue;
         }
-        [appObject setValue:targetAppObject forKey:name];
-        [trash addObject:relationDescription];
-    }
-    for (id relation in trash) {
-        [_relationsQueue removeObject:relation];
+        // Make the connection
+        [appObject setValue:targetObject forKey:name];
     }
 }
+
+
 
 #pragma mark Serializing
 

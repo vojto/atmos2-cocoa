@@ -208,6 +208,11 @@ static NSNumber *defaultBatchSize = nil;
         NSEntityDescription *entity = [self performSelector:@selector(entityInManagedObjectContext:)withObject:context];
         return entity;
     }
+    else if ([self respondsToSelector:@selector(entityName)])
+    {
+        NSString *entityName = [self performSelector:@selector(entityName)];
+        return [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
+    }
     else
     {
         NSString *entityName = NSStringFromClass([self class]);
@@ -238,7 +243,7 @@ static NSNumber *defaultBatchSize = nil;
 			}
 			else
 			{
-				ASLogError(@"Property '%@' not found in %@ properties for %@", propertyName, [propDict count], NSStringFromClass(self));
+				ASLogError(@"Property '%@' not found in %d properties for %@", propertyName, [propDict count], NSStringFromClass(self));
 			}
 		}
 	}
