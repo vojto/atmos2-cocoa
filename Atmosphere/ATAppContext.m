@@ -108,7 +108,7 @@ static ATAppContext* _sharedAppContext = nil;
         if (value == [NSNull null]) continue;
         NSString *localAttributeName = [self.sync.mappingHelper localAttributeNameFor:key entity:appObject.entity];
         if (![[appObject.entity propertiesByName] objectForKey:localAttributeName]) {
-            ASLogWarning(@"Can't find attribute with name %@", localAttributeName);
+            // ASLogWarning(@"Can't find attribute with name %@", localAttributeName);
             continue;
         }
         [appObject setStringValue:[data objectForKey:key] forKey:localAttributeName];
@@ -134,6 +134,7 @@ static ATAppContext* _sharedAppContext = nil;
     // "association" is local
     NSEntityDescription *entity = appObject.entity;
     NSDictionary *relations = [self.sync.mappingHelper relationsForEntity:entity];
+    ASLogInfo(@"Resolving %d relations for entity %@", [relations count], entity.name);
     for (NSString *key in [relations allKeys]) {
         NSString *name = [relations objectForKey:key];
         NSRelationshipDescription *relation = [[entity relationshipsByName] objectForKey:name];

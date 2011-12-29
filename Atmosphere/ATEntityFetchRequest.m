@@ -33,8 +33,9 @@
 
 - (void)send {
     // TODO: Translate self.entity to path
-    NSLog(@"Sending request %@", self.networkClient);
-    [self.networkClient get:@"/projects.json" delegate:self];
+    ATRoute route = [self.resourceClient routeForEntity:self.entity action:ATActionIndex];
+    ASLogInfo(@"Making request %d %@", route.method, route.path);
+    [self.resourceClient loadRoute:route params:nil delegate:self];
 }
 
 #pragma mark - Processing results
