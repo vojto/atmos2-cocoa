@@ -29,9 +29,11 @@ ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier);
 @property (assign) NSManagedObjectContext *managedContext;
 
 #pragma mark - Lifecycle
-- (id)initWithSynchronizer:(ATSynchronizer *)aSync;
++ (id)sharedAppContext;
+- (id)initWithSynchronizer:(ATSynchronizer *)aSync appContext:(NSManagedObjectContext *)anAppContext;
 
 #pragma mark - Managing app objects
+- (NSManagedObject *)appObjectAtURI:(ATObjectURI)uri;
 - (NSManagedObject *)appObjectForObject:(ATObject *)object;
 - (NSManagedObject *)createAppObjectWithLocalEntityName:(NSString *)localEntityName;
 

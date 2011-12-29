@@ -16,6 +16,7 @@
  */
 
 #import "NSManagedObject+ATAdditions.h"
+#import "ATAppContext.h"
 
 @implementation NSManagedObject (NSManagedObject_ATAdditions)
 

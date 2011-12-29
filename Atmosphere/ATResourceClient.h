@@ -16,6 +16,9 @@
 @property (assign) ATSynchronizer *sync;
 @property (retain) RKClient *client;
 
+#pragma mark - Lifecycle
+- (id)initWithSynchronizer:(ATSynchronizer *)sync;
+
 #pragma mark - Fetching entities
 - (void)fetchEntity:(NSString *)entityName;
 

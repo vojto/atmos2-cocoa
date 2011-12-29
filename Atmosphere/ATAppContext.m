@@ -6,9 +6,11 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
 #import "ATSynchronizer.h"
 #import "ATAppContext.h"
 #import "ATObject.h"
+#import "NSManagedObject+ATActiveRecord.h"
 #import "NSManagedObject+ATAdditions.h"
 
 ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier) {
@@ -18,6 +20,8 @@ ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier) {
     return uri;
 }
 
+static ATAppContext* _sharedAppContext = nil;
+
 @implementation ATAppContext
 
 @synthesize sync=_sync;
@@ -25,11 +29,18 @@ ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier) {
 
 #pragma mark - Lifecycle
 
-- (id)initWithSynchronizer:(ATSynchronizer *)aSync {
++ (id)sharedAppContext {
+    return _sharedAppContext;
+}
+
+- (id)initWithSynchronizer:(ATSynchronizer *)aSync appContext:(NSManagedObjectContext *)anAppContext {
     if ((self = [super init])) {
         self.sync = aSync;
+        self.managedContext = anAppContext;
         
         _relationsQueue = [[NSMutableArray alloc] init];
+        
+        _sharedAppContext = self;
     }
     return self;
 }
@@ -54,6 +65,16 @@ ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier) {
 }
 
 #pragma mark - Managing App Objects
+
+- (NSManagedObject *)appObjectAtURI:(ATObjectURI)uri {
+    NSEntityDescription *entity = [NSEntityDescription entityForName:uri.entity inManagedObjectContext:self.managedContext];
+    NSString *className = [entity managedObjectClassName];
+    RKAssert(className, @"Entity %@ has no class", uri.entity);
+    Class managedClass = NSClassFromString(className);
+    NSManagedObject *managedObject = [managedClass findFirstByAttribute:@"identifier" withValue:uri.identifier];
+    NSLog(@"Managed object: %@", managedObject);
+    return nil;
+}
 
 - (NSManagedObject *)appObjectForObject:(ATObject *)object {
     return [object clientObjectInContext:self.managedContext];
