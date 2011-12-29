@@ -85,9 +85,6 @@ extern NSString * const ATDidUpdateObjectNotification;
 #pragma mark - Responding to changes in app objects
 - (void)_didChangeAppObject:(NSNotification *)notification;
 
-#pragma mark - Adding existing objects
-- (void)addObjectsFromAppContext;
-
 #pragma mark - Marking objects
 - (void)_markAppObjectChanged:(NSManagedObject *)object;
 - (void)_markAppObjectSynchronized:(NSManagedObject *)appObject;

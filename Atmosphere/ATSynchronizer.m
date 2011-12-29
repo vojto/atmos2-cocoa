@@ -223,28 +223,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     ASLogInfo(@"Marking app object deleted: %@ (%@)", appObject, object);
 }
 
-- (void)addObjectsFromAppContext {
-    NSArray *entities = [[[_appContext persistentStoreCoordinator] managedObjectModel] entities];
-    for (NSEntityDescription *entity in entities) {
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        request.entity = entity;
-        NSError *error = nil;
-        NSArray *result = [_appContext executeFetchRequest:request error:&error];
-        if (error) ASLogInfo(@"Error: %@", error);
-        for (NSManagedObject *object in result) {
-            ASLogInfo(@"Handling object %@ ...", object.objectID);
-            ATObject *metaObject = [self.metaContext existingMetaObjectForAppObject:object];
-            if (!metaObject) {
-                ASLogInfo(@"There's no meta object, creating");
-                metaObject = [self.metaContext objectForAppObject:object];
-                [metaObject markChanged];
-            }
-        }
-        [request release];
-    }
-    [self startSync];
-}
-
 #pragma mark - Pushing object to server
 
 - (void)startSync {
