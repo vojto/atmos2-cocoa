@@ -7,12 +7,22 @@
 //
 
 #import <CoreData/CoreData.h>
+#import "ATObject.h"
+
+@class ATSynchronizer;
 
 @interface ATAppContext : NSObject {
+    ATSynchronizer *_sync;
+    
     NSManagedObjectContext *_managedContext;
+    NSMutableArray *_relationsQueue;
 }
 
+@property (assign) ATSynchronizer *sync;
 @property (assign) NSManagedObjectContext *managedContext;
+
+#pragma mark - Lifecycle
+- (id)initWithSynchronizer:(ATSynchronizer *)aSync;
 
 #pragma mark - Managing app objects
 - (NSManagedObject *)appObjectForObject:(ATObject *)object;
@@ -25,8 +35,8 @@
 - (void)deleteAppObject:(NSManagedObject *)appObject;
 
 #pragma mark - Relations queue
-- (void)enqueueRelation:(NSDictionary *)relation forAppObject:(NSManagedObject *)appObject;
-- (void)applyRelations;
+- (void)_enqueueRelation:(NSDictionary *)relation forAppObject:(NSManagedObject *)appObject;
+- (void)_applyRelations;
 
 #pragma mark Serializing
 - (NSDictionary *)dataForAppObject:(NSManagedObject *)appObject;

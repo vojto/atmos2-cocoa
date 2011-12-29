@@ -50,7 +50,6 @@ extern NSString * const ATDidUpdateObjectNotification;
     /** State */
     NSString *_authKey;
     BOOL _needsSync;
-    NSMutableArray *_relationsQueue;
     
     /** Delegate */
     id<ATSynchronizerDelegate> delegate;
@@ -68,7 +67,6 @@ extern NSString * const ATDidUpdateObjectNotification;
 
 #pragma mark - Lifecycle
 - (id) initWithHost:(NSString *)aHost port:(NSInteger)aPort appContext:(NSManagedObjectContext *)context;
-- (NSManagedObjectContext *) _createContext;
 - (void)_registerForAppNotifications;
 - (void)close;
 

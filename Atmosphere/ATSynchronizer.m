@@ -41,10 +41,9 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 - (id) initWithHost:(NSString *)aHost port:(NSInteger)aPort appContext:(NSManagedObjectContext *)context {
     if ((self = [self init])) {
         _needsSync = YES;
-        _relationsQueue = [[NSMutableArray alloc] init];
         
         self.metaContext = [[[ATMetaContext alloc] init] autorelease];
-        self.appContext = [[[ATAppContext alloc] init] autorelease];
+        self.appContext = [[[ATAppContext alloc] initWithSynchronizer:self] autorelease];
         self.mappingHelper = [[[ATMappingHelper alloc] init] autorelease];
         self.messageClient = [[[ATMessageClient alloc] initWithHost:aHost port:aPort synchronizer:self] autorelease];
         self.resourceClient = [[[ATResourceClient alloc] init] autorelease];
@@ -74,7 +73,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 - (void) dealloc {
     [_appContext release];
     [_authKey release];
-    [_relationsQueue release];
     self.metaContext = nil;
     self.mappingHelper = nil;
     self.messageClient = nil;
@@ -239,145 +237,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 - (void) _syncMetaObject:(ATObject *)metaObject {
     ASLogError(@"Not implemented yet");
-}
-
-                                  
-#pragma mark - Managing app objects
-
-- (NSManagedObject *) _appObjectForObject:(ATObject *)object {
-    return [object clientObjectInContext:_appContext];
-}
-
-- (NSManagedObject *) _createAppObjectWithLocalEntityName:(NSString *)localEntityName {
-    NSManagedObject *appObject = [NSEntityDescription insertNewObjectForEntityForName:localEntityName inManagedObjectContext:_appContext];
-    RKAssert(appObject, @"App object shouldn't be nil");
-    return appObject;
-}
-
-#pragma mark Updating
-
-- (void) _updateAppObject:(NSManagedObject *)appObject withData:(NSDictionary *)data relations:(NSArray *)relations {
-    [self _updateAppObject:appObject withData:data];
-    [self _updateAppObject:appObject withRelations:relations];
-    [self _applyRelations];
-}
-
-- (void)_updateAppObject:(NSManagedObject *)appObject withData:(NSDictionary *)data {
-    ASLogInfo(@"Updating object with data");
-    for (NSString *key in [data allKeys]) {
-        id value = [data objectForKey:key];
-        if ([key hasPrefix:@"_"]) continue;
-        if (value == [NSNull null]) continue;
-        NSString *localAttributeName = [self.mappingHelper localAttributeNameFor:key entity:appObject.entity];
-        if (![[appObject.entity propertiesByName] objectForKey:localAttributeName]) {
-            ASLogWarning(@"Can't find attribute with name %@", localAttributeName);
-            continue;
-        }
-        [appObject setStringValue:[data objectForKey:key] forKey:localAttributeName];
-    }
-}
-
-- (void)_updateAppObject:(NSManagedObject *)appObject withRelations:(NSArray *)relations {
-    for (NSDictionary *relation in relations)
-        [self _enqueueRelation:relation forAppObject:appObject];
-}
-
-- (void)_deleteAppObject:(NSManagedObject *)appObject {
-    if (appObject != nil) {
-        [_appContext deleteObject:appObject];
-    }
-}
-
-#pragma mark - Relations queue
-
-- (void) _enqueueRelation:(NSDictionary *)relation forAppObject:(NSManagedObject *)appObject {
-    NSDictionary *relationDescription =
-        [NSDictionary dictionaryWithObjectsAndKeys:appObject, @"appObject",
-                                                   relation, @"relation", nil];
-    [_relationsQueue addObject:relationDescription];
-}
-
-- (void) _applyRelations {
-    ASLogInfo(@"Applying %d relations", [_relationsQueue count]);
-    NSMutableArray *trash = [NSMutableArray array];
-    for (NSDictionary *relationDescription in _relationsQueue) {
-        NSDictionary *relation = [relationDescription objectForKey:@"relation"];
-        NSManagedObject *appObject = [relationDescription objectForKey:@"appObject"];
-        NSString *name = [relation objectForKey:@"name"];
-        // Use this to find target entity. Don't forget to translate it using the entity map.
-        // NSString *targetEntity = [relation objectForKey:@"target_entity"]; 
-        NSString *atid = [relation objectForKey:@"target"];
-        ATObject *targetMetaObject = [self.metaContext objectWithATID:atid];
-        if (!targetMetaObject) {
-            ASLogWarning(@"Can't find meta object with atid %@ referenced in relation", atid);
-            continue;
-        }
-        NSManagedObject *targetAppObject = [self _appObjectForObject:targetMetaObject];
-        if (!targetAppObject) {
-            ASLogWarning(@"Can't find app object with atid %@ referenced in relation", atid);
-            continue;
-        }
-        [appObject setValue:targetAppObject forKey:name];
-        [trash addObject:relationDescription];
-    }
-    for (id relation in trash) {
-        [_relationsQueue removeObject:relation];
-    }
-}
-
-#pragma mark Serializing
-
-- (NSDictionary *) _dataForAppObject:(NSManagedObject *)appObject {
-    NSString *entity = [self _serverEntityNameForAppObject:appObject];
-    NSArray *attributes = [[appObject entity] attributeKeys];
-    
-    NSMutableDictionary *data = [NSMutableDictionary dictionary];
-    for (NSString *attribute in attributes) {
-        NSString *stringValue = [appObject stringValueForKey:attribute];
-        NSString *serverAttributeName = [self _serverAttributeNameFor:attribute entity:appObject.entity];
-        [data setValue:stringValue forKey:serverAttributeName];
-    }
-    
-    return data;
-}
-
-- (NSArray *)_relationsForAppObject:(NSManagedObject *)appObject {
-    NSEntityDescription *entityDescription = [appObject entity];
-    NSDictionary *relationDescriptions = [entityDescription relationshipsByName];
-    ATObject *metaObject = [self _objectForAppObject:appObject];
-    NSMutableArray *relations = [NSMutableArray array];
-    for (NSString *relationName in [relationDescriptions allKeys]) {
-        NSRelationshipDescription *relationDescription = [relationDescriptions objectForKey:relationName];
-        NSString *serverRelationName = [self _serverAttributeNameFor:relationName entity:entityDescription];
-        if ([relationDescription isToMany]) continue;
-        id targetAppObject = [appObject valueForKey:relationName];
-        if (!targetAppObject) {
-            ASLogInfo(@"Relation is not connected: %@", relationName);
-            continue;
-        }
-        ATObject *targetMetaObject = [self _objectForAppObject:targetAppObject];
-        if (!targetMetaObject) {
-            ASLogWarning(@"Couldn't find meta object for object %@ referenced in relation", targetAppObject);
-            continue;
-        }
-        NSDictionary *relation = [NSMutableDictionary dictionaryWithObjectsAndKeys:serverRelationName, @"name", [metaObject ATID], @"source", [targetMetaObject ATID], @"target", nil];
-        
-        [relations addObject:relation];
-    }
-    
-    return relations;
-}
-
-#pragma mark - Checking attribute changes
-
-- (BOOL)_attributesChangedInAppObject:(NSManagedObject *)appObject {
-    NSDictionary *changedValues = [appObject changedValuesForCurrentEvent];
-    NSArray *changedKeys = [changedValues allKeys];
-    NSArray *attributeNames = [[[appObject entity] attributesByName] allKeys]; // TODO: Check if attributeKeys works
-    for (NSString *attributeName in attributeNames) {
-        if ([changedKeys containsObject:attributeName]) return YES;
-    }
-    return NO;
 }
 
 @end
