@@ -11,6 +11,13 @@
 #import "ATObject.h"
 #import "NSManagedObject+ATAdditions.h"
 
+ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier) {
+    ATObjectURI uri;
+    uri.entity = entity;
+    uri.identifier = identifier;
+    return uri;
+}
+
 @implementation ATAppContext
 
 @synthesize sync=_sync;

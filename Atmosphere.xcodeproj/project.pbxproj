@@ -22,6 +22,8 @@
 		9926290914ABA00600F0DD79 /* ATAppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9926290714ABA00600F0DD79 /* ATAppContext.m */; };
 		9926290C14ABA06300F0DD79 /* ATResourceClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 9926290A14ABA06300F0DD79 /* ATResourceClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9926290D14ABA06300F0DD79 /* ATResourceClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9926290B14ABA06300F0DD79 /* ATResourceClient.m */; };
+		997213CC14AC79490044B92B /* ATEntityFetchRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 997213CA14AC79490044B92B /* ATEntityFetchRequest.h */; };
+		997213CD14AC79490044B92B /* ATEntityFetchRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 997213CB14AC79490044B92B /* ATEntityFetchRequest.m */; };
 		9986E5BC145AE83800619A25 /* ATConnectionGuard.h in Headers */ = {isa = PBXBuildFile; fileRef = 9986E5BA145AE83800619A25 /* ATConnectionGuard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9986E5BD145AE83800619A25 /* ATConnectionGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 9986E5BB145AE83800619A25 /* ATConnectionGuard.m */; };
 		999834301455AB5100F1C436 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9998342F1455AB5100F1C436 /* Cocoa.framework */; };
@@ -217,6 +219,8 @@
 		9926290714ABA00600F0DD79 /* ATAppContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATAppContext.m; sourceTree = "<group>"; };
 		9926290A14ABA06300F0DD79 /* ATResourceClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATResourceClient.h; sourceTree = "<group>"; };
 		9926290B14ABA06300F0DD79 /* ATResourceClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATResourceClient.m; sourceTree = "<group>"; };
+		997213CA14AC79490044B92B /* ATEntityFetchRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATEntityFetchRequest.h; sourceTree = "<group>"; };
+		997213CB14AC79490044B92B /* ATEntityFetchRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATEntityFetchRequest.m; sourceTree = "<group>"; };
 		9986E5BA145AE83800619A25 /* ATConnectionGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATConnectionGuard.h; sourceTree = "<group>"; };
 		9986E5BB145AE83800619A25 /* ATConnectionGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATConnectionGuard.m; sourceTree = "<group>"; };
 		9998342C1455AB5100F1C436 /* Atmosphere.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Atmosphere.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -378,6 +382,8 @@
 			children = (
 				9926290A14ABA06300F0DD79 /* ATResourceClient.h */,
 				9926290B14ABA06300F0DD79 /* ATResourceClient.m */,
+				997213CA14AC79490044B92B /* ATEntityFetchRequest.h */,
+				997213CB14AC79490044B92B /* ATEntityFetchRequest.m */,
 			);
 			name = "Resource Client";
 			sourceTree = "<group>";
@@ -640,6 +646,7 @@
 				99BDBE5B1483A10000906F37 /* b64.h in Headers */,
 				9998348E1455ABCE00F1C436 /* SBJsonTokeniser.h in Headers */,
 				999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */,
+				997213CC14AC79490044B92B /* ATEntityFetchRequest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -836,6 +843,7 @@
 				992628ED14AB9D6400F0DD79 /* ATMessageClient.m in Sources */,
 				9926290914ABA00600F0DD79 /* ATAppContext.m in Sources */,
 				9926290D14ABA06300F0DD79 /* ATResourceClient.m in Sources */,
+				997213CD14AC79490044B92B /* ATEntityFetchRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -923,6 +931,10 @@
 				GCC_PREFIX_HEADER = "Atmosphere/Atmosphere-Prefix.pch";
 				INFOPLIST_FILE = "Atmosphere/Atmosphere-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.6;
 				WRAPPER_EXTENSION = framework;
@@ -940,6 +952,10 @@
 				GCC_PREFIX_HEADER = "Atmosphere/Atmosphere-Prefix.pch";
 				INFOPLIST_FILE = "Atmosphere/Atmosphere-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.6;
 				WRAPPER_EXTENSION = framework;

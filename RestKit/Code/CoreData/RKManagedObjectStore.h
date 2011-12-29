@@ -91,6 +91,12 @@ extern NSString* const RKManagedObjectStoreDidFailSaveNotification;
 + (RKManagedObjectStore*)objectStoreWithStoreFilename:(NSString *)storeFilename inDirectory:(NSString *)directory usingSeedDatabaseName:(NSString *)nilOrNameOfSeedDatabaseInMainBundle managedObjectModel:(NSManagedObjectModel*)nilOrManagedObjectModel delegate:(id)delegate;
 
 /**
+ * Initialize a new managed object store using existing persistent store coordinator and managed
+ * object model.
+ */
+- (id)initWithPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)coord managedObjectModel:(NSManagedObjectModel *)managedObjectModel;
+
+/**
  * Initialize a new managed object store with a SQLite database with the filename specified
  * @deprecated
  */

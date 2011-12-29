@@ -11,6 +11,13 @@
 
 @class ATSynchronizer;
 
+typedef struct _ATObjectURI {
+    NSString *entity;
+    NSString *identifier;
+} ATObjectURI;
+
+ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier);
+
 @interface ATAppContext : NSObject {
     ATSynchronizer *_sync;
     

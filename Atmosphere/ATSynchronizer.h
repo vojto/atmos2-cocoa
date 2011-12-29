@@ -73,10 +73,11 @@ extern NSString * const ATDidUpdateObjectNotification;
 #pragma mark - Authentication
 - (NSString *)authKeyOrNull;
 
-#pragma mark - Working with contexts
-- (BOOL) _saveContext;
+#pragma mark - Resource methods
+- (void)fetchEntity:(NSString *)entityName;
 
 #pragma mark - Objects
+- (void)updateObjectAtURI:(ATObjectURI)uri withDictionary:(NSDictionary *)data;
 - (void)applyObjectMessage:(NSDictionary *)content;
 - (void)_postObjectUpdateNotification:(NSManagedObject *)object;
 

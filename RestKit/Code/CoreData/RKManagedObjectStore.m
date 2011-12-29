@@ -52,6 +52,15 @@ static NSString* const RKManagedObjectStoreThreadDictionaryEntityCacheKey = @"RK
 	return [self initWithStoreFilename:storeFilename inDirectory:nil usingSeedDatabaseName:nil managedObjectModel:nil delegate:nil];
 }
 
+- (id)initWithPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)coord managedObjectModel:(NSManagedObjectModel *)managedObjectModel {
+    if (!(self = [super init])) return self;
+    _managedObjectModel = [managedObjectModel retain];
+    _persistentStoreCoordinator = [coord retain];
+    _delegate = nil;
+    
+    return self;
+}
+
 - (id)initWithStoreFilename:(NSString *)storeFilename inDirectory:(NSString *)nilOrDirectoryPath usingSeedDatabaseName:(NSString *)nilOrNameOfSeedDatabaseInMainBundle managedObjectModel:(NSManagedObjectModel*)nilOrManagedObjectModel delegate:(id)delegate {
     self = [self init];
 	if (self) {

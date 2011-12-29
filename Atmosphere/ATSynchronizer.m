@@ -46,7 +46,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         self.appContext = [[[ATAppContext alloc] initWithSynchronizer:self] autorelease];
         self.mappingHelper = [[[ATMappingHelper alloc] init] autorelease];
         self.messageClient = [[[ATMessageClient alloc] initWithHost:aHost port:aPort synchronizer:self] autorelease];
-        self.resourceClient = [[[ATResourceClient alloc] init] autorelease];
+        self.resourceClient = [[[ATResourceClient alloc] initWithSynchronizer:self] autorelease];
         
         [self _registerForAppNotifications];
         [self.metaContext readVersionFromDefaults];
@@ -63,7 +63,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 }
 
 - (void)close {
-    [self _saveContext];
+    [self.metaContext save];
     [self _sync];
     [self.messageClient disconnect];
 }
@@ -86,12 +86,17 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     return (_authKey ? (id)_authKey : [NSNull null]);
 }
 
-#pragma mark - Working with contexts
+#pragma mak - Resource Methods
 
-- (BOOL)_saveContext {
-    return [self.metaContext save];
+- (void)fetchEntity:(NSString *)entityName {
+    [self.resourceClient fetchEntity:entityName];
 }
 
+#pragma mark - Working with objects
+
+- (void)updateObjectAtURI:(ATObjectURI)uri withDictionary:(NSDictionary *)data {
+    NSLog(@"Updating le object with data: %@", data);
+}
 
 - (void)applyObjectMessage:(NSDictionary *)content {
     NSString *atID = [content objectForKey:ATMessageATIDKey];
@@ -137,7 +142,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [object markSynchronized];
     [object unlock];
     
-    if ([self _saveContext]) {
+    if ([self.metaContext save]) {
         [self.metaContext updateVersion:version];
         [self _postObjectUpdateNotification:appObject];
     }
