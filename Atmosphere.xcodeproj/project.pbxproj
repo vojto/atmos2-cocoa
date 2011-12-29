@@ -12,15 +12,15 @@
 		992628C214AB959D00F0DD79 /* libRestKitNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 992628A814AB94C900F0DD79 /* libRestKitNetwork.a */; };
 		992628C314AB959D00F0DD79 /* libRestKitObjectMapping.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 992628AA14AB94C900F0DD79 /* libRestKitObjectMapping.a */; };
 		992628C414AB959D00F0DD79 /* libRestKitSupport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 992628AC14AB94C900F0DD79 /* libRestKitSupport.a */; };
-		992628D814AB999A00F0DD79 /* ATMetaContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 992628D614AB999A00F0DD79 /* ATMetaContext.h */; };
+		992628D814AB999A00F0DD79 /* ATMetaContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 992628D614AB999A00F0DD79 /* ATMetaContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		992628D914AB999A00F0DD79 /* ATMetaContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 992628D714AB999A00F0DD79 /* ATMetaContext.m */; };
-		992628E814AB9B4D00F0DD79 /* ATMappingHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 992628E614AB9B4D00F0DD79 /* ATMappingHelper.h */; };
+		992628E814AB9B4D00F0DD79 /* ATMappingHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 992628E614AB9B4D00F0DD79 /* ATMappingHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		992628E914AB9B4D00F0DD79 /* ATMappingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 992628E714AB9B4D00F0DD79 /* ATMappingHelper.m */; };
-		992628EC14AB9D6400F0DD79 /* ATMessageClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 992628EA14AB9D6400F0DD79 /* ATMessageClient.h */; };
+		992628EC14AB9D6400F0DD79 /* ATMessageClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 992628EA14AB9D6400F0DD79 /* ATMessageClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		992628ED14AB9D6400F0DD79 /* ATMessageClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 992628EB14AB9D6400F0DD79 /* ATMessageClient.m */; };
-		9926290814ABA00600F0DD79 /* ATAppContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 9926290614ABA00600F0DD79 /* ATAppContext.h */; };
+		9926290814ABA00600F0DD79 /* ATAppContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 9926290614ABA00600F0DD79 /* ATAppContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9926290914ABA00600F0DD79 /* ATAppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9926290714ABA00600F0DD79 /* ATAppContext.m */; };
-		9926290C14ABA06300F0DD79 /* ATResourceClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 9926290A14ABA06300F0DD79 /* ATResourceClient.h */; };
+		9926290C14ABA06300F0DD79 /* ATResourceClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 9926290A14ABA06300F0DD79 /* ATResourceClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9926290D14ABA06300F0DD79 /* ATResourceClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9926290B14ABA06300F0DD79 /* ATResourceClient.m */; };
 		9986E5BC145AE83800619A25 /* ATConnectionGuard.h in Headers */ = {isa = PBXBuildFile; fileRef = 9986E5BA145AE83800619A25 /* ATConnectionGuard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9986E5BD145AE83800619A25 /* ATConnectionGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 9986E5BB145AE83800619A25 /* ATConnectionGuard.m */; };
@@ -623,6 +623,11 @@
 				99E8985C14A9C959001A1D60 /* ASIHTTPRequestDelegate.h in Headers */,
 				99E8985D14A9C959001A1D60 /* ASIInputStream.h in Headers */,
 				99E8985F14A9C959001A1D60 /* ASINetworkQueue.h in Headers */,
+				992628D814AB999A00F0DD79 /* ATMetaContext.h in Headers */,
+				992628E814AB9B4D00F0DD79 /* ATMappingHelper.h in Headers */,
+				992628EC14AB9D6400F0DD79 /* ATMessageClient.h in Headers */,
+				9926290814ABA00600F0DD79 /* ATAppContext.h in Headers */,
+				9926290C14ABA06300F0DD79 /* ATResourceClient.h in Headers */,
 				99E8986114A9C959001A1D60 /* ASIProgressDelegate.h in Headers */,
 				99E8987914A9C9DA001A1D60 /* RegexKitLite.h in Headers */,
 				99BDBE431483A0EF00906F37 /* NSData+Base64.h in Headers */,
@@ -635,11 +640,6 @@
 				99BDBE5B1483A10000906F37 /* b64.h in Headers */,
 				9998348E1455ABCE00F1C436 /* SBJsonTokeniser.h in Headers */,
 				999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */,
-				992628D814AB999A00F0DD79 /* ATMetaContext.h in Headers */,
-				992628E814AB9B4D00F0DD79 /* ATMappingHelper.h in Headers */,
-				992628EC14AB9D6400F0DD79 /* ATMessageClient.h in Headers */,
-				9926290814ABA00600F0DD79 /* ATAppContext.h in Headers */,
-				9926290C14ABA06300F0DD79 /* ATResourceClient.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
