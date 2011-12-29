@@ -18,6 +18,7 @@
 #import "ATMessage.h"
 #import "ATObject.h"
 #import "ATMetaContext.h"
+#import "ATAppContext.h"
 #import "ATMappingHelper.h"
 #import "ATMessageClient.h"
 #import "ATResourceClient.h"
@@ -35,20 +36,18 @@ extern NSString * const ATDidUpdateObjectNotification;
 
 @interface ATSynchronizer : NSObject {
    
-    /** Atmosphere */
-    ATMetaContext *_metaContext;
+    /** Helper */
     ATMappingHelper *_mappingHelper;
+    
+    /** Context */
+    ATMetaContext *_metaContext;
+    ATAppContext *_appContext;
     
     /** Networking clients */
     ATMessageClient *_messageClient;
     ATResourceClient *_resourceClient;
 
-    
-    /** App */
-    NSManagedObjectContext *_appContext;
-    
     /** State */
-
     NSString *_authKey;
     BOOL _needsSync;
     NSMutableArray *_relationsQueue;
@@ -58,22 +57,19 @@ extern NSString * const ATDidUpdateObjectNotification;
 }
 
 @property (nonatomic, retain) ATMetaContext *metaContext;
+@property (nonatomic, retain) ATAppContext *appContext;
 @property (nonatomic, retain) ATMappingHelper *mappingHelper;
 @property (nonatomic, retain) ATMessageClient *messageClient;
 @property (nonatomic, retain) ATResourceClient *resourceClient;
 
 @property (nonatomic, retain) NSString *authKey;
 
-@property (nonatomic, assign) NSManagedObjectContext *appContext;
 @property (assign) id<ATSynchronizerDelegate> delegate;
 
 #pragma mark - Lifecycle
 - (id) initWithHost:(NSString *)aHost port:(NSInteger)aPort appContext:(NSManagedObjectContext *)context;
 - (NSManagedObjectContext *) _createContext;
 - (void)_registerForAppNotifications;
-/**
- * Ends active connections, saves changes
- */
 - (void)close;
 
 #pragma mark - Authentication
@@ -88,35 +84,19 @@ extern NSString * const ATDidUpdateObjectNotification;
 
 #pragma mark - Responding to changes in app objects
 - (void)_didChangeAppObject:(NSNotification *)notification;
-#pragma mark Marking objects
+
+#pragma mark - Adding existing objects
+- (void)addObjectsFromAppContext;
+
+#pragma mark - Marking objects
 - (void)_markAppObjectChanged:(NSManagedObject *)object;
 - (void)_markAppObjectSynchronized:(NSManagedObject *)appObject;
 - (BOOL)_isAppObjectChanged:(NSManagedObject *)appObject;
 - (void)_markAppObjectDeleted:(NSManagedObject *)appObject;
-- (void)addObjectsFromAppContext; /**< Finds objects in app context that are not yet managed by
-                                   Atmosphere, adds them to meta context and marks them as changed. */
 
 #pragma mark - Syncing
 - (void)startSync;
 - (void)_sync;
 - (void)_syncMetaObject:(ATObject *)metaObject;
-
-
-#pragma mark - Managing app objects
-- (NSManagedObject *) _appObjectForObject:(ATObject *)object;
-- (NSManagedObject *) _createAppObjectWithLocalEntityName:(NSString *)localEntityName;
-#pragma mark Updating
-- (void) _updateAppObject:(NSManagedObject *)appObject withData:(NSDictionary *)data relations:(NSArray *)relations;
-- (void) _updateAppObject:(NSManagedObject *)appObject withData:(NSDictionary *)data;
-- (void) _updateAppObject:(NSManagedObject *)appObject withRelations:(NSArray *)relations;
-- (void) _deleteAppObject:(NSManagedObject *)appObject;
-#pragma mark Relations queue
-- (void) _enqueueRelation:(NSDictionary *)relation forAppObject:(NSManagedObject *)appObject;
-- (void) _applyRelations;
-#pragma mark Serializing
-- (NSDictionary *) _dataForAppObject:(NSManagedObject *)appObject;
-- (NSArray *) _relationsForAppObject:(NSManagedObject *)appObject;
-#pragma mark - Checking attribute changes
-- (BOOL)_attributesChangedInAppObject:(NSManagedObject *)appObject;
 
 @end

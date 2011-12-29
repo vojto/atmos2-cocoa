@@ -23,6 +23,7 @@
 #import "ASIHTTPRequest.h"
 #import "NSObject+JSON.h"
 #import "ATMetaContext.h"
+#import "ATAppContext.h"
 
 // NSString * const ATMessageEntityKey = @"entity";
 
@@ -30,10 +31,9 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 @implementation ATSynchronizer
 
-@synthesize metaContext=_metaContext, mappingHelper=_mappingHelper;
+@synthesize metaContext=_metaContext, appContext=_appContext, mappingHelper=_mappingHelper;
 @synthesize messageClient=_messageClient, resourceClient=_resourceClient;
 @synthesize authKey=_authKey;
-@synthesize appContext=_appContext;
 @synthesize delegate;
 
 #pragma mark - Lifecycle
@@ -44,7 +44,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         _relationsQueue = [[NSMutableArray alloc] init];
         
         self.metaContext = [[[ATMetaContext alloc] init] autorelease];
-        self.appContext = context;
+        self.appContext = [[[ATAppContext alloc] init] autorelease];
         self.mappingHelper = [[[ATMappingHelper alloc] init] autorelease];
         self.messageClient = [[[ATMessageClient alloc] initWithHost:aHost port:aPort synchronizer:self] autorelease];
         self.resourceClient = [[[ATResourceClient alloc] init] autorelease];
@@ -118,21 +118,21 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         [self startSync];
         return;
     } else if (object) {
-        appObject = [self _appObjectForObject:object];
-        [self _updateAppObject:appObject withData:data relations:relations];
-        [_appContext save:&error];
+        appObject = [self.appContext appObjectForObject:object];
+        [self.appContext updateAppObject:appObject withData:data relations:relations];
+        [self.appContext save:&error];
         
     } else {
-        appObject = [self _createAppObjectWithLocalEntityName:localEntityName];
-        [self _updateAppObject:appObject withData:data relations:relations];
-        [_appContext save:&error];
+        appObject = [self.appContext createAppObjectWithLocalEntityName:localEntityName];
+        [self.appContext updateAppObject:appObject withData:data relations:relations];
+        [self.appContext save:&error];
         object = [self.metaContext objectForAppObject:appObject];
         object.ATID = atID;
     }
     
     if ([deleted boolValue] == YES) {
         [object markDeleted];
-        [self _deleteAppObject:appObject];
+        [self.appContext deleteAppObject:appObject];
     }
     
     if (error != nil) ASLogInfo(@"%@", error);
@@ -153,16 +153,16 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark - Responding to changes in app objects
 
 - (void) _didChangeAppObject:(NSNotification *)notification {
-    ASLogInfo(@"App object just changed. %d", (int)[_appContext hasChanges]);
+    ASLogInfo(@"App object just changed. %d", (int)[self.appContext hasChanges]);
     NSDictionary *userInfo = [notification userInfo];
     for (NSManagedObject *updatedObject in [userInfo valueForKey:NSUpdatedObjectsKey]) {
-        if (![self _attributesChangedInAppObject:updatedObject]) continue;
+        if (![self.appContext attributesChangedInAppObject:updatedObject]) continue;
         [self _markAppObjectChanged:updatedObject];
     }
     NSSet *insertedObjects = [userInfo valueForKey:NSInsertedObjectsKey];
     NSError *error = nil;
-    [_appContext obtainPermanentIDsForObjects:[insertedObjects allObjects] error:&error];
-    if (error) ASLogInfo(@"Error obtaining permanent IDs: %@", error);
+    [self.appContext obtainPermanentIDsForObjects:[insertedObjects allObjects] error:&error];
+    if (error) ASLogError(@"Error obtaining permanent IDs: %@", error);
     for (NSManagedObject *insertedObject in insertedObjects) {
 //        ATObject *metaObject = [self _objectForAppObject:insertedObject];
         (void)[self.metaContext objectForAppObject:insertedObject];

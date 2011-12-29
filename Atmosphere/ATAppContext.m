@@ -10,14 +10,20 @@
 
 @implementation ATAppContext
 
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        // Initialization code here.
-    }
-    
-    return self;
+@synthesize managedContext=_managedContext;
+
+#pragma mark - Core Data
+
+- (BOOL)hasChanges {
+    return [self.managedContext hasChanges];
+}
+
+- (void)save:(NSError **)error {
+    [self.managedContext save:error];
+}
+
+- (void)obtainPermanentIDsForObjects:(NSArray *)objects error:(NSError **)error {
+    [self.managedContext obtainPermanentIDsForObjects:objects error:error];
 }
 
 @end
