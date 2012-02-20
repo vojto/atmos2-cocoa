@@ -36,9 +36,8 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
 - (id)initWithSynchronizer:(ATSynchronizer *)sync {
     if ((self = [super init])) {
         self.sync = sync;
-        self.client = [RKClient clientWithBaseURL:@"http://localhost:3000/api"];
+        self.client = [[[RKClient alloc] init] autorelease];
         NSLog(@"Created client: %@", self.client);
-        [self.client.HTTPHeaders setObject:@"a0b48ccc3e747caf3ed77d94c8f3efc8b7911019" forKey:@"Atmosphere-Auth-Key"];
     }
     
     return self;
@@ -46,6 +45,14 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
 
 - (void)dealloc {
     self.client = nil;
+}
+
+- (void)setBaseURL:(NSString *)url {
+    [self.client setBaseURL:url];
+}
+
+- (void)addHeader:(NSString *)name withValue:(NSString *)value {
+    [self.client.HTTPHeaders setObject:value forKey:name];
 }
 
 #pragma mark - Fetching entities

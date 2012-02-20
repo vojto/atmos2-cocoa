@@ -32,6 +32,8 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path);
 
 #pragma mark - Lifecycle
 - (id)initWithSynchronizer:(ATSynchronizer *)sync;
+- (void)setBaseURL:(NSString *)url;
+- (void)addHeader:(NSString *)name withValue:(NSString *)value;
 
 #pragma mark - Fetching entities
 - (void)fetchEntity:(NSString *)entityName;
