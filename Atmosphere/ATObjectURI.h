@@ -14,3 +14,4 @@ typedef struct _ATObjectURI {
 ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier);
 
 NSString* ATObjectURIToString(ATObjectURI uri);
+ATObjectURI ATObjectURIFromString(NSString *string);

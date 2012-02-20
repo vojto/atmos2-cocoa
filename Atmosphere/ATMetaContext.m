@@ -22,17 +22,21 @@ NSString * const ATObjectEntityName = @"Object";
     
 }
 
+@property ATObjectURI uri;
 @property BOOL isChanged;
 @property BOOL isLocalOnly;
+
+- (id)initWithURI:(ATObjectURI)uri;
 
 @end
 
 @implementation ATMetaObject
 
-@synthesize isChanged, isLocalOnly;
+@synthesize uri, isChanged, isLocalOnly;
 
-- (id)init {
+- (id)initWithURI:(ATObjectURI)aURI {
     if ((self = [super init])) {
+        self.uri = aURI;
         self.isChanged = YES;
         self.isLocalOnly = YES;
     }
@@ -42,6 +46,9 @@ NSString * const ATObjectEntityName = @"Object";
 
 - (id)initWithCoder:(NSCoder *)decoder {
     if (self = [super init]) {
+        self.uri = ATObjectURIFromString([decoder decodeObjectForKey:@"uri"]);
+        [self.uri.entity retain];
+        [self.uri.identifier retain];
         self.isChanged = [[decoder decodeObjectForKey:@"isChanged"] boolValue];
         self.isLocalOnly = [[decoder decodeObjectForKey:@"isLocalOnly"] boolValue];
     }
@@ -49,8 +56,13 @@ NSString * const ATObjectEntityName = @"Object";
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeObject:ATObjectURIToString(self.uri) forKey:@"uri"];
     [encoder encodeObject:[NSNumber numberWithBool:self.isChanged] forKey:@"isChanged"];
     [encoder encodeObject:[NSNumber numberWithBool:self.isLocalOnly] forKey:@"isLocalOnly"];
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<ATMetaObject uri=%@, isChanged=%d, isLocalOnly=%d", ATObjectURIToString(self.uri), self.isChanged, self.isLocalOnly];
 }
 
 @end
@@ -132,7 +144,7 @@ NSString * const ATObjectEntityName = @"Object";
 
 - (ATMetaObject *)createObjectAtURI:(ATObjectURI)uri {
     NSString *key = ATObjectURIToString(uri);
-    ATMetaObject *object = [[[ATMetaObject alloc] init] autorelease];
+    ATMetaObject *object = [[[ATMetaObject alloc] initWithURI:uri] autorelease];
     [self._objects setObject:object forKey:key];
     return object;
 }
