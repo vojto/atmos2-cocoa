@@ -86,6 +86,7 @@
 		99BDBE581483A0F600906F37 /* ASLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE501483A0F600906F37 /* ASLResponse.m */; };
 		99BDBE5B1483A10000906F37 /* b64.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE591483A10000906F37 /* b64.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE5C1483A10000906F37 /* b64.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE5A1483A10000906F37 /* b64.m */; };
+		99C752A714F2899900F543B0 /* ATObjectURI.h in Headers */ = {isa = PBXBuildFile; fileRef = 99C752A614F2899900F543B0 /* ATObjectURI.h */; };
 		99E8983C14A9C946001A1D60 /* SocketIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 99E8983A14A9C946001A1D60 /* SocketIO.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99E8983D14A9C946001A1D60 /* SocketIO.m in Sources */ = {isa = PBXBuildFile; fileRef = 99E8983B14A9C946001A1D60 /* SocketIO.m */; };
 		99E8985014A9C959001A1D60 /* ASICacheDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 99E8983E14A9C959001A1D60 /* ASICacheDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -295,6 +296,7 @@
 		99BDBE501483A0F600906F37 /* ASLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASLResponse.m; sourceTree = "<group>"; };
 		99BDBE591483A10000906F37 /* b64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b64.h; sourceTree = "<group>"; };
 		99BDBE5A1483A10000906F37 /* b64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = b64.m; sourceTree = "<group>"; };
+		99C752A614F2899900F543B0 /* ATObjectURI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATObjectURI.h; sourceTree = "<group>"; };
 		99E8983A14A9C946001A1D60 /* SocketIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SocketIO.h; path = SocketIO/SocketIO.h; sourceTree = SOURCE_ROOT; };
 		99E8983B14A9C946001A1D60 /* SocketIO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SocketIO.m; path = SocketIO/SocketIO.m; sourceTree = SOURCE_ROOT; };
 		99E8983E14A9C959001A1D60 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASICacheDelegate.h; path = ASIHTTPRequest/Classes/ASICacheDelegate.h; sourceTree = SOURCE_ROOT; };
@@ -450,6 +452,7 @@
 				99348BA014F25D5200592123 /* Atmosphere.h */,
 				999834481455AB6C00F1C436 /* ATSynchronizer.h */,
 				999834491455AB6C00F1C436 /* ATSynchronizer.m */,
+				99C752A614F2899900F543B0 /* ATObjectURI.h */,
 				992628E614AB9B4D00F0DD79 /* ATMappingHelper.h */,
 				992628E714AB9B4D00F0DD79 /* ATMappingHelper.m */,
 				9926290414AB9E4300F0DD79 /* Message Client */,
@@ -667,6 +670,7 @@
 				9998348E1455ABCE00F1C436 /* SBJsonTokeniser.h in Headers */,
 				999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */,
 				99348B9314F25C4600592123 /* RKClient+ATAdditions.h in Headers */,
+				99C752A714F2899900F543B0 /* ATObjectURI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

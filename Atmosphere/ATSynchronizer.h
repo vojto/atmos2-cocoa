@@ -17,13 +17,17 @@
 
 #import "ATMessage.h"
 #import "ATObject.h"
-#import "ATMetaContext.h"
-#import "ATAppContext.h"
 #import "ATMappingHelper.h"
 #import "ATMessageClient.h"
 #import "ATResourceClient.h"
+#import "ATObjectURI.h"
+
+@class ATAppContext;
+@class ATMetaContext;
 
 extern NSString * const ATDidUpdateObjectNotification;
+
+ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier);
 
 @class ATSynchronizer;
 
@@ -75,6 +79,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 
 #pragma mark - Resource methods
 - (void)fetchEntity:(NSString *)entityName;
+- (void)syncObject:(NSManagedObjectContext *)appObject;
 
 #pragma mark - Objects
 - (void)updateObjectAtURI:(ATObjectURI)uri withDictionary:(NSDictionary *)data;

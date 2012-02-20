@@ -6,31 +6,20 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "ATSynchronizer.h"
 #import "ATObject.h"
 
 @interface ATMetaContext : NSObject {
-    NSInteger _version;
-    NSManagedObjectContext *_managedContext;
-    NSEntityDescription *_objectEntity;
+    NSMutableDictionary *_data;
 }
 
-@property (nonatomic, retain) NSManagedObjectContext *managedContext;
+@property (retain) NSMutableDictionary *data;
 
 #pragma mark - Saving
 - (BOOL)save;
 
-#pragma mark - Managing version number
-- (void)readVersionFromDefaults;
-- (void)writeVersionToDefaults;
-- (void)updateVersion:(NSInteger)version;
-- (NSNumber *)versionAsNumber;
+#pragma mark - Marking changes
 
-#pragma mark - Managing local objects
-// - (ATObject *) _findOrCreateObjectWithATID:(NSString *)atID;
-- (ATObject *)objectWithATID:(NSString *)atID;
-- (ATObject *)createObjectWithATID:(NSString *)atID;
-- (ATObject *)createObject;
-- (ATObject *)objectForAppObject:(NSManagedObject *)appObject;
-- (ATObject *)existingMetaObjectForAppObject:(NSManagedObject *)appObject;
+- (void)markURIChanged:(ATObjectURI)uri;
 
 @end

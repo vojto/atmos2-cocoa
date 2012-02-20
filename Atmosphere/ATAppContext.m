@@ -13,13 +13,6 @@
 #import "NSManagedObject+ATActiveRecord.h"
 #import "NSManagedObject+ATAdditions.h"
 
-ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier) {
-    ATObjectURI uri;
-    uri.entity = entity;
-    uri.identifier = identifier;
-    return uri;
-}
-
 static ATAppContext* _sharedAppContext = nil;
 
 @implementation ATAppContext
@@ -95,6 +88,10 @@ static ATAppContext* _sharedAppContext = nil;
     NSPropertyDescription *identifier = [[entity propertiesByName] objectForKey:@"identifier"];
     RKAssert(identifier, @"Entity %@ doesn't have an identifier field. This is required to store primary keys of remote objects.", entity.name);
     return managedClass;
+}
+
+- (ATObjectURI)URIOfAppObject:(NSManagedObject *)object {
+    return ATObjectURIMake(object.entity.name, [object valueForKey:@"identifier"]);
 }
 
 #pragma mark Updating

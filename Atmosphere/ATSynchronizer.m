@@ -24,10 +24,18 @@
 #import "NSObject+JSON.h"
 #import "ATMetaContext.h"
 #import "ATAppContext.h"
+#import "ATObjectURI.h"
 
 // NSString * const ATMessageEntityKey = @"entity";
 
 NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification";
+
+ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier) {
+    ATObjectURI uri;
+    uri.entity = entity;
+    uri.identifier = identifier;
+    return uri;
+}
 
 @implementation ATSynchronizer
 
@@ -92,6 +100,11 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [self.resourceClient fetchEntity:entityName];
 }
 
+- (void)syncObject:(NSManagedObjectContext *)appObject {
+    // MetaContext.Mark object changed
+    // this.Sync
+}
+
 #pragma mark - Working with objects
 
 - (void)updateObjectAtURI:(ATObjectURI)uri withDictionary:(NSDictionary *)data {
@@ -105,56 +118,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [self.appContext updateAppObject:object withDictionary:data];
 }
 
-- (void)applyObjectMessage:(NSDictionary *)content {
-    NSString *atID = [content objectForKey:ATMessageATIDKey];
-    NSDictionary *data = [content objectForKey:ATMessageObjectDataKey];
-    NSNumber *deleted = [content objectForKey:ATMessageObjectDeletedKey];
-    NSArray *relations = [content objectForKey:ATMessageObjectRelationsKey];
-    NSString *serverEntityName = [content objectForKey:@"object_entity"];
-    NSString *localEntityName = [self.mappingHelper localEntityNameFor:serverEntityName];
-    NSNumber *versionNumber = [content objectForKey:ATMessageVersionKey];
-    NSInteger version = [versionNumber integerValue];
-    NSError *error = nil;
-    
-    ASLogInfo(@"Received push: %@ %@", atID, versionNumber);
-    
-    ATObject *object = [self.metaContext objectWithATID:atID];
-    NSManagedObject *appObject;
-    if (object && object.isLocked) {
-        ASLogInfo(@"Received push for locked object: unlocking, it will sync the next cycle.");
-        // At this point we only unlock the object, still marking it as changed
-        // so it would sync the next cycle.
-        [object unlock];
-        [self startSync];
-        return;
-    } else if (object) {
-        appObject = [self.appContext appObjectForObject:object];
-        [self.appContext updateAppObject:appObject withData:data relations:relations];
-        [self.appContext save:&error];
-        
-    } else {
-        appObject = [self.appContext createAppObjectWithLocalEntityName:localEntityName];
-        [self.appContext updateAppObject:appObject withData:data relations:relations];
-        [self.appContext save:&error];
-        object = [self.metaContext objectForAppObject:appObject];
-        object.ATID = atID;
-    }
-    
-    if ([deleted boolValue] == YES) {
-        [object markDeleted];
-        [self.appContext deleteAppObject:appObject];
-    }
-    
-    if (error != nil) ASLogInfo(@"%@", error);
-    [object markSynchronized];
-    [object unlock];
-    
-    if ([self.metaContext save]) {
-        [self.metaContext updateVersion:version];
-        [self _postObjectUpdateNotification:appObject];
-    }
-}
-
 - (void)_postObjectUpdateNotification:(NSManagedObject *)object {
     NSNotification *notification = [NSNotification notificationWithName:ATDidUpdateObjectNotification object:object];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
@@ -163,6 +126,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark - Responding to changes in app objects
 
 - (void) _didChangeAppObject:(NSNotification *)notification {
+    /*
     ASLogInfo(@"App object just changed. %d", (int)[self.appContext hasChanges]);
     NSDictionary *userInfo = [notification userInfo];
     for (NSManagedObject *updatedObject in [userInfo valueForKey:NSUpdatedObjectsKey]) {
@@ -183,55 +147,9 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         [self _markAppObjectDeleted:deletedObject];
     }
     [self startSync];
+    */
 }
 
-#pragma mark Marking objects
-
-- (void)_markAppObjectChanged:(NSManagedObject *)appObject {    
-    ATObject *object = [self.metaContext objectForAppObject:appObject];
-    
-    if ([self _isAppObjectChanged:appObject]) {
-        // This happens, when we change object, that's already changed.
-        // If something like that happens, it means that we are trying
-        // to change an object that hasn't finished syncing yet.
-        
-        // If we lock an object, the *receive* won't apply the changes,
-        // only unlock it, so next sync cycle will send it again with its
-        // last changes.
-        ASLogInfo(@"Object changed while not synced, locking.");
-        [object lock];
-        return;
-    }
-    
-    [object markChanged];
-}
-     
-- (void)_markAppObjectSynchronized:(NSManagedObject *)appObject {
-    if ([self _isAppObjectChanged:appObject]) {
-        return;
-    }
-    
-    ATObject *object = [self.metaContext objectForAppObject:appObject];
-    
-    [object markSynchronized];
-}
-
-- (BOOL)_isAppObjectChanged:(NSManagedObject *)appObject {
-    ATObject *object = [self.metaContext objectForAppObject:appObject];
-    
-    if ([object.isChanged boolValue]) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
-
-- (void)_markAppObjectDeleted:(NSManagedObject *)appObject {
-    ATObject *object = [self.metaContext objectForAppObject:appObject];
-    [object markDeleted];
-    [object markChanged];
-    ASLogInfo(@"Marking app object deleted: %@ (%@)", appObject, object);
-}
 
 #pragma mark - Pushing object to server
 

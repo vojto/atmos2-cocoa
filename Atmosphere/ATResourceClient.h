@@ -8,6 +8,7 @@
 
 #import <RestKit/RestKit.h>
 #import "ATAppContext.h"
+#import "ATObjectURI.h"
 
 extern NSString * const ATActionIndex;
 extern NSString * const ATActionShow;

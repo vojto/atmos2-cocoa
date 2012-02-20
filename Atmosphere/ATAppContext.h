@@ -9,15 +9,8 @@
 #import <CoreData/CoreData.h>
 #import "ATObject.h"
 #import "ATAttributeMapper.h"
-
-@class ATSynchronizer;
-
-typedef struct _ATObjectURI {
-    NSString *entity;
-    NSString *identifier;
-} ATObjectURI;
-
-ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier);
+#import "ATSynchronizer.h"
+#import "ATObjectURI.h"
 
 @interface ATAppContext : NSObject {
     ATSynchronizer *_sync;
@@ -38,6 +31,7 @@ ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier);
 - (NSManagedObject *)appObjectAtURI:(ATObjectURI)uri;
 - (NSManagedObject *)createAppObjectAtURI:(ATObjectURI)uri;
 - (Class)_managedClassForURI:(ATObjectURI)uri;
+- (ATObjectURI)URIOfAppObject:(NSManagedObject *)object;
 
 #pragma mark - Updating
 - (void)updateAppObject:(NSManagedObject *)appObject withDictionary:(NSDictionary *)data;
