@@ -14,13 +14,21 @@
 NSString * const ATVersionDefaultsKey = @"ATVersion";
 NSString * const ATObjectEntityName = @"Object";
 
+@interface ATMetaContext ()
+
+@property (retain) NSMutableDictionary *_data;
+
+@end
+
 @implementation ATMetaContext
+
+@synthesize _data;
 
 #pragma mark - Lifecycle
 
 - (id)init {
     if ((self = [super init])) {
-        
+        self._data = [NSMutableDictionary dictionary];
     }
     
     return self;
@@ -34,5 +42,8 @@ NSString * const ATObjectEntityName = @"Object";
 
 #pragma mark Marking objects
 
+- (void)markURIChanged:(ATObjectURI)uri {
+    
+}
 
 @end

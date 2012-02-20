@@ -13,8 +13,6 @@
     NSMutableDictionary *_data;
 }
 
-@property (retain) NSMutableDictionary *data;
-
 #pragma mark - Saving
 - (BOOL)save;
 

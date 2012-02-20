@@ -27,8 +27,6 @@
 
 extern NSString * const ATDidUpdateObjectNotification;
 
-ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier);
-
 @class ATSynchronizer;
 
 @protocol ATSynchronizerDelegate <NSObject>

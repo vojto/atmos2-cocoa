@@ -30,13 +30,6 @@
 
 NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification";
 
-ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier) {
-    ATObjectURI uri;
-    uri.entity = entity;
-    uri.identifier = identifier;
-    return uri;
-}
-
 @implementation ATSynchronizer
 
 @synthesize metaContext=_metaContext, appContext=_appContext, mappingHelper=_mappingHelper;

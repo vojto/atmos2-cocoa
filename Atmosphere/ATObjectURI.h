@@ -10,3 +10,7 @@ typedef struct _ATObjectURI {
     NSString *entity;
     NSString *identifier;
 } ATObjectURI;
+
+ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier);
+
+NSString* ATObjectURIToString(ATObjectURI uri);
