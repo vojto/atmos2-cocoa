@@ -40,7 +40,7 @@ extern NSString * const ATMessageAuthKeyKey;
 @property (nonatomic, retain) SocketIO *connection;
 
 #pragma mark - Lifecycle
-- (id)initWithHost:(NSString *)aHost port:(NSInteger)aPort synchronizer:(ATSynchronizer *)aSync;
+- (id)initWithSynchronizer:(ATSynchronizer *)sync;
 
 #pragma mark - Connecting
 - (void)connect;

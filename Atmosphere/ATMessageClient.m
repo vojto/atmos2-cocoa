@@ -30,11 +30,9 @@ NSString * const ATMessageAuthKeyKey = @"auth_key";
 
 #pragma mark - Lifecycle
 
-- (id)initWithHost:(NSString *)aHost port:(NSInteger)aPort synchronizer:(ATSynchronizer *)aSync {
+- (id)initWithSynchronizer:(ATSynchronizer *)sync {
     if ((self = [super init])) {
-        self.sync = aSync;
-        self.host = [[aHost copy] autorelease];
-        self.port = aPort;
+        self.sync = sync;
     }
     return self;
 }

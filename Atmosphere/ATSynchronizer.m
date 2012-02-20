@@ -38,14 +38,14 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 #pragma mark - Lifecycle
 
-- (id) initWithHost:(NSString *)aHost port:(NSInteger)aPort appContext:(NSManagedObjectContext *)context {
+- (id)initWithAppContext:(NSManagedObjectContext *)context {
     if ((self = [self init])) {
         _needsSync = YES;
         
         self.metaContext = [[[ATMetaContext alloc] init] autorelease];
         self.appContext = [[[ATAppContext alloc] initWithSynchronizer:self appContext:context] autorelease];
         self.mappingHelper = [[[ATMappingHelper alloc] init] autorelease];
-        self.messageClient = [[[ATMessageClient alloc] initWithHost:aHost port:aPort synchronizer:self] autorelease];
+        self.messageClient = [[[ATMessageClient alloc] initWithSynchronizer:self] autorelease];
         self.resourceClient = [[[ATResourceClient alloc] initWithSynchronizer:self] autorelease];
         
         [self _registerForAppNotifications];

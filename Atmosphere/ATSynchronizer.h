@@ -66,7 +66,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 @property (assign) id<ATSynchronizerDelegate> delegate;
 
 #pragma mark - Lifecycle
-- (id) initWithHost:(NSString *)aHost port:(NSInteger)aPort appContext:(NSManagedObjectContext *)context;
+- (id)initWithAppContext:(NSManagedObjectContext *)context;
 - (void)_registerForAppNotifications;
 - (void)close;
 
