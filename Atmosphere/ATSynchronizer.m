@@ -105,6 +105,11 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     ATObjectURI uri = [self.appContext URIOfAppObject:appObject];
     [self.metaContext markURIChanged:uri];
     // MetaContext.Mark object changed
+    
+    for (ATMetaObject *object in [self.metaContext changedObjects]) {
+        NSLog(@"Syncing %@", object);
+    }
+    
     // this.Sync
 }
 

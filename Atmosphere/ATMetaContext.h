@@ -9,6 +9,8 @@
 #import "ATSynchronizer.h"
 #import "ATObject.h"
 
+@class ATMetaObject;
+
 @interface ATMetaContext : NSObject <NSCoding> {
     NSMutableDictionary *_objects;
 }
@@ -23,7 +25,12 @@
 #pragma mark - Marking changes
 
 - (void)markURIChanged:(ATObjectURI)uri;
-- (NSDictionary *)objectAtURI:(ATObjectURI)uri;
-- (NSDictionary *)ensureObjectAtURI:(ATObjectURI)uri;
+- (ATMetaObject *)objectAtURI:(ATObjectURI)uri;
+- (ATMetaObject *)ensureObjectAtURI:(ATObjectURI)uri;
+- (ATMetaObject *)createObjectAtURI:(ATObjectURI)uri;
+
+#pragma mark - Finding objects
+
+- (NSArray *)changedObjects;
 
 @end

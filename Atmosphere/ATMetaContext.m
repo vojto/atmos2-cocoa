@@ -14,6 +14,50 @@
 NSString * const ATVersionDefaultsKey = @"ATVersion";
 NSString * const ATObjectEntityName = @"Object";
 
+
+/***************** META OBJECT **********************************************************/
+
+@interface ATMetaObject : NSObject <NSCoding> {
+@private
+    
+}
+
+@property BOOL isChanged;
+@property BOOL isLocalOnly;
+
+@end
+
+@implementation ATMetaObject
+
+@synthesize isChanged, isLocalOnly;
+
+- (id)init {
+    if ((self = [super init])) {
+        self.isChanged = YES;
+        self.isLocalOnly = YES;
+    }
+    
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    if (self = [super init]) {
+        self.isChanged = [[decoder decodeObjectForKey:@"isChanged"] boolValue];
+        self.isLocalOnly = [[decoder decodeObjectForKey:@"isLocalOnly"] boolValue];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeObject:[NSNumber numberWithBool:self.isChanged] forKey:@"isChanged"];
+    [encoder encodeObject:[NSNumber numberWithBool:self.isLocalOnly] forKey:@"isLocalOnly"];
+}
+
+@end
+
+/***************** META OBJECT **********************************************************/
+
+
 @interface ATMetaContext ()
 
 @property (retain) NSMutableDictionary *_objects;
@@ -29,10 +73,10 @@ NSString * const ATObjectEntityName = @"Object";
 + (id)restore {
     ATMetaContext *instance = [NSKeyedUnarchiver unarchiveObjectWithFile:[self path]];
     if (!instance) {
-        instance = [[ATMetaContext alloc] init];
+        instance = [[[ATMetaContext alloc] init] autorelease];
     }
 
-    return [instance autorelease];
+    return instance;
 }
 
 - (id)init {
@@ -62,13 +106,48 @@ NSString * const ATObjectEntityName = @"Object";
 #pragma mark - Saving
 
 - (BOOL)save {
-    NSLog(@"ARchiving: %@", [self.class path]);
+    NSLog(@"Archiving: %@", [self.class path]);
     [NSKeyedArchiver archiveRootObject:self toFile:[self.class path]];
     return YES;
 }
 
 #pragma mark Marking objects
 
+- (void)markURIChanged:(ATObjectURI)uri {
+    ATMetaObject *object = [self ensureObjectAtURI:uri];
+    object.isChanged = YES;
+    [self save];
+}
 
+- (ATMetaObject *)ensureObjectAtURI:(ATObjectURI)uri {
+    ATMetaObject *object = [self objectAtURI:uri];
+    if (!object) object = [self createObjectAtURI:uri];
+    return object;
+}
+
+- (ATMetaObject *)objectAtURI:(ATObjectURI)uri {
+    NSString *key = ATObjectURIToString(uri);
+    return [self._objects objectForKey:key];
+}
+
+- (ATMetaObject *)createObjectAtURI:(ATObjectURI)uri {
+    NSString *key = ATObjectURIToString(uri);
+    ATMetaObject *object = [[[ATMetaObject alloc] init] autorelease];
+    [self._objects setObject:object forKey:key];
+    return object;
+}
+
+#pragma mark - Finding objects
+
+- (NSArray *)changedObjects {
+    NSMutableArray *objects = [NSMutableArray array];
+    [[self._objects allKeys] enumerateObjectsUsingBlock:^(id key, NSUInteger idx, BOOL *stop) {
+        ATMetaObject *object = [self._objects objectForKey:key];
+        if (object.isChanged == YES) {
+            [objects addObject:object];
+        }
+    }];
+    return objects;
+}
 
 @end
