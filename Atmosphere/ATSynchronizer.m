@@ -43,14 +43,15 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     if ((self = [self init])) {
         _needsSync = YES;
         
-        self.metaContext = [[[ATMetaContext alloc] init] autorelease];
+        self.metaContext = [ATMetaContext restore];
+        NSLog(@"Meta context: %@", self.metaContext);
+        [self.metaContext save];
         self.appContext = [[[ATAppContext alloc] initWithSynchronizer:self appContext:context] autorelease];
         self.mappingHelper = [[[ATMappingHelper alloc] init] autorelease];
         self.messageClient = [[[ATMessageClient alloc] initWithSynchronizer:self] autorelease];
         self.resourceClient = [[[ATResourceClient alloc] initWithSynchronizer:self] autorelease];
         
         [self _registerForAppNotifications];
-        [self.metaContext readVersionFromDefaults];
     }
     return self;
 }
@@ -93,7 +94,16 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [self.resourceClient fetchEntity:entityName];
 }
 
-- (void)syncObject:(NSManagedObjectContext *)appObject {
+- (void)syncObject:(NSManagedObject *)appObject {
+    if (![appObject valueForKey:@"identifier"]) {
+        // Generate a new identifier
+        [appObject setValue:[RNUtil uuidString] forKey:@"identifier"];
+    }
+    
+    // TOOD: Save locally here
+    
+    ATObjectURI uri = [self.appContext URIOfAppObject:appObject];
+    [self.metaContext markURIChanged:uri];
     // MetaContext.Mark object changed
     // this.Sync
 }

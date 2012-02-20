@@ -15,7 +15,7 @@
  02111-1307, USA.
  */
 
-//#import "RNUtil.h"
+#import "RNUtil.h"
 //#import "ASLogger.h"
 
 @implementation RNUtil
@@ -36,6 +36,26 @@
     NSString *appName = [[NSBundle mainBundle] bundleIdentifier];
     [[ASLogger defaultLogger] setName:appName facility:@"RINIK" options:0];
     asl_add_log_file([[ASLogger defaultLogger] client], 0);
+}
+
++ (NSString *)uuidString {
+    CFUUIDRef uuid = CFUUIDCreate(nil);
+    NSString *uuidString = [(NSString*)CFUUIDCreateString(nil, uuid) autorelease];
+    CFRelease(uuid);
+    return uuidString;
+}
+
++ (NSString *)applicationSupportDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : NSTemporaryDirectory();
+    NSString *appName = [[NSBundle mainBundle] bundleIdentifier];
+	NSString *path = [basePath stringByAppendingPathComponent:appName];
+	NSFileManager *manager = [NSFileManager defaultManager];
+	if ([manager fileExistsAtPath:path]) {
+	} else {
+		[manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:NULL];
+	}
+	return path;
 }
 
 @end

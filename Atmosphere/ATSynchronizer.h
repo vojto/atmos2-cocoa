@@ -77,7 +77,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 
 #pragma mark - Resource methods
 - (void)fetchEntity:(NSString *)entityName;
-- (void)syncObject:(NSManagedObjectContext *)appObject;
+- (void)syncObject:(NSManagedObject *)appObject;
 
 #pragma mark - Objects
 - (void)updateObjectAtURI:(ATObjectURI)uri withDictionary:(NSDictionary *)data;

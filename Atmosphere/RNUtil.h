@@ -30,9 +30,12 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface RNUtil : NSObject
 
 + (void)initLoggingInDirectory:(NSString *)logDirectory;
 + (void)initLogging;
++ (NSString *)uuidString;
++ (NSString *)applicationSupportDirectory;
 
 @end

@@ -16,34 +16,59 @@ NSString * const ATObjectEntityName = @"Object";
 
 @interface ATMetaContext ()
 
-@property (retain) NSMutableDictionary *_data;
+@property (retain) NSMutableDictionary *_objects;
 
 @end
 
 @implementation ATMetaContext
 
-@synthesize _data;
+@synthesize _objects;
 
 #pragma mark - Lifecycle
 
++ (id)restore {
+    ATMetaContext *instance = [NSKeyedUnarchiver unarchiveObjectWithFile:[self path]];
+    if (!instance) {
+        instance = [[ATMetaContext alloc] init];
+    }
+
+    return [instance autorelease];
+}
+
 - (id)init {
     if ((self = [super init])) {
-        self._data = [NSMutableDictionary dictionary];
+        self._objects = [NSMutableDictionary dictionary];
     }
-    
     return self;
+}
+
++ (NSString *)path {
+    NSString *support = [RNUtil applicationSupportDirectory];
+    NSString *path = [support stringByAppendingPathComponent:@"ATMetaContext.plist"];
+    return path;
+}
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    if (self = [super init]) {
+        self._objects = [decoder decodeObjectForKey:@"objects"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeObject:self._objects forKey:@"objects"];
 }
 
 #pragma mark - Saving
 
 - (BOOL)save {
-    
+    NSLog(@"ARchiving: %@", [self.class path]);
+    [NSKeyedArchiver archiveRootObject:self toFile:[self.class path]];
+    return YES;
 }
 
 #pragma mark Marking objects
 
-- (void)markURIChanged:(ATObjectURI)uri {
-    
-}
+
 
 @end
