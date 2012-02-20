@@ -18,6 +18,13 @@ NSString * const ATActionCreate = @"create";
 NSString * const ATActionUpdate = @"update";
 NSString * const ATActionDestroy = @"destroy";
 
+ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
+    ATRoute route;
+    route.method = method;
+    route.path = path;
+    return route;
+}
+
 @implementation ATResourceClient
 
 @synthesize sync = _sync;

@@ -7,3 +7,5 @@
 //
 
 #import "ATSynchronizer.h"
+#import "ATResourceClient.h"
+#import "ATMessageClient.h"

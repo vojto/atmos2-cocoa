@@ -20,6 +20,8 @@ typedef struct _ATRoute {
     NSString *path;
 } ATRoute;
 
+ATRoute ATRouteMake(RKRequestMethod method, NSString *path);
+
 @class ATSynchronizer;
 
 @interface ATResourceClient : NSObject
