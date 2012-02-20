@@ -25,6 +25,8 @@
 		9926290914ABA00600F0DD79 /* ATAppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9926290714ABA00600F0DD79 /* ATAppContext.m */; };
 		9926290C14ABA06300F0DD79 /* ATResourceClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 9926290A14ABA06300F0DD79 /* ATResourceClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9926290D14ABA06300F0DD79 /* ATResourceClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9926290B14ABA06300F0DD79 /* ATResourceClient.m */; };
+		99348B9314F25C4600592123 /* RKClient+ATAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 99348B9214F25C4600592123 /* RKClient+ATAdditions.h */; };
+		99348BA114F25D5200592123 /* Atmosphere.h in Headers */ = {isa = PBXBuildFile; fileRef = 99348BA014F25D5200592123 /* Atmosphere.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		997213CC14AC79490044B92B /* ATEntityFetchRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 997213CA14AC79490044B92B /* ATEntityFetchRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		997213CD14AC79490044B92B /* ATEntityFetchRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 997213CB14AC79490044B92B /* ATEntityFetchRequest.m */; };
 		9986E5BC145AE83800619A25 /* ATConnectionGuard.h in Headers */ = {isa = PBXBuildFile; fileRef = 9986E5BA145AE83800619A25 /* ATConnectionGuard.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -226,6 +228,8 @@
 		9926290714ABA00600F0DD79 /* ATAppContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATAppContext.m; sourceTree = "<group>"; };
 		9926290A14ABA06300F0DD79 /* ATResourceClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATResourceClient.h; sourceTree = "<group>"; };
 		9926290B14ABA06300F0DD79 /* ATResourceClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATResourceClient.m; sourceTree = "<group>"; };
+		99348B9214F25C4600592123 /* RKClient+ATAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RKClient+ATAdditions.h"; sourceTree = "<group>"; };
+		99348BA014F25D5200592123 /* Atmosphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Atmosphere.h; sourceTree = "<group>"; };
 		997213CA14AC79490044B92B /* ATEntityFetchRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATEntityFetchRequest.h; sourceTree = "<group>"; };
 		997213CB14AC79490044B92B /* ATEntityFetchRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATEntityFetchRequest.m; sourceTree = "<group>"; };
 		9986E5BA145AE83800619A25 /* ATConnectionGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATConnectionGuard.h; sourceTree = "<group>"; };
@@ -394,6 +398,7 @@
 				9926290B14ABA06300F0DD79 /* ATResourceClient.m */,
 				997213CA14AC79490044B92B /* ATEntityFetchRequest.h */,
 				997213CB14AC79490044B92B /* ATEntityFetchRequest.m */,
+				99348B9214F25C4600592123 /* RKClient+ATAdditions.h */,
 			);
 			name = "Resource Client";
 			sourceTree = "<group>";
@@ -442,6 +447,7 @@
 		999834351455AB5100F1C436 /* Atmosphere */ = {
 			isa = PBXGroup;
 			children = (
+				99348BA014F25D5200592123 /* Atmosphere.h */,
 				999834481455AB6C00F1C436 /* ATSynchronizer.h */,
 				999834491455AB6C00F1C436 /* ATSynchronizer.m */,
 				992628E614AB9B4D00F0DD79 /* ATMappingHelper.h */,
@@ -655,10 +661,12 @@
 				9921BA4814AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h in Headers */,
 				9921BA5814AC9B19000A6D5F /* ATAttributeMapper.h in Headers */,
 				99BDBE551483A0F600906F37 /* ASLQuery.h in Headers */,
+				99348BA114F25D5200592123 /* Atmosphere.h in Headers */,
 				99BDBE571483A0F600906F37 /* ASLResponse.h in Headers */,
 				99BDBE5B1483A10000906F37 /* b64.h in Headers */,
 				9998348E1455ABCE00F1C436 /* SBJsonTokeniser.h in Headers */,
 				999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */,
+				99348B9314F25C4600592123 /* RKClient+ATAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

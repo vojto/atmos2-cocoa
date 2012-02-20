@@ -10,6 +10,7 @@
 #import "ATSynchronizer.h"
 #import "ATResourceClient.h"
 #import "ATEntityFetchRequest.h"
+#import "RKClient+ATAdditions.h"
 
 NSString * const ATActionIndex = @"index";
 NSString * const ATActionShow = @"show";
