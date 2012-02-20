@@ -33,5 +33,6 @@
 @interface RNUtil : NSObject
 
 + (void)initLoggingInDirectory:(NSString *)logDirectory;
++ (void)initLogging;
 
 @end

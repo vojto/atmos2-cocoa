@@ -32,4 +32,10 @@
     ASLogInfo(@"Initialized logging for bundle %@", appName);
 }
 
++ (void)initLogging {
+    NSString *appName = [[NSBundle mainBundle] bundleIdentifier];
+    [[ASLogger defaultLogger] setName:appName facility:@"RINIK" options:0];
+    asl_add_log_file([[ASLogger defaultLogger] client], 0);
+}
+
 @end

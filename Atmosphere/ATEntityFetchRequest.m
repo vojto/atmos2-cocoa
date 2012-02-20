@@ -41,6 +41,9 @@
 #pragma mark - Processing results
 
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
+    if ([response statusCode] != 200) {
+        ASLogWarning(@"[ATEntityFetchRequest] Response is not 200", [response bodyAsString]);
+    }
     ASLogInfo(@"[ATEntityFetchRequest] Done fetching");
     id items = [response parsedBody:nil];
     RKAssert([items isKindOfClass:[NSArray class]], @"Expected result to by an array");
