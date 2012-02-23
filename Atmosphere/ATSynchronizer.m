@@ -41,7 +41,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 - (id)initWithAppContext:(NSManagedObjectContext *)context {
     if ((self = [self init])) {
-        _needsSync = YES;
+        _isSyncScheduled = NO;
         
         self.metaContext = [ATMetaContext restore];
         NSLog(@"Meta context: %@", self.metaContext);
@@ -51,22 +51,13 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         self.messageClient = [[[ATMessageClient alloc] initWithSynchronizer:self] autorelease];
         self.resourceClient = [[[ATResourceClient alloc] initWithSynchronizer:self] autorelease];
         
-        [self _registerForAppNotifications];
+        [self startAutosync];
     }
     return self;
 }
 
-- (void) _registerForAppNotifications {
-    RKAssert(_appContext, @"App context shouldn't be nil");
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(_didChangeAppObject:)
-                                                 name:NSManagedObjectContextObjectsDidChangeNotification
-                                               object:_appContext];
-}
-
 - (void)close {
     [self.metaContext save];
-    [self _sync];
     [self.messageClient disconnect];
 }
 
@@ -74,7 +65,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 - (void) dealloc {
     [_appContext release];
-    [_authKey release];
     self.metaContext = nil;
     self.mappingHelper = nil;
     self.messageClient = nil;
@@ -94,18 +84,30 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [self.resourceClient fetchEntity:entityName];
 }
 
+/*****************************************************************************/
+#pragma mark - Syncing
+/*****************************************************************************/
+
 - (void)syncObject:(NSManagedObject *)appObject {
     if (![appObject valueForKey:@"identifier"]) {
-        // Generate a new identifier if there is not one yet
         [appObject setValue:[RNUtil uuidString] forKey:@"identifier"];
     }
-
-    [self.appContext save:nil];
+    // [self.appContext save:nil]; // TODO: Remove?
     
     ATObjectURI uri = [self.appContext URIOfAppObject:appObject];
     [self.metaContext markURIChanged:uri];
-    // MetaContext.Mark object changed
     
+    [self startSync];
+}
+
+- (void)startSync {
+    if (!_isSyncScheduled) {
+        _isSyncScheduled = YES;
+        [self performSelectorOnMainThread:@selector(sync) withObject:nil waitUntilDone:NO];
+    }
+}
+
+- (void)sync {
     for (ATMetaObject *meta in [self.metaContext changedObjects]) {
         NSLog(@"Syncing %@", meta);
         
@@ -113,11 +115,12 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         NSManagedObject *object = [self.appContext objectAtURI:meta.uri];
         [self.resourceClient saveObject:object options:[NSDictionary dictionaryWithObject:action forKey:@"action"]];
     }
-    
-    // this.Sync
+    _isSyncScheduled = NO;
 }
 
+/*****************************************************************************/
 #pragma mark - Working with objects
+/*****************************************************************************/
 
 - (void)updateObjectAtURI:(ATObjectURI)uri withDictionary:(NSDictionary *)data {
     NSManagedObject *object = [self.appContext objectAtURI:uri];
@@ -130,13 +133,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [self.appContext updateAppObject:object withDictionary:data];
 }
 
-- (void)_postObjectUpdateNotification:(NSManagedObject *)object {
-    NSNotification *notification = [NSNotification notificationWithName:ATDidUpdateObjectNotification object:object];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
-}
-
-#pragma mark - Changing URIs
-
 - (void)changeURIFrom:(ATObjectURI)original to:(ATObjectURI)changed {
     NSLog(@"Changing URIs: %@ --> %@", original.entity, changed.entity);
     NSLog(@"Changing URIs: %@ --> %@", original.identifier, changed.identifier);
@@ -145,15 +141,28 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [self.metaContext changeIDTo:changed.identifier atURI:original];
 }
 
-#pragma mark - Responding to changes in app objects
+/*****************************************************************************/
+#pragma mark - Autosync
+/*****************************************************************************/
 
-- (void) _didChangeAppObject:(NSNotification *)notification {
-    /*
+- (void)startAutosync {
+    RKAssert(self.appContext, @"App context shouldn't be nil");
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(_didChangeAppObject:)
+                                                 name:NSManagedObjectContextObjectsDidChangeNotification
+                                               object:self.appContext.managedContext];
+}
+
+- (void)stopAutosync {
+    
+}
+
+- (void)_didChangeAppObject:(NSNotification *)notification {
     ASLogInfo(@"App object just changed. %d", (int)[self.appContext hasChanges]);
     NSDictionary *userInfo = [notification userInfo];
     for (NSManagedObject *updatedObject in [userInfo valueForKey:NSUpdatedObjectsKey]) {
         if (![self.appContext attributesChangedInAppObject:updatedObject]) continue;
-        [self _markAppObjectChanged:updatedObject];
+        [self syncObject:updatedObject];
     }
     NSSet *insertedObjects = [userInfo valueForKey:NSInsertedObjectsKey];
     NSError *error = nil;
@@ -161,30 +170,13 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     if (error) ASLogError(@"Error obtaining permanent IDs: %@", error);
     for (NSManagedObject *insertedObject in insertedObjects) {
 //        ATObject *metaObject = [self _objectForAppObject:insertedObject];
-        (void)[self.metaContext objectForAppObject:insertedObject];
-        [self _markAppObjectChanged:insertedObject];
+        [self syncObject:insertedObject];
 //        [self _saveContext];
     }
     for (NSManagedObject *deletedObject in [userInfo valueForKey:NSDeletedObjectsKey]) {
-        [self _markAppObjectDeleted:deletedObject];
+        // TODO: Handle deletion
     }
     [self startSync];
-    */
-}
-
-
-#pragma mark - Pushing object to server
-
-- (void)startSync {
-    ASLogInfo(@"Scheduling sync for next run loop", nil);
-    _needsSync = YES;
-    [self performSelectorOnMainThread:@selector(_sync) withObject:nil waitUntilDone:NO];
-}
-
-// This will be refactored to use ResourceClient instead of MessageClient, so 
-// whatever is in here doesn't matter.
-- (void)_sync {
-    ASLogError(@"Not implemented yet");
 }
 
 @end

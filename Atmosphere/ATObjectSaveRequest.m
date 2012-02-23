@@ -66,9 +66,7 @@
     }
     
     ASLogInfo(@"Object save request completed: %@", data);
-    // 01 Update data
-    [sync updateObjectAtURI:uri withDictionary:data];
-    // 02 Change ID if needed
+    // 01 Change ID if needed
     NSString *IDField = self.resourceClient.IDField;
     NSString *ID = [data objectForKey:IDField];
     if (!ID) {
@@ -77,9 +75,12 @@
     ATObjectURI changedURI = uri;
     changedURI.identifier = ID;
     [sync changeURIFrom:uri to:changedURI];
-    // TODO: Change ID!!!
+
+    // 02 Update the data
+    [sync updateObjectAtURI:changedURI withDictionary:data];
+
     // 03 Mark meta contxt
-    [metaContext markURISynced:uri];
+    [metaContext markURISynced:changedURI];
     [metaContext save];
 }
 

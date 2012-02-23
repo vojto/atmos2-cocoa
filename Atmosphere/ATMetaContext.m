@@ -61,6 +61,10 @@ NSString * const ATObjectEntityName = @"Object";
     [encoder encodeObject:self._objects forKey:@"objects"];
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<ATMetaContext _objects=%@>", [self._objects description]];
+}
+
 #pragma mark - Saving
 
 - (BOOL)save {
@@ -79,6 +83,7 @@ NSString * const ATObjectEntityName = @"Object";
 - (void)markURISynced:(ATObjectURI)uri {
     ATMetaObject *object = [self ensureObjectAtURI:uri];
     object.isChanged = NO;
+    object.isLocalOnly = NO;
 }
 
 - (ATMetaObject *)ensureObjectAtURI:(ATObjectURI)uri {
@@ -117,8 +122,11 @@ NSString * const ATObjectEntityName = @"Object";
 - (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI)uri {
     ATMetaObject *object = [self objectAtURI:uri];
     ATObjectURI newURI = uri;
-    uri.identifier = newID;
+    newURI.identifier = newID;
     object.uri = newURI;
+    [self._objects setObject:object forKey:ATObjectURIToString(newURI)];
+    [self._objects removeObjectForKey:ATObjectURIToString(uri)];
+    NSLog(@"%@", self._objects);
 }
 
 @end

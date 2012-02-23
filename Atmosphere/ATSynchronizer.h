@@ -50,7 +50,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 
     /** State */
     NSString *_authKey;
-    BOOL _needsSync;
+    BOOL _isSyncScheduled;
     
     /** Delegate */
     id<ATSynchronizerDelegate> delegate;
@@ -62,13 +62,13 @@ extern NSString * const ATDidUpdateObjectNotification;
 @property (nonatomic, retain) ATMessageClient *messageClient;
 @property (nonatomic, retain) ATResourceClient *resourceClient;
 
-@property (nonatomic, retain) NSString *authKey;
+@property (nonatomic, retain) NSString *authKey; // TODO: remove this
 
 @property (assign) id<ATSynchronizerDelegate> delegate;
 
 #pragma mark - Lifecycle
 - (id)initWithAppContext:(NSManagedObjectContext *)context;
-- (void)_registerForAppNotifications;
+
 - (void)close;
 
 #pragma mark - Authentication
@@ -76,27 +76,20 @@ extern NSString * const ATDidUpdateObjectNotification;
 
 #pragma mark - Resource methods
 - (void)fetchEntity:(NSString *)entityName;
+
+#pragma mark - Syncing
 - (void)syncObject:(NSManagedObject *)appObject;
+- (void)startSync;
+- (void)sync;
 
 #pragma mark - Objects
 - (void)updateObjectAtURI:(ATObjectURI)uri withDictionary:(NSDictionary *)data;
-- (void)applyObjectMessage:(NSDictionary *)content;
-- (void)_postObjectUpdateNotification:(NSManagedObject *)object;
-
-#pragma mark - Changing URIs
 - (void)changeURIFrom:(ATObjectURI)original to:(ATObjectURI)changed;
 
-#pragma mark - Responding to changes in app objects
+#pragma mark - Auto sync
+- (void)startAutosync;
+- (void)stopAutosync;
 - (void)_didChangeAppObject:(NSNotification *)notification;
 
-#pragma mark - Marking objects
-- (void)_markAppObjectChanged:(NSManagedObject *)object;
-- (void)_markAppObjectSynchronized:(NSManagedObject *)appObject;
-- (BOOL)_isAppObjectChanged:(NSManagedObject *)appObject;
-- (void)_markAppObjectDeleted:(NSManagedObject *)appObject;
-
-#pragma mark - Syncing
-- (void)startSync;
-- (void)_sync;
 
 @end

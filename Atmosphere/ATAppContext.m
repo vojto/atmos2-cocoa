@@ -127,9 +127,7 @@ static ATAppContext* _sharedAppContext = nil;
     
     [self _resolveRelations:appObject withDictionary:data];
     
-    NSError *error = nil;
-    [self save:&error];
-    if (error) ASLogError(@"%@", error);
+    [self save];
 }
 
 - (void)deleteAppObject:(NSManagedObject *)appObject {
@@ -217,11 +215,12 @@ static ATAppContext* _sharedAppContext = nil;
 
 #pragma mark - Checking attribute changes
 
-- (BOOL)_attributesChangedInAppObject:(NSManagedObject *)appObject {
+- (BOOL)attributesChangedInAppObject:(NSManagedObject *)appObject {
     NSDictionary *changedValues = [appObject changedValuesForCurrentEvent];
     NSArray *changedKeys = [changedValues allKeys];
     NSArray *attributeNames = [[[appObject entity] attributesByName] allKeys]; // TODO: Check if attributeKeys works
     for (NSString *attributeName in attributeNames) {
+        if ([attributeName isEqualToString:@"identifier"]) continue; // TODO: Use constant not string
         if ([changedKeys containsObject:attributeName]) return YES;
     }
     return NO;
