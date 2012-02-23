@@ -42,7 +42,8 @@
 
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
     if ([response statusCode] != 200) {
-        ASLogWarning(@"[ATEntityFetchRequest] Response is not 200", [response bodyAsString]);
+        ASLogError(@"[ATEntityFetchRequest] Response is not 200", [response bodyAsString]);
+        return;
     }
     ASLogInfo(@"[ATEntityFetchRequest] Done fetching");
     id items = [response parsedBody:nil];
