@@ -30,22 +30,23 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path);
 @property (assign) ATSynchronizer *sync;
 @property (retain) RKClient *client;
 @property (retain) NSDictionary *routes;
+@property (retain) NSString *IDField;
 
 #pragma mark - Lifecycle
 - (id)initWithSynchronizer:(ATSynchronizer *)sync;
 - (void)setBaseURL:(NSString *)url;
 - (void)addHeader:(NSString *)name withValue:(NSString *)value;
 
-#pragma mark - Fetching entities
+#pragma mark - Fetching objects
 - (void)fetchEntity:(NSString *)entityName;
-
-#pragma mark - Responding to fetch results
 - (void)didFetchItem:(NSDictionary *)item withURI:(ATObjectURI)uri;
 
-#pragma mark - Making request
-- (void)loadRoute:(ATRoute)route params:(NSObject<RKRequestSerializable> *)params delegate:(id)delegate;
+#pragma mark - Saving objects
+- (void)saveObject:(NSManagedObject *)object;
+- (void)saveObject:(NSManagedObject *)object options:(NSDictionary *)options;
 
-#pragma mark - Managing routes
+#pragma mark - Requests & Routing
+- (void)loadRoute:(ATRoute)route params:(NSObject<RKRequestSerializable> *)params delegate:(id)delegate;
 - (void)loadRoutesFromResource:(NSString *)resourceName;
 - (ATRoute)routeForEntity:(NSString *)entity action:(NSString *)action;
 

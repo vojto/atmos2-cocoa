@@ -74,13 +74,11 @@ NSString * const ATObjectEntityName = @"Object";
 - (void)markURIChanged:(ATObjectURI)uri {
     ATMetaObject *object = [self ensureObjectAtURI:uri];
     object.isChanged = YES;
-    [self save];
 }
 
 - (void)markURISynced:(ATObjectURI)uri {
     ATMetaObject *object = [self ensureObjectAtURI:uri];
     object.isChanged = NO;
-    [self save];
 }
 
 - (ATMetaObject *)ensureObjectAtURI:(ATObjectURI)uri {
@@ -112,6 +110,15 @@ NSString * const ATObjectEntityName = @"Object";
         }
     }];
     return objects;
+}
+
+#pragma mark - Other tasks
+
+- (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI)uri {
+    ATMetaObject *object = [self objectAtURI:uri];
+    ATObjectURI newURI = uri;
+    uri.identifier = newID;
+    object.uri = newURI;
 }
 
 @end

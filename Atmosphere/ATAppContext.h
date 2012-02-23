@@ -27,10 +27,11 @@
 - (id)initWithSynchronizer:(ATSynchronizer *)aSync appContext:(NSManagedObjectContext *)anAppContext;
 
 #pragma mark - Managing app objects using URI
-- (NSManagedObject *)appObjectAtURI:(ATObjectURI)uri;
+- (NSManagedObject *)objectAtURI:(ATObjectURI)uri;
 - (NSManagedObject *)createAppObjectAtURI:(ATObjectURI)uri;
 - (Class)_managedClassForURI:(ATObjectURI)uri;
 - (ATObjectURI)URIOfAppObject:(NSManagedObject *)object;
+- (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI)uri;
 
 #pragma mark - Updating
 - (void)updateAppObject:(NSManagedObject *)appObject withDictionary:(NSDictionary *)data;
@@ -40,7 +41,7 @@
 - (void)_resolveRelations:(NSManagedObject *)appObject withDictionary:(NSDictionary *)data;
 
 #pragma mark Serializing
-- (NSDictionary *)dataForAppObject:(NSManagedObject *)appObject;
+- (NSDictionary *)dataForObject:(NSManagedObject *)appObject;
 - (NSArray *)relationsForAppObject:(NSManagedObject *)appObject;
 
 #pragma mark - Checking attribute changes
@@ -48,6 +49,7 @@
 
 #pragma mark - Core Data
 - (BOOL)hasChanges;
+- (void)save;
 - (void)save:(NSError **)error;
 - (void)obtainPermanentIDsForObjects:(NSArray *)objects error:(NSError **)error;
 

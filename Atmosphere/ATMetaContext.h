@@ -36,4 +36,7 @@
 
 - (NSArray *)changedObjects;
 
+#pragma mark - Other tasks
+- (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI)uri;
+
 @end

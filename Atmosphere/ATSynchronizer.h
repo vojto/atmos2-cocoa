@@ -83,6 +83,9 @@ extern NSString * const ATDidUpdateObjectNotification;
 - (void)applyObjectMessage:(NSDictionary *)content;
 - (void)_postObjectUpdateNotification:(NSManagedObject *)object;
 
+#pragma mark - Changing URIs
+- (void)changeURIFrom:(ATObjectURI)original to:(ATObjectURI)changed;
+
 #pragma mark - Responding to changes in app objects
 - (void)_didChangeAppObject:(NSNotification *)notification;
 

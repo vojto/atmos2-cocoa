@@ -42,7 +42,7 @@
     CFUUIDRef uuid = CFUUIDCreate(nil);
     NSString *uuidString = [(NSString*)CFUUIDCreateString(nil, uuid) autorelease];
     CFRelease(uuid);
-    return uuidString;
+    return [uuidString lowercaseString];
 }
 
 + (NSString *)applicationSupportDirectory {

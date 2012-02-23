@@ -106,14 +106,12 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [self.metaContext markURIChanged:uri];
     // MetaContext.Mark object changed
     
-    for (ATMetaObject *object in [self.metaContext changedObjects]) {
-        NSLog(@"Syncing %@", object);
+    for (ATMetaObject *meta in [self.metaContext changedObjects]) {
+        NSLog(@"Syncing %@", meta);
         
-        [self.resourceClient 
-        
-        // For now we'll just mark it as synced without confirming the request.
-        // Just to make development somewhat easier.        
-        [self.metaContext markURISynced:object.uri];
+        NSString *action = meta.isLocalOnly ? ATActionCreate : ATActionUpdate;
+        NSManagedObject *object = [self.appContext objectAtURI:meta.uri];
+        [self.resourceClient saveObject:object options:[NSDictionary dictionaryWithObject:action forKey:@"action"]];
     }
     
     // this.Sync
@@ -122,7 +120,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark - Working with objects
 
 - (void)updateObjectAtURI:(ATObjectURI)uri withDictionary:(NSDictionary *)data {
-    NSManagedObject *object = [self.appContext appObjectAtURI:uri];
+    NSManagedObject *object = [self.appContext objectAtURI:uri];
     if (!object) {
         object = [self.appContext createAppObjectAtURI:uri];
         ASLogInfo(@"Created object %@", uri.identifier);
@@ -135,6 +133,16 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 - (void)_postObjectUpdateNotification:(NSManagedObject *)object {
     NSNotification *notification = [NSNotification notificationWithName:ATDidUpdateObjectNotification object:object];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+#pragma mark - Changing URIs
+
+- (void)changeURIFrom:(ATObjectURI)original to:(ATObjectURI)changed {
+    NSLog(@"Changing URIs: %@ --> %@", original.entity, changed.entity);
+    NSLog(@"Changing URIs: %@ --> %@", original.identifier, changed.identifier);
+
+    [self.appContext changeIDTo:changed.identifier atURI:original];
+    [self.metaContext changeIDTo:changed.identifier atURI:original];
 }
 
 #pragma mark - Responding to changes in app objects

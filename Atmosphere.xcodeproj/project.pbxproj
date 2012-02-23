@@ -68,6 +68,8 @@
 		999834911455ABCE00F1C436 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9998347E1455ABCE00F1C436 /* SBJsonWriter.m */; };
 		999C96A814F6062E00595FF1 /* ATMetaObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 999C96A614F6062E00595FF1 /* ATMetaObject.h */; };
 		999C96A914F6062E00595FF1 /* ATMetaObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 999C96A714F6062E00595FF1 /* ATMetaObject.m */; };
+		999C96AC14F60ADD00595FF1 /* ATObjectSaveRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 999C96AA14F60ADD00595FF1 /* ATObjectSaveRequest.h */; };
+		999C96AD14F60ADD00595FF1 /* ATObjectSaveRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 999C96AB14F60ADD00595FF1 /* ATObjectSaveRequest.m */; };
 		99BDBE371483A0AD00906F37 /* RNUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE351483A0AD00906F37 /* RNUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE381483A0AD00906F37 /* RNUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE361483A0AD00906F37 /* RNUtil.m */; };
 		99BDBE431483A0EF00906F37 /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE3D1483A0EF00906F37 /* NSData+Base64.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -279,6 +281,8 @@
 		9998347E1455ABCE00F1C436 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		999C96A614F6062E00595FF1 /* ATMetaObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATMetaObject.h; sourceTree = "<group>"; };
 		999C96A714F6062E00595FF1 /* ATMetaObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATMetaObject.m; sourceTree = "<group>"; };
+		999C96AA14F60ADD00595FF1 /* ATObjectSaveRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATObjectSaveRequest.h; sourceTree = "<group>"; };
+		999C96AB14F60ADD00595FF1 /* ATObjectSaveRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATObjectSaveRequest.m; sourceTree = "<group>"; };
 		99BDBE351483A0AD00906F37 /* RNUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNUtil.h; sourceTree = "<group>"; };
 		99BDBE361483A0AD00906F37 /* RNUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNUtil.m; sourceTree = "<group>"; };
 		99BDBE3D1483A0EF00906F37 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -402,6 +406,8 @@
 				9926290B14ABA06300F0DD79 /* ATResourceClient.m */,
 				997213CA14AC79490044B92B /* ATEntityFetchRequest.h */,
 				997213CB14AC79490044B92B /* ATEntityFetchRequest.m */,
+				999C96AA14F60ADD00595FF1 /* ATObjectSaveRequest.h */,
+				999C96AB14F60ADD00595FF1 /* ATObjectSaveRequest.m */,
 				99348B9214F25C4600592123 /* RKClient+ATAdditions.h */,
 			);
 			name = "Resource Client";
@@ -674,6 +680,7 @@
 				999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */,
 				99348B9314F25C4600592123 /* RKClient+ATAdditions.h in Headers */,
 				999C96A814F6062E00595FF1 /* ATMetaObject.h in Headers */,
+				999C96AC14F60ADD00595FF1 /* ATObjectSaveRequest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -874,6 +881,7 @@
 				9921BA5914AC9B19000A6D5F /* ATAttributeMapper.m in Sources */,
 				99C752B514F28AB200F543B0 /* ATObjectURI.m in Sources */,
 				999C96A914F6062E00595FF1 /* ATMetaObject.m in Sources */,
+				999C96AD14F60ADD00595FF1 /* ATObjectSaveRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

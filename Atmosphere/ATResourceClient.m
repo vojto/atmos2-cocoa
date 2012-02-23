@@ -10,6 +10,7 @@
 #import "ATSynchronizer.h"
 #import "ATResourceClient.h"
 #import "ATEntityFetchRequest.h"
+#import "ATObjectSaveRequest.h"
 #import "RKClient+ATAdditions.h"
 
 NSString * const ATActionIndex = @"index";
@@ -30,14 +31,18 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
 @synthesize sync = _sync;
 @synthesize client = _client;
 @synthesize routes = _routes;
+@synthesize IDField = _IDField;
 
+/*****************************************************************************/
 #pragma mark - Lifecycle
+/*****************************************************************************/
 
 - (id)initWithSynchronizer:(ATSynchronizer *)sync {
     if ((self = [super init])) {
         self.sync = sync;
         self.client = [[[RKClient alloc] init] autorelease];
         NSLog(@"Created client: %@", self.client);
+        self.IDField = @"id"; // Default ID field
     }
     
     return self;
@@ -55,27 +60,42 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
     [self.client.HTTPHeaders setObject:value forKey:name];
 }
 
+/*****************************************************************************/
 #pragma mark - Fetching entities
+/*****************************************************************************/
 
 - (void)fetchEntity:(NSString *)entityName {
     // TODO: Routing based on entity name
     ATEntityFetchRequest *fetchRequest = [[ATEntityFetchRequest alloc] initWithResourceClient:self entity:entityName];
     [fetchRequest send];
+    // TODO: Memory management
 }
-
-#pragma mark - Responding to fetch results
 
 - (void)didFetchItem:(NSDictionary *)item withURI:(ATObjectURI)uri {
     [self.sync updateObjectAtURI:uri withDictionary:item];
 }
 
-#pragma mark - Making requests
+/*****************************************************************************/
+#pragma mark - Saving objects
+/*****************************************************************************/
+
+- (void)saveObject:(NSManagedObject *)object {
+    [self saveObject:object options:[NSDictionary dictionary]];
+}
+
+- (void)saveObject:(NSManagedObject *)object options:(NSDictionary *)options {
+    ATObjectSaveRequest *request = [[ATObjectSaveRequest alloc] initWithResourceClient:self object:object options:options];
+    [request send];
+}
+
+/*****************************************************************************/
+#pragma mark - Requests & Routing
+/*****************************************************************************/
 
 - (void)loadRoute:(ATRoute)route params:(NSObject<RKRequestSerializable> *)params delegate:(id)delegate {
     [self.client load:route.path method:route.method params:params delegate:delegate];
 }
 
-#pragma mark - Managing routes
 - (void)loadRoutesFromResource:(NSString *)resourceName {
     self.routes = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:resourceName ofType:@"plist"]];
 }

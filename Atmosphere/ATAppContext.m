@@ -51,6 +51,14 @@ static ATAppContext* _sharedAppContext = nil;
     return [self.managedContext hasChanges];
 }
 
+- (void)save {
+    NSError *error = nil;
+    [self save:&error];
+    if (error != nil) {
+        ASLogError(@"[ATAppContext] Save failed: %@", error);
+    }
+}
+
 - (void)save:(NSError **)error {
     [self.managedContext save:error];
 }
@@ -61,7 +69,7 @@ static ATAppContext* _sharedAppContext = nil;
 
 #pragma mark - Managing App Objects
 
-- (NSManagedObject *)appObjectAtURI:(ATObjectURI)uri {
+- (NSManagedObject *)objectAtURI:(ATObjectURI)uri {
     Class managedClass = [self _managedClassForURI:uri];
     NSManagedObject *managedObject = [managedClass findFirstByAttribute:@"identifier" withValue:uri.identifier];
 
@@ -91,6 +99,13 @@ static ATAppContext* _sharedAppContext = nil;
 
 - (ATObjectURI)URIOfAppObject:(NSManagedObject *)object {
     return ATObjectURIMake(object.entity.name, [object valueForKey:@"identifier"]);
+}
+
+- (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI)uri {
+    NSManagedObject *object = [self objectAtURI:uri];
+    [object setValue:newID forKey:@"identifier"];
+    // TODO: Consider saving here
+    // [self save];
 }
 
 #pragma mark Updating
@@ -143,7 +158,7 @@ static ATAppContext* _sharedAppContext = nil;
         // Find the target
         NSString *targetEntityName = relation.destinationEntity.name;
         ATObjectURI targetURI = ATObjectURIMake(targetEntityName , targetId);
-        NSManagedObject *targetObject = [self appObjectAtURI:targetURI];
+        NSManagedObject *targetObject = [self objectAtURI:targetURI];
         if (!targetObject) {
             ASLogWarning(@"Target object %@/%@ referenced in relation %@ of %@ not found", targetURI.entity, targetURI.identifier, key, entity.name);
             continue;
@@ -157,7 +172,7 @@ static ATAppContext* _sharedAppContext = nil;
 
 #pragma mark Serializing
 
-- (NSDictionary *) _dataForAppObject:(NSManagedObject *)appObject {
+- (NSDictionary *)dataForObject:(NSManagedObject *)appObject {
     ATMappingHelper *mapping = self.sync.mappingHelper;
     // NSString *entity = [mapping serverEntityNameForAppObject:appObject];
     NSArray *attributes = [[appObject entity] attributeKeys];
