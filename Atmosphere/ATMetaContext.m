@@ -126,7 +126,6 @@ NSString * const ATObjectEntityName = @"Object";
     object.uri = newURI;
     [self._objects setObject:object forKey:ATObjectURIToString(newURI)];
     [self._objects removeObjectForKey:ATObjectURIToString(uri)];
-    NSLog(@"%@", self._objects);
 }
 
 @end

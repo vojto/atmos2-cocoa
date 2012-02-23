@@ -170,16 +170,28 @@ static ATAppContext* _sharedAppContext = nil;
 
 #pragma mark Serializing
 
-- (NSDictionary *)dataForObject:(NSManagedObject *)appObject {
+- (NSDictionary *)dataForObject:(NSManagedObject *)object {
     ATMappingHelper *mapping = self.sync.mappingHelper;
-    // NSString *entity = [mapping serverEntityNameForAppObject:appObject];
-    NSArray *attributes = [[appObject entity] attributeKeys];
     
+    // Add attributes
+    NSArray *attributes = [[object entity] attributeKeys];
     NSMutableDictionary *data = [NSMutableDictionary dictionary];
     for (NSString *attribute in attributes) {
-        NSString *stringValue = [appObject stringValueForKey:attribute];
-        NSString *serverAttributeName = [mapping serverAttributeNameFor:attribute entity:appObject.entity];
+        NSString *stringValue = [object stringValueForKey:attribute];
+        NSString *serverAttributeName = [mapping serverAttributeNameFor:attribute entity:object.entity];
         [data setValue:stringValue forKey:serverAttributeName];
+    }
+    
+    // Add relations
+    NSDictionary *relations = [mapping relationsForObject:object];
+    for (NSString *key in [relations allKeys]) {
+        NSString *relation = [relations objectForKey:key];
+        NSManagedObject *target = [object performSelector:NSSelectorFromString(relation)];
+        if (target) {
+            [data setValue:[target valueForKey:@"identifier"] forKey:key];
+        } else {
+            ASLogWarning(@"[ATAppContext] Cannot find target object for relation with key %@. (%@)", key, object);
+        }
     }
     
     return data;
