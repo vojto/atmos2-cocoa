@@ -177,6 +177,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         // TODO: Handle deletion
     }
     [self startSync];
+    [self.metaContext save];
 }
 
 @end
