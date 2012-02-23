@@ -49,5 +49,6 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path);
 - (void)loadRoute:(ATRoute)route params:(NSObject<RKRequestSerializable> *)params delegate:(id)delegate;
 - (void)loadRoutesFromResource:(NSString *)resourceName;
 - (ATRoute)routeForEntity:(NSString *)entity action:(NSString *)action;
+- (ATRoute)routeForEntity:(NSString *)entity action:(NSString *)action params:(NSDictionary *)options;
 
 @end

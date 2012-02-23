@@ -102,6 +102,10 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
 
 // TODO: Auto-generate route if none found
 - (ATRoute)routeForEntity:(NSString *)entity action:(NSString *)action {
+    return [self routeForEntity:entity action:action params:nil];
+}
+
+- (ATRoute)routeForEntity:(NSString *)entity action:(NSString *)action params:(NSDictionary *)params {
     NSDictionary *routes = [self.routes objectForKey:entity];
     NSString *routeString = [routes objectForKey:action];
     RKAssert(routeString, @"No route found for action %@ of entity %@", action, entity);
@@ -110,8 +114,15 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
     NSString *method = [[comps objectAtIndex:0] lowercaseString];
     NSString *path = [comps objectAtIndex:1];
     
+    // Apply params in the route
+    for (NSString *key in [params allKeys]) {
+        path = [path stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@":%@", key] withString:[params objectForKey:key]];
+    }
+    
+    ASLogInfo(@"[ATResourceClient] Built path: %@", path);
+    
     ATRoute route;
-    route.path = path; // Retain maybe?? Nope, it's retain by routes dictionary.
+    route.path = path;
     if ([method isEqualToString:@"get"]) route.method = RKRequestMethodGET;
     else if ([method isEqualToString:@"post"]) route.method = RKRequestMethodPOST;
     else if ([method isEqualToString:@"put"]) route.method = RKRequestMethodPUT;

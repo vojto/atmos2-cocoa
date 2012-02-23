@@ -28,6 +28,8 @@
 
 #define RKDefaults [NSUserDefaults standardUserDefaults]
 
+#define RKTry(object, method) [object respondsToSelector:@selector(method)] ? [object performSelector:@selector(method)] : nil
+
 #import <Foundation/Foundation.h>
 
 

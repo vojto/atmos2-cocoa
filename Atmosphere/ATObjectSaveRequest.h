@@ -21,6 +21,5 @@
 
 - (void)send;
 
-- (NSString *)_paramWrapperForObject:(NSManagedObject *)object;
 
 @end

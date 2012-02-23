@@ -29,15 +29,19 @@
 - (void)send {
     ATAppContext *appContext = self.resourceClient.sync.appContext; // TODO: Refactor to something nicer
     
-    NSString *action = [self.options objectForKey:@"action"];
+    // Options
+    NSString *wrapper           = RKTry(self.object, paramWrapper);
+    NSDictionary *routeParams   = RKTry(self.object, routeParams);
+    
+    NSString *action    = [self.options objectForKey:@"action"];
     if (!action) action = ATActionCreate;
-    ATRoute route = [self.resourceClient routeForEntity:self.object.entity.name action:action];
+    ATRoute route       = [self.resourceClient routeForEntity:self.object.entity.name action:action params:routeParams];
     
     NSDictionary *data = [appContext dataForObject:self.object];
-    NSString *wrapper = [self _paramWrapperForObject:self.object];
+
     NSDictionary *params;
     if (wrapper) params = [NSDictionary dictionaryWithObject:data forKey:wrapper];
-    else params = data;
+    else         params = data;
     
     ASLogInfo(@"Sending save request (%@): %@", action, data);
     [self.resourceClient loadRoute:route params:params delegate:self];
@@ -86,10 +90,6 @@
 
 - (void)request:(RKRequest *)request didFailLoadWithError:(NSError *)error {
     NSLog(@"Load failed: %@", error);
-}
-
-- (NSString *)_paramWrapperForObject:(NSManagedObject *)object {
-    return [object respondsToSelector:@selector(paramWrapper)] ? [object performSelector:@selector(paramWrapper)] : nil;
 }
 
 @end
