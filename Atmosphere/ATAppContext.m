@@ -9,7 +9,6 @@
 #import <CoreData/CoreData.h>
 #import "ATSynchronizer.h"
 #import "ATAppContext.h"
-#import "ATObject.h"
 #import "NSManagedObject+ATActiveRecord.h"
 #import "NSManagedObject+ATAdditions.h"
 
@@ -177,7 +176,7 @@ static ATAppContext* _sharedAppContext = nil;
     ATMappingHelper *mapping = self.sync.mappingHelper;
     NSEntityDescription *entityDescription = [appObject entity];
     NSDictionary *relationDescriptions = [entityDescription relationshipsByName];
-    ATObject *metaObject = [self.sync.metaContext objectForAppObject:appObject];
+//    ATObject *metaObject = [self.sync.metaContext objectForAppObject:appObject];
     NSMutableArray *relations = [NSMutableArray array];
     for (NSString *relationName in [relationDescriptions allKeys]) {
         NSRelationshipDescription *relationDescription = [relationDescriptions objectForKey:relationName];
@@ -188,14 +187,14 @@ static ATAppContext* _sharedAppContext = nil;
             ASLogInfo(@"Relation is not connected: %@", relationName);
             continue;
         }
-        ATObject *targetMetaObject = [self.sync.metaContext objectForAppObject:targetAppObject];
-        if (!targetMetaObject) {
-            ASLogWarning(@"Couldn't find meta object for object %@ referenced in relation", targetAppObject);
-            continue;
-        }
-        NSDictionary *relation = [NSMutableDictionary dictionaryWithObjectsAndKeys:serverRelationName, @"name", [metaObject ATID], @"source", [targetMetaObject ATID], @"target", nil];
+//        ATObject *targetMetaObject = [self.sync.metaContext objectForAppObject:targetAppObject];
+//        if (!targetMetaObject) {
+//            ASLogWarning(@"Couldn't find meta object for object %@ referenced in relation", targetAppObject);
+//            continue;
+//        }
+//        NSDictionary *relation = [NSMutableDictionary dictionaryWithObjectsAndKeys:serverRelationName, @"name", [metaObject ATID], @"source", [targetMetaObject ATID], @"target", nil];
         
-        [relations addObject:relation];
+//        [relations addObject:relation];
     }
     
     return relations;

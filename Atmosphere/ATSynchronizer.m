@@ -18,11 +18,11 @@
 #import <CoreData/CoreData.h>
 
 #import "ATSynchronizer.h"
-#import "ATObject.h"
 #import "NSManagedObject+ATAdditions.h"
 #import "ASIHTTPRequest.h"
 #import "NSObject+JSON.h"
 #import "ATMetaContext.h"
+#import "ATMetaObject.h"
 #import "ATAppContext.h"
 #import "ATObjectURI.h"
 
@@ -96,11 +96,11 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 - (void)syncObject:(NSManagedObject *)appObject {
     if (![appObject valueForKey:@"identifier"]) {
-        // Generate a new identifier
+        // Generate a new identifier if there is not one yet
         [appObject setValue:[RNUtil uuidString] forKey:@"identifier"];
     }
-    
-    // TOOD: Save locally here
+
+    [self.appContext save:nil];
     
     ATObjectURI uri = [self.appContext URIOfAppObject:appObject];
     [self.metaContext markURIChanged:uri];
@@ -108,6 +108,12 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     
     for (ATMetaObject *object in [self.metaContext changedObjects]) {
         NSLog(@"Syncing %@", object);
+        
+        [self.resourceClient 
+        
+        // For now we'll just mark it as synced without confirming the request.
+        // Just to make development somewhat easier.        
+        [self.metaContext markURISynced:object.uri];
     }
     
     // this.Sync
@@ -170,10 +176,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 // This will be refactored to use ResourceClient instead of MessageClient, so 
 // whatever is in here doesn't matter.
 - (void)_sync {
-    ASLogError(@"Not implemented yet");
-}
-
-- (void) _syncMetaObject:(ATObject *)metaObject {
     ASLogError(@"Not implemented yet");
 }
 

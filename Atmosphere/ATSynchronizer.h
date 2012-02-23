@@ -16,7 +16,6 @@
  */
 
 #import "ATMessage.h"
-#import "ATObject.h"
 #import "ATMappingHelper.h"
 #import "ATMessageClient.h"
 #import "ATResourceClient.h"
@@ -96,6 +95,5 @@ extern NSString * const ATDidUpdateObjectNotification;
 #pragma mark - Syncing
 - (void)startSync;
 - (void)_sync;
-- (void)_syncMetaObject:(ATObject *)metaObject;
 
 @end

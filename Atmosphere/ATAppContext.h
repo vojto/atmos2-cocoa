@@ -7,7 +7,6 @@
 //
 
 #import <CoreData/CoreData.h>
-#import "ATObject.h"
 #import "ATAttributeMapper.h"
 #import "ATSynchronizer.h"
 #import "ATObjectURI.h"

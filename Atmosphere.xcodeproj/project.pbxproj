@@ -39,8 +39,6 @@
 		999834551455AB6C00F1C436 /* ATSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 999834491455AB6C00F1C436 /* ATSynchronizer.m */; };
 		999834561455AB6C00F1C436 /* ATMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 9998344A1455AB6C00F1C436 /* ATMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		999834571455AB6C00F1C436 /* ATMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9998344B1455AB6C00F1C436 /* ATMessage.m */; };
-		999834581455AB6C00F1C436 /* ATObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 9998344C1455AB6C00F1C436 /* ATObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		999834591455AB6C00F1C436 /* ATObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 9998344D1455AB6C00F1C436 /* ATObject.m */; };
 		9998345A1455AB6C00F1C436 /* NSManagedObject+ATAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 9998344E1455AB6C00F1C436 /* NSManagedObject+ATAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9998345B1455AB6C00F1C436 /* NSManagedObject+ATAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9998344F1455AB6C00F1C436 /* NSManagedObject+ATAdditions.m */; };
 		999834651455ABBA00F1C436 /* AsyncSocket Documentation.html in Resources */ = {isa = PBXBuildFile; fileRef = 9998345F1455ABBA00F1C436 /* AsyncSocket Documentation.html */; };
@@ -68,6 +66,8 @@
 		9998348F1455ABCE00F1C436 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9998347C1455ABCE00F1C436 /* SBJsonTokeniser.m */; };
 		999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 9998347D1455ABCE00F1C436 /* SBJsonWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		999834911455ABCE00F1C436 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9998347E1455ABCE00F1C436 /* SBJsonWriter.m */; };
+		999C96A814F6062E00595FF1 /* ATMetaObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 999C96A614F6062E00595FF1 /* ATMetaObject.h */; };
+		999C96A914F6062E00595FF1 /* ATMetaObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 999C96A714F6062E00595FF1 /* ATMetaObject.m */; };
 		99BDBE371483A0AD00906F37 /* RNUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE351483A0AD00906F37 /* RNUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE381483A0AD00906F37 /* RNUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE361483A0AD00906F37 /* RNUtil.m */; };
 		99BDBE431483A0EF00906F37 /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE3D1483A0EF00906F37 /* NSData+Base64.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -250,8 +250,6 @@
 		999834491455AB6C00F1C436 /* ATSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATSynchronizer.m; sourceTree = "<group>"; };
 		9998344A1455AB6C00F1C436 /* ATMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATMessage.h; sourceTree = "<group>"; };
 		9998344B1455AB6C00F1C436 /* ATMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATMessage.m; sourceTree = "<group>"; };
-		9998344C1455AB6C00F1C436 /* ATObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATObject.h; sourceTree = "<group>"; };
-		9998344D1455AB6C00F1C436 /* ATObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATObject.m; sourceTree = "<group>"; };
 		9998344E1455AB6C00F1C436 /* NSManagedObject+ATAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ATAdditions.h"; sourceTree = "<group>"; };
 		9998344F1455AB6C00F1C436 /* NSManagedObject+ATAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ATAdditions.m"; sourceTree = "<group>"; };
 		9998345F1455ABBA00F1C436 /* AsyncSocket Documentation.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "AsyncSocket Documentation.html"; sourceTree = "<group>"; };
@@ -279,6 +277,8 @@
 		9998347C1455ABCE00F1C436 /* SBJsonTokeniser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonTokeniser.m; sourceTree = "<group>"; };
 		9998347D1455ABCE00F1C436 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		9998347E1455ABCE00F1C436 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		999C96A614F6062E00595FF1 /* ATMetaObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATMetaObject.h; sourceTree = "<group>"; };
+		999C96A714F6062E00595FF1 /* ATMetaObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATMetaObject.m; sourceTree = "<group>"; };
 		99BDBE351483A0AD00906F37 /* RNUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNUtil.h; sourceTree = "<group>"; };
 		99BDBE361483A0AD00906F37 /* RNUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNUtil.m; sourceTree = "<group>"; };
 		99BDBE3D1483A0EF00906F37 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -383,14 +383,14 @@
 				9926290714ABA00600F0DD79 /* ATAppContext.m */,
 				9921BA5614AC9B19000A6D5F /* ATAttributeMapper.h */,
 				9921BA5714AC9B19000A6D5F /* ATAttributeMapper.m */,
-				9998344C1455AB6C00F1C436 /* ATObject.h */,
-				9998344D1455AB6C00F1C436 /* ATObject.m */,
 				9921BA4614AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h */,
 				9921BA4714AC8629000A6D5F /* NSManagedObject+ATActiveRecord.m */,
 				9998344E1455AB6C00F1C436 /* NSManagedObject+ATAdditions.h */,
 				9998344F1455AB6C00F1C436 /* NSManagedObject+ATAdditions.m */,
 				992628D614AB999A00F0DD79 /* ATMetaContext.h */,
 				992628D714AB999A00F0DD79 /* ATMetaContext.m */,
+				999C96A614F6062E00595FF1 /* ATMetaObject.h */,
+				999C96A714F6062E00595FF1 /* ATMetaObject.m */,
 			);
 			name = "Data Store";
 			sourceTree = "<group>";
@@ -626,7 +626,6 @@
 				999834541455AB6C00F1C436 /* ATSynchronizer.h in Headers */,
 				999834501455AB6C00F1C436 /* WebSocket.h in Headers */,
 				999834561455AB6C00F1C436 /* ATMessage.h in Headers */,
-				999834581455AB6C00F1C436 /* ATObject.h in Headers */,
 				9998345A1455AB6C00F1C436 /* NSManagedObject+ATAdditions.h in Headers */,
 				999834661455ABBA00F1C436 /* AsyncSocket.h in Headers */,
 				999834681455ABBA00F1C436 /* AsyncUdpSocket.h in Headers */,
@@ -674,6 +673,7 @@
 				9998348E1455ABCE00F1C436 /* SBJsonTokeniser.h in Headers */,
 				999834901455ABCE00F1C436 /* SBJsonWriter.h in Headers */,
 				99348B9314F25C4600592123 /* RKClient+ATAdditions.h in Headers */,
+				999C96A814F6062E00595FF1 /* ATMetaObject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -834,7 +834,6 @@
 				999834511455AB6C00F1C436 /* WebSocket.m in Sources */,
 				999834551455AB6C00F1C436 /* ATSynchronizer.m in Sources */,
 				999834571455AB6C00F1C436 /* ATMessage.m in Sources */,
-				999834591455AB6C00F1C436 /* ATObject.m in Sources */,
 				9998345B1455AB6C00F1C436 /* NSManagedObject+ATAdditions.m in Sources */,
 				999834671455ABBA00F1C436 /* AsyncSocket.m in Sources */,
 				999834691455ABBA00F1C436 /* AsyncUdpSocket.m in Sources */,
@@ -874,6 +873,7 @@
 				9921BA4914AC8629000A6D5F /* NSManagedObject+ATActiveRecord.m in Sources */,
 				9921BA5914AC9B19000A6D5F /* ATAttributeMapper.m in Sources */,
 				99C752B514F28AB200F543B0 /* ATObjectURI.m in Sources */,
+				999C96A914F6062E00595FF1 /* ATMetaObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

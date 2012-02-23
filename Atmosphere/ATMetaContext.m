@@ -10,64 +10,10 @@
 #import <CoreData/NSFetchRequest.h>
 #import "ATMetaContext.h"
 #import "NSManagedObject+ATAdditions.h"
+#import "ATMetaObject.h"
 
 NSString * const ATVersionDefaultsKey = @"ATVersion";
 NSString * const ATObjectEntityName = @"Object";
-
-
-/***************** META OBJECT **********************************************************/
-
-@interface ATMetaObject : NSObject <NSCoding> {
-@private
-    
-}
-
-@property ATObjectURI uri;
-@property BOOL isChanged;
-@property BOOL isLocalOnly;
-
-- (id)initWithURI:(ATObjectURI)uri;
-
-@end
-
-@implementation ATMetaObject
-
-@synthesize uri, isChanged, isLocalOnly;
-
-- (id)initWithURI:(ATObjectURI)aURI {
-    if ((self = [super init])) {
-        self.uri = aURI;
-        self.isChanged = YES;
-        self.isLocalOnly = YES;
-    }
-    
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder *)decoder {
-    if (self = [super init]) {
-        self.uri = ATObjectURIFromString([decoder decodeObjectForKey:@"uri"]);
-        [self.uri.entity retain];
-        [self.uri.identifier retain];
-        self.isChanged = [[decoder decodeObjectForKey:@"isChanged"] boolValue];
-        self.isLocalOnly = [[decoder decodeObjectForKey:@"isLocalOnly"] boolValue];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject:ATObjectURIToString(self.uri) forKey:@"uri"];
-    [encoder encodeObject:[NSNumber numberWithBool:self.isChanged] forKey:@"isChanged"];
-    [encoder encodeObject:[NSNumber numberWithBool:self.isLocalOnly] forKey:@"isLocalOnly"];
-}
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<ATMetaObject uri=%@, isChanged=%d, isLocalOnly=%d", ATObjectURIToString(self.uri), self.isChanged, self.isLocalOnly];
-}
-
-@end
-
-/***************** META OBJECT **********************************************************/
 
 
 @interface ATMetaContext ()
@@ -128,6 +74,12 @@ NSString * const ATObjectEntityName = @"Object";
 - (void)markURIChanged:(ATObjectURI)uri {
     ATMetaObject *object = [self ensureObjectAtURI:uri];
     object.isChanged = YES;
+    [self save];
+}
+
+- (void)markURISynced:(ATObjectURI)uri {
+    ATMetaObject *object = [self ensureObjectAtURI:uri];
+    object.isChanged = NO;
     [self save];
 }
 

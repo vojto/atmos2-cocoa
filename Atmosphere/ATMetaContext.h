@@ -7,7 +7,6 @@
 //
 
 #import "ATSynchronizer.h"
-#import "ATObject.h"
 
 @class ATMetaObject;
 
@@ -25,6 +24,10 @@
 #pragma mark - Marking changes
 
 - (void)markURIChanged:(ATObjectURI)uri;
+- (void)markURISynced:(ATObjectURI)uri;
+
+#pragma mark - Finding objects
+
 - (ATMetaObject *)objectAtURI:(ATObjectURI)uri;
 - (ATMetaObject *)ensureObjectAtURI:(ATObjectURI)uri;
 - (ATMetaObject *)createObjectAtURI:(ATObjectURI)uri;
