@@ -1,0 +1,19 @@
+PODS:
+  - ASIHTTPRequest (1.8.1):
+    - Reachability
+  - Atmos2 (0.0.1):
+    - ASIHTTPRequest (= 1.8.1)
+    - CocoaAsyncSocket (= 0.0.1)
+    - RegexKitLite (= 4.0)
+    - RestKit (= 0.9.3)
+    - SBJson (= 3.0.4)
+  - CocoaAsyncSocket (0.0.1)
+  - Reachability (3.0.0)
+  - RegexKitLite (4.0)
+  - SBJson (3.0.4)
+
+DOWNLOAD_ONLY:
+  - RestKit (0.9.3)
+
+DEPENDENCIES:
+  - Atmos2 (from `Atmos2.podspec')
