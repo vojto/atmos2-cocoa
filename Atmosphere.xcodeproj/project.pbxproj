@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3876EDFB5B8A422CA9266BCF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E24424ED9D2441E9929F0C9F /* libPods.a */; };
 		9921BA4814AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 9921BA4614AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9921BA4914AC8629000A6D5F /* NSManagedObject+ATActiveRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 9921BA4714AC8629000A6D5F /* NSManagedObject+ATActiveRecord.m */; };
 		9921BA5814AC9B19000A6D5F /* ATAttributeMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9921BA5614AC9B19000A6D5F /* ATAttributeMapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -84,6 +85,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1688AB4DEFDF4E1A98C893CD /* Pods.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		99112958152B7D5500634371 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		9921BA4614AC8629000A6D5F /* NSManagedObject+ATActiveRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ATActiveRecord.h"; sourceTree = "<group>"; };
 		9921BA4714AC8629000A6D5F /* NSManagedObject+ATActiveRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ATActiveRecord.m"; sourceTree = "<group>"; };
 		9921BA5614AC9B19000A6D5F /* ATAttributeMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATAttributeMapper.h; sourceTree = "<group>"; };
@@ -152,6 +155,7 @@
 		99E8987C14A9CA2F001A1D60 /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = SDKs/MacOSX10.6.sdk/usr/lib/libz.1.2.3.dylib; sourceTree = DEVELOPER_DIR; };
 		99E8987E14A9CA72001A1D60 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = SDKs/MacOSX10.6.sdk/usr/lib/libicucore.dylib; sourceTree = DEVELOPER_DIR; };
 		99E8988014A9CA93001A1D60 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		E24424ED9D2441E9929F0C9F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +167,7 @@
 				99E8987F14A9CA73001A1D60 /* libicucore.dylib in Frameworks */,
 				99E8987D14A9CA2F001A1D60 /* libz.1.2.3.dylib in Frameworks */,
 				999834301455AB5100F1C436 /* Cocoa.framework in Frameworks */,
+				3876EDFB5B8A422CA9266BCF /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +235,7 @@
 		999834201455AB5100F1C436 = {
 			isa = PBXGroup;
 			children = (
+				99112958152B7D5500634371 /* Security.framework */,
 				99E8988014A9CA93001A1D60 /* SystemConfiguration.framework */,
 				99E8987E14A9CA72001A1D60 /* libicucore.dylib */,
 				99E8987C14A9CA2F001A1D60 /* libz.1.2.3.dylib */,
@@ -238,6 +244,7 @@
 				999834351455AB5100F1C436 /* Atmosphere */,
 				9998342E1455AB5100F1C436 /* Frameworks */,
 				9998342D1455AB5100F1C436 /* Products */,
+				1688AB4DEFDF4E1A98C893CD /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -254,6 +261,7 @@
 			children = (
 				9998342F1455AB5100F1C436 /* Cocoa.framework */,
 				999834311455AB5100F1C436 /* Other Frameworks */,
+				E24424ED9D2441E9929F0C9F /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -399,6 +407,7 @@
 				999834291455AB5100F1C436 /* Headers */,
 				9998342A1455AB5100F1C436 /* Resources */,
 				991DBC981477B9DE00E084C5 /* CopyFiles */,
+				E5899AD838234850BF5AFBDB /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -447,6 +456,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E5899AD838234850BF5AFBDB /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		999834271455AB5100F1C436 /* Sources */ = {
@@ -549,42 +575,42 @@
 		};
 		999834421455AB5100F1C436 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1688AB4DEFDF4E1A98C893CD /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				DSTROOT = /tmp/xcodeproj.dst;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Atmosphere/Atmosphere-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Atmosphere/Atmosphere-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.6;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
 		};
 		999834431455AB5100F1C436 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1688AB4DEFDF4E1A98C893CD /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				DSTROOT = /tmp/xcodeproj.dst;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Atmosphere/Atmosphere-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Atmosphere/Atmosphere-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.6;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;

@@ -16,7 +16,7 @@
  */
 
 #import "ATMessage.h"
-#import "NSObject+JSON.h"
+#import <SBJson/NSObject+SBJSON.h>
 
 @implementation ATMessage
 

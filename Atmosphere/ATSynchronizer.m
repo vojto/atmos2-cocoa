@@ -16,11 +16,11 @@
  */
 
 #import <CoreData/CoreData.h>
+#import <SBJson/NSObject+SBJson.h>
 
 #import "ATSynchronizer.h"
 #import "NSManagedObject+ATAdditions.h"
 #import "ASIHTTPRequest.h"
-#import "NSObject+JSON.h"
 #import "ATMetaContext.h"
 #import "ATMetaObject.h"
 #import "ATAppContext.h"
