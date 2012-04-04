@@ -38,7 +38,9 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 @synthesize authKey=_authKey;
 @synthesize delegate;
 
+/*****************************************************************************/
 #pragma mark - Lifecycle
+/*****************************************************************************/
 
 - (id)initWithAppContext:(NSManagedObjectContext *)context {
     if ((self = [self init])) {
@@ -62,7 +64,9 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [self.messageClient disconnect];
 }
 
+/*****************************************************************************/
 #pragma mark Memory Management
+/*****************************************************************************/
 
 - (void) dealloc {
     [_appContext release];
@@ -73,13 +77,26 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [super dealloc];
 }
 
+/*****************************************************************************/
 #pragma mark - Authentication
+/*****************************************************************************/
 
 - (NSString *)authKeyOrNull {
     return (_authKey ? (id)_authKey : [NSNull null]);
 }
 
-#pragma mak - Resource Methods
+
+/*****************************************************************************/
+#pragma mark - Resource Methods
+/*****************************************************************************/
+
+- (void)setBaseURL:(NSString *)baseURL {
+    [self.resourceClient setBaseURL:baseURL];
+}
+
+- (void)loadRoutesFromResource:(NSString *)resourceName {
+    [self.resourceClient loadRoutesFromResource:resourceName];
+}
 
 - (void)fetchEntity:(NSString *)entityName {
     [self.resourceClient fetchEntity:entityName];
