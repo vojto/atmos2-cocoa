@@ -15,6 +15,8 @@
  02111-1307, USA.
  */
 
+#import "RNUtil.h"
+
 #import "ATConnectionGuard.h"
 #import "ATSynchronizer.h"
 

@@ -7,6 +7,8 @@
 //
 
 #import <RestKit/RestKit.h>
+#import "RNUtil.h"
+
 #import "ATSynchronizer.h"
 #import "ATResourceClient.h"
 #import "ATEntityFetchRequest.h"

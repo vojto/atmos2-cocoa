@@ -6,6 +6,8 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "RNUtil.h"
+
 #import "ATEntityFetchRequest.h"
 #import "ATResourceClient.h"
 

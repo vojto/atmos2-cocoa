@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import "RNUtil.h"
+
 #import "ATObjectURI.h"
 
 ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier) {

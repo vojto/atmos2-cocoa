@@ -6,6 +6,8 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "RNUtil.h"
+
 #import "ATMessageClient.h"
 #import "ATSynchronizer.h"
 

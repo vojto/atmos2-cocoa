@@ -7,6 +7,9 @@
 //
 
 #import <CoreData/CoreData.h>
+#import "ASLogger.h"
+#import "RNUtil.h"
+
 #import "ATSynchronizer.h"
 #import "ATAppContext.h"
 #import "NSManagedObject+ATActiveRecord.h"

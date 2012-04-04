@@ -9,6 +9,8 @@
 //
 
 #import <objc/runtime.h>
+#import "RNUtil.h"
+
 #import "NSManagedObject+ATActiveRecord.h"
 #import "ATAppContext.h"
 

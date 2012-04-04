@@ -6,6 +6,8 @@
 //  Copyright 2010 OpenResearch Software Development OG. All rights reserved.
 //
 
+#import "RNUtil.h"
+
 #import "WebSocket.h"
 #import "AsyncSocket.h"
 
