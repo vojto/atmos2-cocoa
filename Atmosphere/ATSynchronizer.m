@@ -25,6 +25,7 @@
 #import "ATMetaObject.h"
 #import "ATAppContext.h"
 #import "ATObjectURI.h"
+#import "RNUtil.h"
 
 // NSString * const ATMessageEntityKey = @"entity";
 

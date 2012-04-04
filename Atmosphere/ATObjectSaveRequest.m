@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import "RNUtil.h"
 #import "ATObjectSaveRequest.h"
 #import "ATResourceClient.h"
 #import "ATAppContext.h"

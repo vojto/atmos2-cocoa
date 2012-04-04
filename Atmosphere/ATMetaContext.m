@@ -8,6 +8,8 @@
 
 #import <CoreData/CoreData.h>
 #import <CoreData/NSFetchRequest.h>
+
+#import "RNUtil.h"
 #import "ATMetaContext.h"
 #import "NSManagedObject+ATAdditions.h"
 #import "ATMetaObject.h"
