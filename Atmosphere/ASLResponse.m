@@ -36,9 +36,9 @@
  *
  */
 
-//#import "ASLResponse.h"
-// #import "ASLMessage.h"
-//#import "ASLQuery.h"
+#import "ASLResponse.h"
+#import "ASLMessage.h"
+#import "ASLQuery.h"
 
 // keep in sync with ASLMessage.m
 @interface ASLMessage (ResponseHelper)

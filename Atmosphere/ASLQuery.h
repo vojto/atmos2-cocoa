@@ -38,7 +38,7 @@
 
 #import <Foundation/Foundation.h>
 #import <asl.h>
-// #import "ASLMessage.h"
+#import "ASLMessage.h"
 
 enum
 {

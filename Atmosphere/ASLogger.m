@@ -36,7 +36,7 @@
  *
  */
 
-// #import "ASLogger.h"
+#import "ASLogger.h"
 
 static ASLogger * __defaultLogger = nil;
 

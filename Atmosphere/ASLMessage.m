@@ -36,7 +36,7 @@
  *
  */
 
-//#import "ASLMessage.h"
+#import "ASLMessage.h"
 #import "NSObject+Properties.h"
 #import "NSData+Base64.h"
 
