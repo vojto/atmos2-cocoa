@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
   # over the selected files.
   # (See http://rake.rubyforge.org/classes/Rake/FileList.html.)
   #
-  s.source_files = 'Atmosphere', 'Atmosphere/**/*.{h,m}'
+  s.source_files = 'Atmosphere', 'Atmosphere/**/*.{h,m}', 'SocketIO/**/*{h,m}'
 
   # A list of resources included with the Pod. These are copied into the
   # target bundle with a build phase script.

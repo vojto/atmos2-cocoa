@@ -26,9 +26,6 @@
 		99348BA114F25D5200592123 /* Atmosphere.h in Headers */ = {isa = PBXBuildFile; fileRef = 99348BA014F25D5200592123 /* Atmosphere.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		997213CC14AC79490044B92B /* ATEntityFetchRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 997213CA14AC79490044B92B /* ATEntityFetchRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		997213CD14AC79490044B92B /* ATEntityFetchRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 997213CB14AC79490044B92B /* ATEntityFetchRequest.m */; };
-		99759EBA152B59310001DB73 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 99759EB5152B59310001DB73 /* .gitignore */; };
-		99759EBB152B59310001DB73 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 99759EB6152B59310001DB73 /* LICENSE */; };
-		99759EBC152B59310001DB73 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 99759EB7152B59310001DB73 /* README.md */; };
 		99759EBD152B59310001DB73 /* SocketIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 99759EB8152B59310001DB73 /* SocketIO.h */; };
 		99759EBE152B59310001DB73 /* SocketIO.m in Sources */ = {isa = PBXBuildFile; fileRef = 99759EB9152B59310001DB73 /* SocketIO.m */; };
 		9986E5BC145AE83800619A25 /* ATConnectionGuard.h in Headers */ = {isa = PBXBuildFile; fileRef = 9986E5BA145AE83800619A25 /* ATConnectionGuard.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -105,9 +102,6 @@
 		99348BA014F25D5200592123 /* Atmosphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Atmosphere.h; sourceTree = "<group>"; };
 		997213CA14AC79490044B92B /* ATEntityFetchRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATEntityFetchRequest.h; sourceTree = "<group>"; };
 		997213CB14AC79490044B92B /* ATEntityFetchRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATEntityFetchRequest.m; sourceTree = "<group>"; };
-		99759EB5152B59310001DB73 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		99759EB6152B59310001DB73 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		99759EB7152B59310001DB73 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		99759EB8152B59310001DB73 /* SocketIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketIO.h; sourceTree = "<group>"; };
 		99759EB9152B59310001DB73 /* SocketIO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIO.m; sourceTree = "<group>"; };
 		9986E5BA145AE83800619A25 /* ATConnectionGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATConnectionGuard.h; sourceTree = "<group>"; };
@@ -223,9 +217,6 @@
 		99759EB4152B59310001DB73 /* SocketIO */ = {
 			isa = PBXGroup;
 			children = (
-				99759EB5152B59310001DB73 /* .gitignore */,
-				99759EB6152B59310001DB73 /* LICENSE */,
-				99759EB7152B59310001DB73 /* README.md */,
 				99759EB8152B59310001DB73 /* SocketIO.h */,
 				99759EB9152B59310001DB73 /* SocketIO.m */,
 			);
@@ -449,9 +440,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9998343A1455AB5100F1C436 /* InfoPlist.strings in Resources */,
-				99759EBA152B59310001DB73 /* .gitignore in Resources */,
-				99759EBB152B59310001DB73 /* LICENSE in Resources */,
-				99759EBC152B59310001DB73 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
