@@ -119,6 +119,7 @@ static ATAppContext* _sharedAppContext = nil;
     for (NSString *key in [data allKeys]) {
         id value = [data objectForKey:key];
         if ([key hasPrefix:@"_"]) continue;
+        if ([key isEqualToString:@"identifier"]) continue;
         if (value == [NSNull null]) continue;
         NSString *localAttributeName = [self.sync.mappingHelper localAttributeNameFor:key entity:appObject.entity];
         if (![[appObject.entity propertiesByName] objectForKey:localAttributeName]) {

@@ -70,6 +70,7 @@ NSString * const ATObjectEntityName = @"Object";
 #pragma mark - Saving
 
 - (BOOL)save {
+    // TODO: Postpone IO!
     NSLog(@"Archiving: %@", [self.class path]);
     [NSKeyedArchiver archiveRootObject:self toFile:[self.class path]];
     return YES;

@@ -77,6 +77,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 #pragma mark - Resource methods
 - (void)loadRoutesFromResource:(NSString *)resourceName;
 - (void)setBaseURL:(NSString *)baseURL;
+- (void)setIDField:(NSString *)IDField;
 - (void)fetchEntity:(NSString *)entityName;
 
 #pragma mark - Syncing

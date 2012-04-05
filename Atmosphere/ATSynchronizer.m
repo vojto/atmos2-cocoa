@@ -98,6 +98,10 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [self.resourceClient loadRoutesFromResource:resourceName];
 }
 
+- (void)setIDField:(NSString *)IDField {
+    [self.resourceClient setIDField:IDField];
+}
+
 - (void)fetchEntity:(NSString *)entityName {
     [self.resourceClient fetchEntity:entityName];
 }
@@ -107,6 +111,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 /*****************************************************************************/
 
 - (void)syncObject:(NSManagedObject *)appObject {
+    NSLog(@"Saving object, identifier: %@", [appObject valueForKey:@"identifier"]);
     if (![appObject valueForKey:@"identifier"]) {
         [appObject setValue:[RNUtil uuidString] forKey:@"identifier"];
     }
@@ -149,6 +154,10 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         ASLogInfo(@"Found existing object %@", uri.identifier);
     }
     [self.appContext updateAppObject:object withDictionary:data];
+    
+    // 03 Mark meta contxt
+    [self.metaContext markURISynced:uri];
+    [self.metaContext save];
 }
 
 - (void)changeURIFrom:(ATObjectURI)original to:(ATObjectURI)changed {

@@ -83,10 +83,6 @@
 
     // 02 Update the data
     [sync updateObjectAtURI:changedURI withDictionary:data];
-
-    // 03 Mark meta contxt
-    [metaContext markURISynced:changedURI];
-    [metaContext save];
 }
 
 - (void)request:(RKRequest *)request didFailLoadWithError:(NSError *)error {

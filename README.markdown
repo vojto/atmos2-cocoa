@@ -16,14 +16,26 @@ Add the following line to your [Podfile](http://cocoapods.org/).
 
 Run `pod install`.
 
+## Prepare your Core Data schema
+
+Add field named `identifier` of type `String` to your `Project` entity. This field will be used to store remote IDs of your objects.
+
 ## Set up synchronizer
     
     self.sync = [[ATSynchronizer alloc] initWithAppContext:self.managedObjectContext];
     [sync setBaseURL:@"http://localhost:6001"];
 
+Additionaly, set up the remote identifier field: It's the field that contains remote ID of an object. For example a response from server like this:
+
+    [{"_id":"4f7d5bfe228ff60000000001","title":"Test 1"}]
+
+Would require you to set `IDField` to `_id`, like this:
+
+    [self.sync setIDField:@"_id"];
+
 ## Set up routing
 
-Create a new property list file called `Routes.plist`. Insert equivalent of the following JSON:
+Create a new property list file called `Routes.plist`. Insert the equivalent of the following JSON:
 
     {Project: {index: "get /index"}}
 
