@@ -44,10 +44,10 @@
 
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
     if ([response statusCode] != 200) {
-        ASLogError(@"[ATEntityFetchRequest] Response is not 200", [response bodyAsString]);
+        ASLogError(@"[ATEntityFetchRequest] Unexpected response code %d (expecting 200)", [response statusCode]);
         return;
     }
-    ASLogInfo(@"[ATEntityFetchRequest] Done fetching");
+    ASLogInfo(@"[ATEntityFetchRequest] Done fetching: %@", [response bodyAsString]);
     id items = [response parsedBody:nil];
     RKAssert([items isKindOfClass:[NSArray class]], @"Expected result to by an array");
     for (NSDictionary *item in (NSArray *)items) {
