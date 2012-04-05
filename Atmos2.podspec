@@ -81,6 +81,7 @@ Pod::Spec.new do |s|
   s.dependency 'RegexKitLite', '4.0'
   s.dependency 'RestKit/Network', '0.9.3'
   s.dependency 'RestKit/ObjectMapping', '0.9.3'
+  s.dependency 'RestKit/ObjectMapping/JSONKit', '0.9.3'
   s.dependency 'SBJson', '3.0.4'
   s.dependency 'CocoaAsyncSocket', '0.0.1'
   
