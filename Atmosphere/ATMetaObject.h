@@ -14,7 +14,7 @@
     
 }
 
-@property ATObjectURI *uri;
+@property (retain, nonatomic) ATObjectURI *uri;
 @property BOOL isChanged;
 @property BOOL isLocalOnly;
 

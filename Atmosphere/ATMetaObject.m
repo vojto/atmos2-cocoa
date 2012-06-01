@@ -34,7 +34,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject:[self.uri stringValue]];
+    [encoder encodeObject:[self.uri stringValue] forKey:@"uri"];
     [encoder encodeObject:[NSNumber numberWithBool:self.isChanged] forKey:@"isChanged"];
     [encoder encodeObject:[NSNumber numberWithBool:self.isLocalOnly] forKey:@"isLocalOnly"];
 }

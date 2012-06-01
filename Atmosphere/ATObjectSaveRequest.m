@@ -77,7 +77,7 @@
     if (!ID) {
         ASLogError(@"[ATObjectSaveRequest] No ID find in the response! (IDField = %@, response = %@)", IDField, data);
     }
-    ATObjectURI *changedURI = uri;
+    ATObjectURI *changedURI = [uri copy];
     changedURI.identifier = ID;
     [sync changeURIFrom:uri to:changedURI];
 

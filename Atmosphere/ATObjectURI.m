@@ -33,7 +33,8 @@
 
 - (id)initFromString:(NSString *)string {
     NSArray *comps = [string componentsSeparatedByString:@"."];
-    RKAssert(([comps count] == 2), @"Expected URI to have to components separated by '.'");
+    RKSafeAssert(([comps count] == 2), @"Expected URI to have to components separated by '.'");
+
     
     NSString *entity = [comps objectAtIndex:0];
     NSString *identifier = [comps objectAtIndex:1];
@@ -43,6 +44,10 @@
 
 - (NSString *)stringValue {
     return [NSString stringWithFormat:@"%@.%@", self.entity, self.identifier];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    return [[ATObjectURI alloc] initWithEntity:self.entity identifier:self.identifier];
 }
 
 @end

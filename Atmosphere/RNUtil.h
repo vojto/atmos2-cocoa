@@ -23,6 +23,8 @@
 
 #define RKAssert(condition, ...) do { if (!(condition)) { RKAssertLog(__VA_ARGS__); }} while(0)
 
+#define RKSafeAssert(condition, ...) if (!(condition)) { ASLogError(__VA_ARGS__); }
+
 #define RKPostNotification(name) [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:name object:nil]]
 #define RKObserveNotification(notifName,sel) [[NSNotificationCenter defaultCenter] addObserver:self selector:sel name:notifName object:nil]
 

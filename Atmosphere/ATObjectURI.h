@@ -7,7 +7,7 @@
 //
 
 
-@interface ATObjectURI : NSObject
+@interface ATObjectURI : NSObject <NSCopying>
 
 @property (retain, nonatomic) NSString *entity;
 @property (retain, nonatomic) NSString *identifier;
