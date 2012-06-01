@@ -57,7 +57,7 @@
 }
 
 - (void)request:(RKRequest *)request didFailLoadWithError:(NSError *)error {
-    NSLog(@"Request failed: %@", error);
+    ASLogError(@"Request failed: %@", error);
 }
 
 #pragma mark - Helper methods

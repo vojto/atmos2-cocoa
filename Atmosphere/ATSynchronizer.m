@@ -44,10 +44,11 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 - (id)initWithAppContext:(NSManagedObjectContext *)context {
     if ((self = [self init])) {
+        [RNUtil initLogging];
+        
         _isSyncScheduled = NO;
         
         self.metaContext = [ATMetaContext restore];
-        NSLog(@"Meta context: %@", self.metaContext);
         [self.metaContext save];
         self.appContext = [[[ATAppContext alloc] initWithSynchronizer:self appContext:context] autorelease];
         self.mappingHelper = [[[ATMappingHelper alloc] init] autorelease];

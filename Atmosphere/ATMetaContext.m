@@ -71,7 +71,7 @@ NSString * const ATObjectEntityName = @"Object";
 
 - (BOOL)save {
     // TODO: Postpone IO!
-    NSLog(@"Archiving: %@", [self.class path]);
+    ASLogInfo(@"Archiving: %@", [self.class path]);
     [NSKeyedArchiver archiveRootObject:self toFile:[self.class path]];
     return YES;
 }
