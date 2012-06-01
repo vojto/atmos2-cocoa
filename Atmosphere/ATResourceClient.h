@@ -18,7 +18,7 @@ extern NSString * const ATActionDestroy;
 
 typedef struct _ATRoute {
     RKRequestMethod method;
-    NSString *path;
+    __unsafe_unretained NSString *path; // TODO: This is wrong and it should be refactored
 } ATRoute;
 
 ATRoute ATRouteMake(RKRequestMethod method, NSString *path);
