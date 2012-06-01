@@ -12,7 +12,6 @@
 
 #import "ATSynchronizer.h"
 #import "ATAppContext.h"
-#import "NSManagedObject+ATActiveRecord.h"
 #import "NSManagedObject+ATAdditions.h"
 
 static ATAppContext* _sharedAppContext = nil;

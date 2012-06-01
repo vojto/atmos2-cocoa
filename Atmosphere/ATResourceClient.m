@@ -44,7 +44,7 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
         self.sync = sync;
         self.client = [[[RKClient alloc] init] autorelease];
         NSLog(@"Created client: %@", self.client);
-        self.IDField = @"id"; // Default ID field
+        self.IDField = @"_id"; // Default ID field
     }
     
     return self;
