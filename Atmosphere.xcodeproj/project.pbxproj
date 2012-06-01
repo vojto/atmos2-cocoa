@@ -68,6 +68,8 @@
 		99E8987F14A9CA73001A1D60 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 99E8987E14A9CA72001A1D60 /* libicucore.dylib */; };
 		99E8988114A9CA93001A1D60 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99E8988014A9CA93001A1D60 /* SystemConfiguration.framework */; };
 		99EDD24315795B8B00A748CB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99EDD24215795B8B00A748CB /* CoreData.framework */; };
+		99EDD25015795E6900A748CB /* NSString+ATAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 99EDD24E15795E6900A748CB /* NSString+ATAdditions.h */; };
+		99EDD25115795E6900A748CB /* NSString+ATAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 99EDD24F15795E6900A748CB /* NSString+ATAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -151,6 +153,8 @@
 		99E8987E14A9CA72001A1D60 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = SDKs/MacOSX10.6.sdk/usr/lib/libicucore.dylib; sourceTree = DEVELOPER_DIR; };
 		99E8988014A9CA93001A1D60 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		99EDD24215795B8B00A748CB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
+		99EDD24E15795E6900A748CB /* NSString+ATAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ATAdditions.h"; sourceTree = "<group>"; };
+		99EDD24F15795E6900A748CB /* NSString+ATAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ATAdditions.m"; sourceTree = "<group>"; };
 		E24424ED9D2441E9929F0C9F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -284,6 +288,8 @@
 				9926290414AB9E4300F0DD79 /* Message Client */,
 				9926290E14ABA06700F0DD79 /* Resource Client */,
 				9926290514AB9E5600F0DD79 /* Data Store */,
+				99EDD24E15795E6900A748CB /* NSString+ATAdditions.h */,
+				99EDD24F15795E6900A748CB /* NSString+ATAdditions.m */,
 			);
 			path = Atmosphere;
 			sourceTree = "<group>";
@@ -387,6 +393,7 @@
 				999C96A814F6062E00595FF1 /* ATMetaObject.h in Headers */,
 				999C96AC14F60ADD00595FF1 /* ATObjectSaveRequest.h in Headers */,
 				99759EBD152B59310001DB73 /* SocketIO.h in Headers */,
+				99EDD25015795E6900A748CB /* NSString+ATAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,6 +504,7 @@
 				999C96A914F6062E00595FF1 /* ATMetaObject.m in Sources */,
 				999C96AD14F60ADD00595FF1 /* ATObjectSaveRequest.m in Sources */,
 				99759EBE152B59310001DB73 /* SocketIO.m in Sources */,
+				99EDD25115795E6900A748CB /* NSString+ATAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
