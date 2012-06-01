@@ -85,4 +85,7 @@ Pod::Spec.new do |s|
   s.dependency 'SBJson', '3.0.4'
   s.dependency 'CocoaAsyncSocket', '0.0.1'
   
+  def s.copy_header_mapping(from)
+    from
+  end
 end
