@@ -67,6 +67,7 @@
 		99E8987D14A9CA2F001A1D60 /* libz.1.2.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 99E8987C14A9CA2F001A1D60 /* libz.1.2.3.dylib */; };
 		99E8987F14A9CA73001A1D60 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 99E8987E14A9CA72001A1D60 /* libicucore.dylib */; };
 		99E8988114A9CA93001A1D60 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99E8988014A9CA93001A1D60 /* SystemConfiguration.framework */; };
+		99EDD24315795B8B00A748CB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99EDD24215795B8B00A748CB /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -149,6 +150,7 @@
 		99E8987C14A9CA2F001A1D60 /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = SDKs/MacOSX10.6.sdk/usr/lib/libz.1.2.3.dylib; sourceTree = DEVELOPER_DIR; };
 		99E8987E14A9CA72001A1D60 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = SDKs/MacOSX10.6.sdk/usr/lib/libicucore.dylib; sourceTree = DEVELOPER_DIR; };
 		99E8988014A9CA93001A1D60 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		99EDD24215795B8B00A748CB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		E24424ED9D2441E9929F0C9F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -157,6 +159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99EDD24315795B8B00A748CB /* CoreData.framework in Frameworks */,
 				99E8988114A9CA93001A1D60 /* SystemConfiguration.framework in Frameworks */,
 				99E8987F14A9CA73001A1D60 /* libicucore.dylib in Frameworks */,
 				99E8987D14A9CA2F001A1D60 /* libz.1.2.3.dylib in Frameworks */,
@@ -226,6 +229,7 @@
 		999834201455AB5100F1C436 = {
 			isa = PBXGroup;
 			children = (
+				99EDD24215795B8B00A748CB /* CoreData.framework */,
 				99112958152B7D5500634371 /* Security.framework */,
 				99E8988014A9CA93001A1D60 /* SystemConfiguration.framework */,
 				99E8987E14A9CA72001A1D60 /* libicucore.dylib */,
