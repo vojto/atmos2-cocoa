@@ -50,5 +50,6 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path);
 - (void)loadRoutesFromResource:(NSString *)resourceName;
 - (ATRoute)routeForEntity:(NSString *)entity action:(NSString *)action;
 - (ATRoute)routeForEntity:(NSString *)entity action:(NSString *)action params:(NSDictionary *)options;
+- (NSString *)_defaultRouteStringForEntity:(NSString *)entity action:(NSString *)action;
 
 @end

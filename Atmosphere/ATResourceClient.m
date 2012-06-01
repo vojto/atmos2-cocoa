@@ -14,6 +14,7 @@
 #import "ATEntityFetchRequest.h"
 #import "ATObjectSaveRequest.h"
 #import "RKClient+ATAdditions.h"
+#import "NSString+ATAdditions.h"
 
 NSString * const ATActionIndex = @"index";
 NSString * const ATActionShow = @"show";
@@ -52,6 +53,7 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
 
 - (void)dealloc {
     self.client = nil;
+    [super dealloc];
 }
 
 - (void)setBaseURL:(NSString *)url {
@@ -110,9 +112,11 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
 - (ATRoute)routeForEntity:(NSString *)entity action:(NSString *)action params:(NSDictionary *)params {
     NSDictionary *routes = [self.routes objectForKey:entity];
     NSString *routeString = [routes objectForKey:action];
-    RKAssert(routeString, @"No route found for action %@ of entity %@", action, entity);
+    if (!routeString) {
+        routeString = [self _defaultRouteStringForEntity:entity action:action];
+    }
     NSArray *comps = [routeString componentsSeparatedByString:@" "];
-    RKAssert(([comps count]==2), @"Unknown route format '%@'. Please use 'METHOD /path'", routeString);
+    RKAssert(([comps count] == 2), @"Unknown route format '%@'. Please use 'METHOD /path'", routeString);
     NSString *method = [[comps objectAtIndex:0] lowercaseString];
     NSString *path = [comps objectAtIndex:1];
     
@@ -132,6 +136,23 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
     else RKAssert(false, @"Unknown method %@", method);
     
     return route;
+}
+
+- (NSString *)_defaultRouteStringForEntity:(NSString *)entity action:(NSString *)action {
+    entity = [[entity lowercaseString] pluralizedString];
+    
+    if ([action isEqualToString:@"index"]) {
+        return [NSString stringWithFormat:@"get /%@", entity];
+    } else if ([action isEqualToString:@"create"]) {
+        return [NSString stringWithFormat:@"post /%@", entity];
+    } else if ([action isEqualToString:@"update"]) {
+        return [NSString stringWithFormat:@"put /%@/:id", entity];
+    } else if ([action isEqualToString:@"delete"]) {
+        return [NSString stringWithFormat:@"delete /%@/:id", entity];
+    } else {
+        RKAssert(false, @"Can't create default route for action %@", action);
+        return nil;
+    }
 }
 
 @end
