@@ -56,7 +56,7 @@
     ATMetaContext *metaContext = sync.metaContext;
     ATAppContext *appContext = sync.appContext;
     
-    ATObjectURI uri = [appContext URIOfAppObject:self.object];
+    ATObjectURI *uri = [appContext URIOfAppObject:self.object];
     NSError *error = nil;
     
     if ([response statusCode] != 200) {
@@ -77,7 +77,7 @@
     if (!ID) {
         ASLogError(@"[ATObjectSaveRequest] No ID find in the response! (IDField = %@, response = %@)", IDField, data);
     }
-    ATObjectURI changedURI = uri;
+    ATObjectURI *changedURI = uri;
     changedURI.identifier = ID;
     [sync changeURIFrom:uri to:changedURI];
 

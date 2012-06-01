@@ -6,12 +6,16 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-typedef struct _ATObjectURI {
-    NSString *entity;
-    NSString *identifier;
-} ATObjectURI;
 
-ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier);
+@interface ATObjectURI : NSObject
 
-NSString* ATObjectURIToString(ATObjectURI uri);
-ATObjectURI ATObjectURIFromString(NSString *string);
+@property (retain, nonatomic) NSString *entity;
+@property (retain, nonatomic) NSString *identifier;
+
++ (id)URIWithEntity:(NSString *)entity identifier:(NSString *)identifier;
+- (id)initWithEntity:(NSString *)entity identifier:(NSString *)identifier;
++ (id)URIFromString:(NSString *)string;
+- (id)initFromString:(NSString *)string;
+- (NSString *)stringValue;
+
+@end

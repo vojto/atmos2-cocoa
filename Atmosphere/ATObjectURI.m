@@ -10,21 +10,39 @@
 
 #import "ATObjectURI.h"
 
-ATObjectURI ATObjectURIMake(NSString *entity, NSString *identifier) {
-    ATObjectURI uri;
-    uri.entity = entity;
-    uri.identifier = identifier;
-    return uri;
+@implementation ATObjectURI
+
+@synthesize entity = _entity, identifier = _identifier;
+
++ (id)URIWithEntity:(NSString *)entity identifier:(NSString *)identifier {
+    return [[[ATObjectURI alloc] initWithEntity:entity identifier:identifier] autorelease];
 }
 
-NSString* ATObjectURIToString(ATObjectURI uri) {
-    RKAssert(uri.entity, @"URI is missing entity, can't convert to string!");
-    RKAssert(uri.identifier, @"URI is missing identifier, can't convert to string!");
-    return [NSString stringWithFormat:@"%@.%@", uri.entity, uri.identifier];
+- (id)initWithEntity:(NSString *)entity identifier:(NSString *)identifier {
+    if ((self = [super init])) {
+        self.entity = entity;
+        self.identifier = identifier;
+    }
+    
+    return self;
 }
 
-ATObjectURI ATObjectURIFromString(NSString *string) {
++ (id)URIFromString:(NSString *)string {
+    return [[[ATObjectURI alloc] initFromString:string] autorelease];
+}
+
+- (id)initFromString:(NSString *)string {
     NSArray *comps = [string componentsSeparatedByString:@"."];
     RKAssert(([comps count] == 2), @"Expected URI to have to components separated by '.'");
-    return ATObjectURIMake([comps objectAtIndex:0], [comps objectAtIndex:1]);
+    
+    NSString *entity = [comps objectAtIndex:0];
+    NSString *identifier = [comps objectAtIndex:1];
+    
+    return [self initWithEntity:entity identifier:identifier];
 }
+
+- (NSString *)stringValue {
+    return [NSString stringWithFormat:@"%@.%@", self.entity, self.identifier];
+}
+
+@end

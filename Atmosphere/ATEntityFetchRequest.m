@@ -51,7 +51,7 @@
     id items = [response parsedBody:nil];
     RKAssert([items isKindOfClass:[NSArray class]], @"Expected result to by an array");
     for (NSDictionary *item in (NSArray *)items) {
-        ATObjectURI uri = [self objectURIFromItem:item];
+        ATObjectURI *uri = [self objectURIFromItem:item];
         [self.resourceClient didFetchItem:item withURI:uri];
     }
 }
@@ -62,10 +62,10 @@
 
 #pragma mark - Helper methods
 
-- (ATObjectURI)objectURIFromItem:(NSDictionary *)item {
+- (ATObjectURI *)objectURIFromItem:(NSDictionary *)item {
     // TODO: _id should be configurable (where?)
     NSString *ident = [item objectForKey:@"_id"];
-    return ATObjectURIMake(self.entity, ident);
+    return [ATObjectURI URIWithEntity:self.entity identifier:ident];
 }
 
 @end

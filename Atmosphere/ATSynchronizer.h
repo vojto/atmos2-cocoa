@@ -86,8 +86,8 @@ extern NSString * const ATDidUpdateObjectNotification;
 - (void)sync;
 
 #pragma mark - Objects
-- (void)updateObjectAtURI:(ATObjectURI)uri withDictionary:(NSDictionary *)data;
-- (void)changeURIFrom:(ATObjectURI)original to:(ATObjectURI)changed;
+- (void)updateObjectAtURI:(ATObjectURI *)uri withDictionary:(NSDictionary *)data;
+- (void)changeURIFrom:(ATObjectURI *)original to:(ATObjectURI *)changed;
 
 #pragma mark - Auto sync
 - (void)startAutosync;

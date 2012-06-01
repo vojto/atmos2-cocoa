@@ -14,10 +14,10 @@
     
 }
 
-@property ATObjectURI uri;
+@property ATObjectURI *uri;
 @property BOOL isChanged;
 @property BOOL isLocalOnly;
 
-- (id)initWithURI:(ATObjectURI)uri;
+- (id)initWithURI:(ATObjectURI *)uri;
 
 @end

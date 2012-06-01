@@ -72,14 +72,14 @@ static ATAppContext* _sharedAppContext = nil;
 
 #pragma mark - Managing App Objects
 
-- (NSManagedObject *)objectAtURI:(ATObjectURI)uri {
+- (NSManagedObject *)objectAtURI:(ATObjectURI *)uri {
     Class managedClass = [self _managedClassForURI:uri];
     NSManagedObject *managedObject = [managedClass findFirstByAttribute:@"identifier" withValue:uri.identifier];
 
     return managedObject;
 }
 
-- (NSManagedObject *)createAppObjectAtURI:(ATObjectURI)uri {
+- (NSManagedObject *)createAppObjectAtURI:(ATObjectURI *)uri {
     NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:uri.entity inManagedObjectContext:self.managedContext];
     [object setValue:uri.identifier forKey:@"identifier"];
     // TODO: Apply attributes (we might create a helper object for this, something like
@@ -88,7 +88,7 @@ static ATAppContext* _sharedAppContext = nil;
     return object;
 }
 
-- (Class)_managedClassForURI:(ATObjectURI)uri {
+- (Class)_managedClassForURI:(ATObjectURI *)uri {
     NSEntityDescription *entity = [NSEntityDescription entityForName:uri.entity inManagedObjectContext:self.managedContext];
     NSString *className = [entity managedObjectClassName];
     RKAssert(className, @"Entity %@ has no class", uri.entity);
@@ -100,11 +100,11 @@ static ATAppContext* _sharedAppContext = nil;
     return managedClass;
 }
 
-- (ATObjectURI)URIOfAppObject:(NSManagedObject *)object {
-    return ATObjectURIMake(object.entity.name, [object valueForKey:@"identifier"]);
+- (ATObjectURI *)URIOfAppObject:(NSManagedObject *)object {
+    return [ATObjectURI URIWithEntity:object.entity.name identifier:[object valueForKey:@"identifier"]];
 }
 
-- (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI)uri {
+- (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI *)uri {
     NSManagedObject *object = [self objectAtURI:uri];
     [object setValue:newID forKey:@"identifier"];
     // TODO: Consider saving here
@@ -159,7 +159,7 @@ static ATAppContext* _sharedAppContext = nil;
         }
         // Find the target
         NSString *targetEntityName = relation.destinationEntity.name;
-        ATObjectURI targetURI = ATObjectURIMake(targetEntityName , targetId);
+        ATObjectURI *targetURI = [ATObjectURI URIWithEntity:targetEntityName identifier:targetId];
         NSManagedObject *targetObject = [self objectAtURI:targetURI];
         if (!targetObject) {
             ASLogWarning(@"Target object %@/%@ referenced in relation %@ of %@ not found", targetURI.entity, targetURI.identifier, key, entity.name);

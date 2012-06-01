@@ -73,7 +73,7 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
     // TODO: Memory management
 }
 
-- (void)didFetchItem:(NSDictionary *)item withURI:(ATObjectURI)uri {
+- (void)didFetchItem:(NSDictionary *)item withURI:(ATObjectURI *)uri {
     [self.sync updateObjectAtURI:uri withDictionary:item];
 }
 

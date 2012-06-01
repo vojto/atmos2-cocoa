@@ -39,7 +39,7 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path);
 
 #pragma mark - Fetching objects
 - (void)fetchEntity:(NSString *)entityName;
-- (void)didFetchItem:(NSDictionary *)item withURI:(ATObjectURI)uri;
+- (void)didFetchItem:(NSDictionary *)item withURI:(ATObjectURI *)uri;
 
 #pragma mark - Saving objects
 - (void)saveObject:(NSManagedObject *)object;

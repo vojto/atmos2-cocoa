@@ -27,11 +27,11 @@
 - (id)initWithSynchronizer:(ATSynchronizer *)aSync appContext:(NSManagedObjectContext *)anAppContext;
 
 #pragma mark - Managing app objects using URI
-- (NSManagedObject *)objectAtURI:(ATObjectURI)uri;
-- (NSManagedObject *)createAppObjectAtURI:(ATObjectURI)uri;
-- (Class)_managedClassForURI:(ATObjectURI)uri;
-- (ATObjectURI)URIOfAppObject:(NSManagedObject *)object;
-- (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI)uri;
+- (NSManagedObject *)objectAtURI:(ATObjectURI *)uri;
+- (NSManagedObject *)createAppObjectAtURI:(ATObjectURI *)uri;
+- (Class)_managedClassForURI:(ATObjectURI *)uri;
+- (ATObjectURI *)URIOfAppObject:(NSManagedObject *)object;
+- (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI *)uri;
 
 #pragma mark - Updating
 - (void)updateAppObject:(NSManagedObject *)appObject withDictionary:(NSDictionary *)data;

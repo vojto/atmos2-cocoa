@@ -23,20 +23,20 @@
 
 #pragma mark - Marking changes
 
-- (void)markURIChanged:(ATObjectURI)uri;
-- (void)markURISynced:(ATObjectURI)uri;
+- (void)markURIChanged:(ATObjectURI *)uri;
+- (void)markURISynced:(ATObjectURI *)uri;
 
 #pragma mark - Finding objects
 
-- (ATMetaObject *)objectAtURI:(ATObjectURI)uri;
-- (ATMetaObject *)ensureObjectAtURI:(ATObjectURI)uri;
-- (ATMetaObject *)createObjectAtURI:(ATObjectURI)uri;
+- (ATMetaObject *)objectAtURI:(ATObjectURI *)uri;
+- (ATMetaObject *)ensureObjectAtURI:(ATObjectURI *)uri;
+- (ATMetaObject *)createObjectAtURI:(ATObjectURI *)uri;
 
 #pragma mark - Finding objects
 
 - (NSArray *)changedObjects;
 
 #pragma mark - Other tasks
-- (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI)uri;
+- (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI *)uri;
 
 @end

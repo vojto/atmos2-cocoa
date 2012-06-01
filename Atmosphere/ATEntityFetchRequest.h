@@ -22,6 +22,6 @@
 
 - (void)send;
 
-- (ATObjectURI)objectURIFromItem:(NSDictionary *)item;
+- (ATObjectURI *)objectURIFromItem:(NSDictionary *)item;
 
 @end

@@ -117,7 +117,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     }
     // [self.appContext save:nil]; // TODO: Remove?
     
-    ATObjectURI uri = [self.appContext URIOfAppObject:appObject];
+    ATObjectURI *uri = [self.appContext URIOfAppObject:appObject];
     [self.metaContext markURIChanged:uri];
     
     [self startSync];
@@ -145,7 +145,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark - Working with objects
 /*****************************************************************************/
 
-- (void)updateObjectAtURI:(ATObjectURI)uri withDictionary:(NSDictionary *)data {
+- (void)updateObjectAtURI:(ATObjectURI *)uri withDictionary:(NSDictionary *)data {
     NSManagedObject *object = [self.appContext objectAtURI:uri];
     if (!object) {
         object = [self.appContext createAppObjectAtURI:uri];
@@ -160,7 +160,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     [self.metaContext save];
 }
 
-- (void)changeURIFrom:(ATObjectURI)original to:(ATObjectURI)changed {
+- (void)changeURIFrom:(ATObjectURI *)original to:(ATObjectURI *)changed {
     NSLog(@"Changing URIs: %@ --> %@", original.entity, changed.entity);
     NSLog(@"Changing URIs: %@ --> %@", original.identifier, changed.identifier);
 

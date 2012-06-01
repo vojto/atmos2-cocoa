@@ -78,30 +78,30 @@ NSString * const ATObjectEntityName = @"Object";
 
 #pragma mark Marking objects
 
-- (void)markURIChanged:(ATObjectURI)uri {
+- (void)markURIChanged:(ATObjectURI *)uri {
     ATMetaObject *object = [self ensureObjectAtURI:uri];
     object.isChanged = YES;
 }
 
-- (void)markURISynced:(ATObjectURI)uri {
+- (void)markURISynced:(ATObjectURI *)uri {
     ATMetaObject *object = [self ensureObjectAtURI:uri];
     object.isChanged = NO;
     object.isLocalOnly = NO;
 }
 
-- (ATMetaObject *)ensureObjectAtURI:(ATObjectURI)uri {
+- (ATMetaObject *)ensureObjectAtURI:(ATObjectURI *)uri {
     ATMetaObject *object = [self objectAtURI:uri];
     if (!object) object = [self createObjectAtURI:uri];
     return object;
 }
 
-- (ATMetaObject *)objectAtURI:(ATObjectURI)uri {
-    NSString *key = ATObjectURIToString(uri);
+- (ATMetaObject *)objectAtURI:(ATObjectURI *)uri {
+    NSString *key = [uri stringValue];
     return [self._objects objectForKey:key];
 }
 
-- (ATMetaObject *)createObjectAtURI:(ATObjectURI)uri {
-    NSString *key = ATObjectURIToString(uri);
+- (ATMetaObject *)createObjectAtURI:(ATObjectURI *)uri {
+    NSString *key = [uri stringValue];
     ATMetaObject *object = [[[ATMetaObject alloc] initWithURI:uri] autorelease];
     [self._objects setObject:object forKey:key];
     return object;
@@ -122,13 +122,13 @@ NSString * const ATObjectEntityName = @"Object";
 
 #pragma mark - Other tasks
 
-- (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI)uri {
+- (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI *)uri {
     ATMetaObject *object = [self objectAtURI:uri];
-    ATObjectURI newURI = uri;
+    ATObjectURI *newURI = [uri copy];
     newURI.identifier = newID;
     object.uri = newURI;
-    [self._objects setObject:object forKey:ATObjectURIToString(newURI)];
-    [self._objects removeObjectForKey:ATObjectURIToString(uri)];
+    [self._objects setObject:object forKey:[newURI stringValue]];
+    [self._objects removeObjectForKey:[uri stringValue]];
 }
 
 @end

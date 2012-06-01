@@ -12,7 +12,7 @@
 
 @synthesize uri, isChanged, isLocalOnly;
 
-- (id)initWithURI:(ATObjectURI)aURI {
+- (id)initWithURI:(ATObjectURI *)aURI {
     if ((self = [super init])) {
         self.uri = aURI;
         self.isChanged = YES;
@@ -24,7 +24,7 @@
 
 - (id)initWithCoder:(NSCoder *)decoder {
     if (self = [super init]) {
-        self.uri = ATObjectURIFromString([decoder decodeObjectForKey:@"uri"]);
+        self.uri = [ATObjectURI URIFromString:[decoder decodeObjectForKey:@"uri"]];
         [self.uri.entity retain];
         [self.uri.identifier retain];
         self.isChanged = [[decoder decodeObjectForKey:@"isChanged"] boolValue];
@@ -34,13 +34,13 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject:ATObjectURIToString(self.uri) forKey:@"uri"];
+    [encoder encodeObject:[self.uri stringValue]];
     [encoder encodeObject:[NSNumber numberWithBool:self.isChanged] forKey:@"isChanged"];
     [encoder encodeObject:[NSNumber numberWithBool:self.isLocalOnly] forKey:@"isLocalOnly"];
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<ATMetaObject uri=%@, isChanged=%d, isLocalOnly=%d", ATObjectURIToString(self.uri), self.isChanged, self.isLocalOnly];
+    return [NSString stringWithFormat:@"<ATMetaObject uri=%@, isChanged=%d, isLocalOnly=%d", [uri stringValue], self.isChanged, self.isLocalOnly];
 }
 
 @end
