@@ -17,6 +17,7 @@
 @property (retain, nonatomic) ATObjectURI *uri;
 @property BOOL isChanged;
 @property BOOL isLocalOnly;
+@property BOOL isDeleted;
 
 - (id)initWithURI:(ATObjectURI *)uri;
 

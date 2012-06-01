@@ -89,6 +89,12 @@ NSString * const ATObjectEntityName = @"Object";
     object.isLocalOnly = NO;
 }
 
+- (void)markURIDeleted:(ATObjectURI *)uri {
+    ATMetaObject *object = [self ensureObjectAtURI:uri]; // TODO: Really wanna ensure?
+    object.isChanged = YES;
+    object.isDeleted = YES;
+}
+
 - (ATMetaObject *)ensureObjectAtURI:(ATObjectURI *)uri {
     ATMetaObject *object = [self objectAtURI:uri];
     if (!object) object = [self createObjectAtURI:uri];
@@ -129,6 +135,11 @@ NSString * const ATObjectEntityName = @"Object";
     object.uri = newURI;
     [self._objects setObject:object forKey:[newURI stringValue]];
     [self._objects removeObjectForKey:[uri stringValue]];
+}
+
+- (void)deleteObjectAtURI:(ATObjectURI *)uri {
+    NSString *key = [uri stringValue];
+    [self._objects removeObjectForKey:key];
 }
 
 @end

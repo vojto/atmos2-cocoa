@@ -24,6 +24,8 @@
 		9926290D14ABA06300F0DD79 /* ATResourceClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9926290B14ABA06300F0DD79 /* ATResourceClient.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		99348B9314F25C4600592123 /* RKClient+ATAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 99348B9214F25C4600592123 /* RKClient+ATAdditions.h */; };
 		99348BA114F25D5200592123 /* Atmosphere.h in Headers */ = {isa = PBXBuildFile; fileRef = 99348BA014F25D5200592123 /* Atmosphere.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		996DABCC15797193008B18B6 /* ATObjectDeleteRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 996DABCA15797193008B18B6 /* ATObjectDeleteRequest.h */; };
+		996DABCD15797193008B18B6 /* ATObjectDeleteRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 996DABCB15797193008B18B6 /* ATObjectDeleteRequest.m */; };
 		997213CC14AC79490044B92B /* ATEntityFetchRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 997213CA14AC79490044B92B /* ATEntityFetchRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		997213CD14AC79490044B92B /* ATEntityFetchRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 997213CB14AC79490044B92B /* ATEntityFetchRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		99759EBD152B59310001DB73 /* SocketIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 99759EB8152B59310001DB73 /* SocketIO.h */; };
@@ -103,6 +105,8 @@
 		9926290B14ABA06300F0DD79 /* ATResourceClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATResourceClient.m; sourceTree = "<group>"; };
 		99348B9214F25C4600592123 /* RKClient+ATAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RKClient+ATAdditions.h"; sourceTree = "<group>"; };
 		99348BA014F25D5200592123 /* Atmosphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Atmosphere.h; sourceTree = "<group>"; };
+		996DABCA15797193008B18B6 /* ATObjectDeleteRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATObjectDeleteRequest.h; sourceTree = "<group>"; };
+		996DABCB15797193008B18B6 /* ATObjectDeleteRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATObjectDeleteRequest.m; sourceTree = "<group>"; };
 		997213CA14AC79490044B92B /* ATEntityFetchRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATEntityFetchRequest.h; sourceTree = "<group>"; };
 		997213CB14AC79490044B92B /* ATEntityFetchRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATEntityFetchRequest.m; sourceTree = "<group>"; };
 		99759EB8152B59310001DB73 /* SocketIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketIO.h; sourceTree = "<group>"; };
@@ -210,13 +214,15 @@
 		9926290E14ABA06700F0DD79 /* Resource Client */ = {
 			isa = PBXGroup;
 			children = (
+				99348B9214F25C4600592123 /* RKClient+ATAdditions.h */,
 				9926290A14ABA06300F0DD79 /* ATResourceClient.h */,
 				9926290B14ABA06300F0DD79 /* ATResourceClient.m */,
 				997213CA14AC79490044B92B /* ATEntityFetchRequest.h */,
 				997213CB14AC79490044B92B /* ATEntityFetchRequest.m */,
 				999C96AA14F60ADD00595FF1 /* ATObjectSaveRequest.h */,
 				999C96AB14F60ADD00595FF1 /* ATObjectSaveRequest.m */,
-				99348B9214F25C4600592123 /* RKClient+ATAdditions.h */,
+				996DABCA15797193008B18B6 /* ATObjectDeleteRequest.h */,
+				996DABCB15797193008B18B6 /* ATObjectDeleteRequest.m */,
 			);
 			name = "Resource Client";
 			sourceTree = "<group>";
@@ -394,6 +400,7 @@
 				999C96AC14F60ADD00595FF1 /* ATObjectSaveRequest.h in Headers */,
 				99759EBD152B59310001DB73 /* SocketIO.h in Headers */,
 				99EDD25015795E6900A748CB /* NSString+ATAdditions.h in Headers */,
+				996DABCC15797193008B18B6 /* ATObjectDeleteRequest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +512,7 @@
 				999C96AD14F60ADD00595FF1 /* ATObjectSaveRequest.m in Sources */,
 				99759EBE152B59310001DB73 /* SocketIO.m in Sources */,
 				99EDD25115795E6900A748CB /* NSString+ATAdditions.m in Sources */,
+				996DABCD15797193008B18B6 /* ATObjectDeleteRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

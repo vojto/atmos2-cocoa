@@ -9,6 +9,7 @@
 #import <RestKit/RestKit.h>
 #import "ATAppContext.h"
 #import "ATObjectURI.h"
+#import "ATMetaObject.h"
 
 extern NSString * const ATActionIndex;
 extern NSString * const ATActionShow;
@@ -44,6 +45,12 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path);
 #pragma mark - Saving objects
 - (void)saveObject:(NSManagedObject *)object;
 - (void)saveObject:(NSManagedObject *)object options:(NSDictionary *)options;
+
+#pragma mark - Deleting objects
+/**
+ This method takes object URI as argument because the app object
+ might be removed from the memory already. */
+- (void)deleteObject:(ATObjectURI *)objectURI;
 
 #pragma mark - Requests & Routing
 - (void)loadRoute:(ATRoute)route params:(NSObject<RKRequestSerializable> *)params delegate:(id)delegate;

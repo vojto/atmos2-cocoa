@@ -8,9 +8,13 @@
 
 #import "ATMetaObject.h"
 
+NSString * const kATMetaObjectIsChangedKey = @"isChanged";
+NSString * const kATMetaObjectIsLocalOnlyKey = @"isLocalOnly";
+NSString * const kATMetaObjectIsDeletedKey = @"isDeleted";
+
 @implementation ATMetaObject
 
-@synthesize uri, isChanged, isLocalOnly;
+@synthesize uri, isChanged, isLocalOnly, isDeleted;
 
 - (id)initWithURI:(ATObjectURI *)aURI {
     if ((self = [super init])) {
@@ -27,20 +31,22 @@
         self.uri = [ATObjectURI URIFromString:[decoder decodeObjectForKey:@"uri"]];
         [self.uri.entity retain];
         [self.uri.identifier retain];
-        self.isChanged = [[decoder decodeObjectForKey:@"isChanged"] boolValue];
-        self.isLocalOnly = [[decoder decodeObjectForKey:@"isLocalOnly"] boolValue];
+        self.isChanged = [[decoder decodeObjectForKey:kATMetaObjectIsChangedKey] boolValue];
+        self.isLocalOnly = [[decoder decodeObjectForKey:kATMetaObjectIsLocalOnlyKey] boolValue];
+        self.isDeleted = [[decoder decodeObjectForKey:kATMetaObjectIsDeletedKey] boolValue];
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeObject:[self.uri stringValue] forKey:@"uri"];
-    [encoder encodeObject:[NSNumber numberWithBool:self.isChanged] forKey:@"isChanged"];
-    [encoder encodeObject:[NSNumber numberWithBool:self.isLocalOnly] forKey:@"isLocalOnly"];
+    [encoder encodeObject:[NSNumber numberWithBool:self.isChanged] forKey:kATMetaObjectIsChangedKey];
+    [encoder encodeObject:[NSNumber numberWithBool:self.isLocalOnly] forKey:kATMetaObjectIsLocalOnlyKey];
+    [encoder encodeObject:[NSNumber numberWithBool:self.isDeleted] forKey:kATMetaObjectIsDeletedKey];
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<ATMetaObject uri=%@, isChanged=%d, isLocalOnly=%d", [uri stringValue], self.isChanged, self.isLocalOnly];
+    return [NSString stringWithFormat:@"<ATMetaObject uri=%@, isChanged=%d, isLocalOnly=%d, isDeleted=%d", [uri stringValue], self.isChanged, self.isLocalOnly, self.isDeleted];
 }
 
 @end

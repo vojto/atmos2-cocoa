@@ -15,6 +15,7 @@
 #import "ATObjectSaveRequest.h"
 #import "RKClient+ATAdditions.h"
 #import "NSString+ATAdditions.h"
+#import "ATObjectDeleteRequest.h"
 
 NSString * const ATActionIndex = @"index";
 NSString * const ATActionShow = @"show";
@@ -93,6 +94,15 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
 }
 
 /*****************************************************************************/
+#pragma mark - Deleting objects
+/*****************************************************************************/
+
+- (void)deleteObject:(ATObjectURI *)objectURI {
+    ATObjectDeleteRequest *request = [[ATObjectDeleteRequest alloc] initWithResourceClient:self objectURI:objectURI];
+    [request send];
+}
+
+/*****************************************************************************/
 #pragma mark - Requests & Routing
 /*****************************************************************************/
 
@@ -147,7 +157,7 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
         return [NSString stringWithFormat:@"post /%@", entity];
     } else if ([action isEqualToString:@"update"]) {
         return [NSString stringWithFormat:@"put /%@/:id", entity];
-    } else if ([action isEqualToString:@"delete"]) {
+    } else if ([action isEqualToString:@"destroy"]) {
         return [NSString stringWithFormat:@"delete /%@/:id", entity];
     } else {
         RKAssert(false, @"Can't create default route for action %@", action);

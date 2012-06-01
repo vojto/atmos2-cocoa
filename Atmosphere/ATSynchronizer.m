@@ -56,6 +56,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         self.resourceClient = [[[ATResourceClient alloc] initWithSynchronizer:self] autorelease];
         
         [self startAutosync];
+        [self startSync];
     }
     return self;
 }
@@ -112,7 +113,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 /*****************************************************************************/
 
 - (void)syncObject:(NSManagedObject *)appObject {
-    NSLog(@"Saving object, identifier: %@", [appObject valueForKey:@"identifier"]);
     if (![appObject valueForKey:@"identifier"]) {
         [appObject setValue:[RNUtil uuidString] forKey:@"identifier"];
     }
@@ -121,6 +121,12 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     ATObjectURI *uri = [self.appContext URIOfAppObject:appObject];
     [self.metaContext markURIChanged:uri];
     
+    [self startSync];
+}
+
+- (void)deleteOject:(NSManagedObject *)appObject {
+    ATObjectURI *uri = [self.appContext URIOfAppObject:appObject];
+    [self.metaContext markURIDeleted:uri];
     [self startSync];
 }
 
@@ -135,9 +141,15 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     for (ATMetaObject *meta in [self.metaContext changedObjects]) {
         NSLog(@"Syncing %@", meta);
         
-        NSString *action = meta.isLocalOnly ? ATActionCreate : ATActionUpdate;
-        NSManagedObject *object = [self.appContext objectAtURI:meta.uri];
-        [self.resourceClient saveObject:object options:[NSDictionary dictionaryWithObject:action forKey:@"action"]];
+        if (meta.isDeleted) {
+            if (meta.isLocalOnly) continue; // Local objects don't need to be deleted remotely
+            [self.resourceClient deleteObject:meta.uri];
+        } else {
+            NSString *action = meta.isLocalOnly ? ATActionCreate : ATActionUpdate;
+            NSManagedObject *object = [self.appContext objectAtURI:meta.uri];
+            [self.resourceClient saveObject:object options:[NSDictionary dictionaryWithObject:action forKey:@"action"]];
+        }
+        
     }
     _isSyncScheduled = NO;
 }
@@ -203,9 +215,13 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     }
     for (NSManagedObject *deletedObject in [userInfo valueForKey:NSDeletedObjectsKey]) {
         // TODO: Handle deletion
+        ASLogInfo(@"Object was deleted: %@", deletedObject);
+        [self deleteOject:deletedObject];
     }
     [self startSync];
     [self.metaContext save];
+    
+    NSLog(@"%@", [self.metaContext valueForKey:@"_objects"]);
 }
 
 @end

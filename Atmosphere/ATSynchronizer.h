@@ -82,6 +82,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 
 #pragma mark - Syncing
 - (void)syncObject:(NSManagedObject *)appObject;
+- (void)deleteOject:(NSManagedObject *)appObject;
 - (void)startSync;
 - (void)sync;
 

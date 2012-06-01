@@ -31,8 +31,14 @@
     ATAppContext *appContext = self.resourceClient.sync.appContext; // TODO: Refactor to something nicer
     
     // Options
-    NSString *wrapper           = RKTry(self.object, paramWrapper);
-    NSDictionary *routeParams   = RKTry(self.object, routeParams);
+    NSString *wrapper                   = RKTry(self.object, paramWrapper);
+    NSMutableDictionary *routeParams    = RKTry(self.object, routeParams);
+        
+    
+    // TODO: Refactor this block somewhere else
+    if (!routeParams) routeParams = [NSMutableDictionary dictionary];
+    routeParams = [[routeParams mutableCopy] autorelease];
+    [routeParams setObject:[self.object valueForKey:@"identifier"] forKey:@"id"];
     
     NSString *action    = [self.options objectForKey:@"action"];
     if (!action) action = ATActionCreate;
