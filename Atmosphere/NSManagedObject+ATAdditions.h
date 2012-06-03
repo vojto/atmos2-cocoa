@@ -22,5 +22,6 @@
 - (NSString *) objectIDString;
 - (NSString *)stringValueForKey:(NSString *)key;
 - (void)setStringValue:(id)value forKey:(NSString *)key;
+- (NSDate *)_dateFromString:(NSString *)value;
 
 @end
