@@ -83,6 +83,6 @@ Pod::Spec.new do |s|
   s.dependency 'RestKit/ObjectMapping', '0.9.3'
   s.dependency 'RestKit/ObjectMapping/JSONKit', '0.9.3'
   s.dependency 'SBJson', '3.0.4'
-  s.dependency 'CocoaAsyncSocket', '0.0.1'
+  s.dependency 'CocoaAsyncSocket', {:git => 'git://github.com/robbiehanson/CocoaAsyncSocket.git'}
   s.dependency 'MagicalRecord', '~> 1.8.3'
 end
