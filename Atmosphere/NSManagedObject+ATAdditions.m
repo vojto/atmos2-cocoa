@@ -46,6 +46,9 @@
     if (type == NSDateAttributeType) {
         NSDate *date = [NSDate dateWithString:(NSString *)value];
         [self setValue:date forKey:key];
+    } else if (type == NSFloatAttributeType) {
+        NSNumber *number = [NSNumber numberWithFloat:[value floatValue]];
+        [self setValue:number forKey:key];
     } else {
         [self setValue:value forKey:key];
     }

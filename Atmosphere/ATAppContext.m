@@ -100,6 +100,7 @@ static ATAppContext* _sharedAppContext = nil;
 }
 
 - (ATObjectURI *)URIOfAppObject:(NSManagedObject *)object {
+    NSLog(@"Getting URI of %@", object);
     return [ATObjectURI URIWithEntity:object.entity.name identifier:[object valueForKey:@"identifier"]];
 }
 
@@ -113,7 +114,7 @@ static ATAppContext* _sharedAppContext = nil;
 #pragma mark Updating
 
 - (void)updateAppObject:(NSManagedObject *)appObject withDictionary:(NSDictionary *)data {
-    ASLogInfo(@"Updating object with data");
+    ASLogInfo(@"Updating object with data %@", data);
     // TODO: Go through attributes in map instead of in incoming dictionary
     for (NSString *key in [data allKeys]) {
         id value = [data objectForKey:key];

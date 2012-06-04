@@ -15,7 +15,7 @@
 @property (assign) ATResourceClient *resourceClient;
 @property (assign) RKClient *networkClient;
 @property (retain) NSDictionary *options;
-@property (assign) NSManagedObject *object;
+@property (retain) NSManagedObject *object;
 
 - (id)initWithResourceClient:(ATResourceClient *)client object:(NSManagedObject *)object options:(NSDictionary *)options;
 

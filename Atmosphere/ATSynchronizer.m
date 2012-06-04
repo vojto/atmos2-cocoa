@@ -141,8 +141,11 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     for (ATMetaObject *meta in [self.metaContext changedObjects]) {
         NSLog(@"Syncing %@", meta);
         
-        if (meta.isDeleted) {
-            if (meta.isLocalOnly) continue; // Local objects don't need to be deleted remotely
+        if (meta.isDeleted && meta.isLocalOnly) {
+            ASLogInfo(@"Removing meta object because it's deleted and local only: %@", meta);
+            [self.metaContext deleteObjectAtURI:meta.uri];
+            [self.metaContext save];
+        } else if (meta.isDeleted && !meta.isLocalOnly) {
             [self.resourceClient deleteObject:meta.uri];
         } else {
             NSString *action = meta.isLocalOnly ? ATActionCreate : ATActionUpdate;

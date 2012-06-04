@@ -52,7 +52,6 @@
     
     ASLogInfo(@"Sending save request (%@): %@", action, data);
     [self.resourceClient loadRoute:route params:params delegate:self];
-    
 }
 
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
