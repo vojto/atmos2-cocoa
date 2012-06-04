@@ -32,5 +32,6 @@
 #pragma mark - Relations
 - (NSDictionary *)relationsForObject:(NSManagedObject *)appObject;
 - (NSDictionary *)relationsForEntity:(NSEntityDescription *)entity;
+- (NSString *)serverRelationNameFor:(NSString *)relation entity:(NSEntityDescription *)entity;
 
 @end

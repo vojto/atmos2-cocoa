@@ -177,8 +177,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 }
 
 - (void)changeURIFrom:(ATObjectURI *)original to:(ATObjectURI *)changed {
-    NSLog(@"Changing URIs: %@ --> %@", original.entity, changed.entity);
-    NSLog(@"Changing URIs: %@ --> %@", original.identifier, changed.identifier);
+    ASLogInfo(@"Changing URIs: %@/%@ --> %@/%@", original.entity, original.identifier, changed.entity, changed.identifier);
 
     [self.appContext changeIDTo:changed.identifier atURI:original];
     [self.metaContext changeIDTo:changed.identifier atURI:original];

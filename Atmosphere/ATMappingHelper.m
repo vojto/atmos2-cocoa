@@ -85,4 +85,11 @@
     return [self.relationsMap objectForKey:entity.name];
 }
 
+- (NSString *)serverRelationNameFor:(NSString *)relation entity:(NSEntityDescription *)entity {
+    NSDictionary *relations = [self relationsForEntity:entity];
+    NSString *key = [[relations allKeysForObject:relation] lastObject];
+    if (!key) key = [NSString stringWithFormat:@"%@_id", [relation lowercaseString]];
+    return key;
+}
+
 @end

@@ -175,27 +175,36 @@ static ATAppContext* _sharedAppContext = nil;
 #pragma mark Serializing
 
 - (NSDictionary *)dataForObject:(NSManagedObject *)object {
-    ATMappingHelper *mapping = self.sync.mappingHelper;
+    ATMappingHelper     *mapping    = self.sync.mappingHelper;
+    NSEntityDescription *entity     = object.entity;
+    NSMutableDictionary *data       = [NSMutableDictionary dictionary];
+    NSDictionary        *relations  = entity.relationshipsByName;
     
     // Add attributes
-    NSArray *attributes = [[object entity] attributeKeys];
-    NSMutableDictionary *data = [NSMutableDictionary dictionary];
+    NSArray *attributes = entity.attributesByName.allKeys;
     for (NSString *attribute in attributes) {
         NSString *stringValue = [object stringValueForKey:attribute];
         NSString *serverAttributeName = [mapping serverAttributeNameFor:attribute entity:object.entity];
         [data setValue:stringValue forKey:serverAttributeName];
     }
     
-    // Add relations
-    NSDictionary *relations = [mapping relationsForObject:object];
-    for (NSString *key in [relations allKeys]) {
-        NSString *relation = [relations objectForKey:key];
-        NSManagedObject *target = [object performSelector:NSSelectorFromString(relation)];
-        if (target) {
-            [data setValue:[target valueForKey:@"identifier"] forKey:key];
-        } else {
-            ASLogWarning(@"[ATAppContext] Cannot find target object for relation with key %@. (%@)", key, object);
+    // Add relations    
+    for (NSString *relation in relations.allKeys) {
+        NSRelationshipDescription *description = [relations objectForKey:relation];
+        NSString *serverRelationName = [mapping serverRelationNameFor:relation entity:entity];
+        if ([description isToMany]) continue;
+        id target = [object valueForKey:relation];
+        if (!target) {
+            ASLogWarning(@"Relation is not connected: %@", relation);
+            continue;
         }
+        NSString *identifier = [target valueForKey:@"identifier"];
+        if (!identifier) {
+            ASLogError(@"Relation target doens't have an identifier: %@", target);
+            continue;
+        }
+        // TODO: What if the object doesn't have an identifier yet?
+        [data setObject:identifier forKey:serverRelationName];
     }
     
     return data;
