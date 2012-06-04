@@ -151,15 +151,15 @@ static ATAppContext* _sharedAppContext = nil;
         NSRelationshipDescription *description = [relations objectForKey:relation];
         NSEntityDescription *destinationDescription = description.destinationEntity;
         NSString *serverRelationName = [mapping serverRelationNameFor:relation entity:entity];
-        
+
         if ([description isToMany]) continue;
-        
+
         NSString *value = [data objectForKey:serverRelationName];
         if (!value) continue;
-        
+
         NSString *destinationEntity = destinationDescription.name;
         ATObjectURI *targetURI = [ATObjectURI URIWithEntity:destinationEntity identifier:value];
-        
+
         NSManagedObject *targetObject = [self objectAtURI:targetURI];
         if (!targetObject) {
             ASLogWarning(@"Target object %@/%@ referenced in relation %@ of %@ not found", targetURI.entity, targetURI.identifier, relation, entity.name);
