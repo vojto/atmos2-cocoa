@@ -44,7 +44,8 @@
     NSAttributeType type = [attribute attributeType];
     
     if (type == NSDateAttributeType) {
-        NSDate *date = [NSDate dateWithString:(NSString *)value];
+        NSDate *date = [self _dateFromString:(NSString *)value];
+        NSLog(@"Resolved date: %@ -> %@", value, date);
         [self setValue:date forKey:key];
     } else if (type == NSFloatAttributeType) {
         NSNumber *number = [NSNumber numberWithFloat:[value floatValue]];
@@ -52,7 +53,25 @@
     } else {
         [self setValue:value forKey:key];
     }
+}
+
+- (NSDate *)_dateFromString:(NSString *)value {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    value = [value stringByReplacingOccurrencesOfString:@"Z" withString:@"+0000"];
+    NSArray *formats = [NSArray arrayWithObjects:@"YYYY-MM-dd HH:mm:ss zzzz", @"YYYY-MM-dd'T'HH:mm:ss.SSSZZZ", nil];
+    NSDate *date = nil;
     
+    for (NSString *format in formats) {
+        [formatter setDateFormat:format];
+        date = [formatter dateFromString:value];
+        if (date != nil) {
+            NSLog(@"Matched format %@", format);
+            break;
+        }
+    }
+    
+    [formatter release];
+    return date;
 }
 
 @end
