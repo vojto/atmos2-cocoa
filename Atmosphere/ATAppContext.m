@@ -143,30 +143,29 @@ static ATAppContext* _sharedAppContext = nil;
 #pragma mark - Resolving relations
 
 - (void)_resolveRelations:(NSManagedObject *)appObject withDictionary:(NSDictionary *)data {
-    // "relation"    is remote
-    // "association" is local
-    NSEntityDescription *entity = appObject.entity;
-    NSDictionary *relations = [self.sync.mappingHelper relationsForEntity:entity];
-    ASLogInfo(@"Resolving %d relations for entity %@", [relations count], entity.name);
-    for (NSString *key in [relations allKeys]) {
-        NSString *name = [relations objectForKey:key];
-        NSRelationshipDescription *relation = [[entity relationshipsByName] objectForKey:name];
-        RKAssert(relation, @"No relation %@ found for entity", name, entity);
-        NSString *targetId = [data objectForKey:key];
-        if (!targetId) {
-            ASLogWarning(@"Relation %@ not found in data %@", key, data);
-            continue;
-        }
-        // Find the target
-        NSString *targetEntityName = relation.destinationEntity.name;
-        ATObjectURI *targetURI = [ATObjectURI URIWithEntity:targetEntityName identifier:targetId];
+    ATMappingHelper     *mapping    = self.sync.mappingHelper;
+    NSEntityDescription *entity     = appObject.entity;
+    NSDictionary        *relations  = entity.relationshipsByName;
+    
+    for (NSString *relation in relations.allKeys) {
+        NSRelationshipDescription *description = [relations objectForKey:relation];
+        NSEntityDescription *destinationDescription = description.destinationEntity;
+        NSString *serverRelationName = [mapping serverRelationNameFor:relation entity:entity];
+        
+        if ([description isToMany]) continue;
+        
+        NSString *value = [data objectForKey:serverRelationName];
+        if (!value) continue;
+        
+        NSString *destinationEntity = destinationDescription.name;
+        ATObjectURI *targetURI = [ATObjectURI URIWithEntity:destinationEntity identifier:value];
+        
         NSManagedObject *targetObject = [self objectAtURI:targetURI];
         if (!targetObject) {
-            ASLogWarning(@"Target object %@/%@ referenced in relation %@ of %@ not found", targetURI.entity, targetURI.identifier, key, entity.name);
+            ASLogWarning(@"Target object %@/%@ referenced in relation %@ of %@ not found", targetURI.entity, targetURI.identifier, relation, entity.name);
             continue;
         }
-        // Make the connection
-        [appObject setValue:targetObject forKey:name];
+        [appObject setValue:targetObject forKey:relation];
     }
 }
 
