@@ -106,6 +106,7 @@ NSString * const kATCurrentUserDefaultsKey = @"ATCurrentUser";
             [self _useToken];
             ASLogInfo(@"Logged in as %@ (%@)", username, token);
             RKPostNotification(kATAuthChangedNotification);
+            [self startSync];
         } else {
             ASLogWarning(@"Failed to login as %@", username);
             RKPostNotification(kATAuthChangedNotification);
