@@ -32,15 +32,12 @@
 NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification";
 NSString * const kATAuthChangedNotification = @"ATAuthChangedNotification";
 
-NSString * const kATAuthTokenDefaultsKey = @"ATAuthToken";
-NSString * const kATCurrentUserDefaultsKey = @"ATCurrentUser";
-
 @implementation ATSynchronizer
 
 @synthesize metaContext=_metaContext, appContext=_appContext, mappingHelper=_mappingHelper;
 @synthesize messageClient=_messageClient, resourceClient=_resourceClient;
 @synthesize delegate;
-@synthesize authToken = _authToken, currentUser = _currentUser;
+@synthesize authentication;
 
 /*****************************************************************************/
 #pragma mark - Lifecycle
@@ -58,8 +55,8 @@ NSString * const kATCurrentUserDefaultsKey = @"ATCurrentUser";
         self.mappingHelper = [[[ATMappingHelper alloc] init] autorelease];
         self.messageClient = [[[ATMessageClient alloc] initWithSynchronizer:self] autorelease];
         self.resourceClient = [[[ATResourceClient alloc] initWithSynchronizer:self] autorelease];
-
-        [self performSelector:@selector(_restoreToken) withObject:nil afterDelay:0];
+        self.authentication = [[ATAuthentication alloc] initWithSynchronizer:self];
+        self.authentication.resourceClient = self.resourceClient;
         
         [self startAutosync];
         [self startSync];
@@ -91,56 +88,26 @@ NSString * const kATCurrentUserDefaultsKey = @"ATCurrentUser";
 /*****************************************************************************/
 
 - (BOOL)isLoggedIn {
-    return !!self.authToken;
+    return [self.authentication isLoggedIn];
 }
 
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password {
-    NSString *path = [NSString stringWithFormat:@"/login?username=%@&password=%@", username, password];
-    [self.resourceClient loadPath:path callback:^(RKResponse *response) {
-        if (response.statusCode == 200) {
-            NSDictionary *data = [response parsedBody:nil];
-            NSString *token = [data objectForKey:@"token"];
-            self.authToken = token;
-            self.currentUser = data;
-            [self _rememberToken];
-            [self _useToken];
-            ASLogInfo(@"Logged in as %@ (%@)", username, token);
-            RKPostNotification(kATAuthChangedNotification);
-            [self startSync];
-        } else {
-            ASLogWarning(@"Failed to login as %@", username);
-            RKPostNotification(kATAuthChangedNotification);
-        }
-    }];
-}
-
-- (void)_rememberToken {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:self.authToken forKey:kATAuthTokenDefaultsKey];
-    [defaults setObject:self.currentUser forKey:kATCurrentUserDefaultsKey];
-}
-
-- (void)_restoreToken {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    self.authToken = [defaults objectForKey:kATAuthTokenDefaultsKey];
-    self.currentUser = [defaults objectForKey:kATCurrentUserDefaultsKey];
-    [self _useToken];
-    RKPostNotification(kATAuthChangedNotification);
-}
-
-- (void)_useToken {
-    if (self.authToken) {
-        [self.resourceClient addHeader:@"Auth-Token" withValue:self.authToken];
-    } else {
-        [self.resourceClient removeHeader:@"Auth-Token"];
-    }
+    return [self.authentication loginWithUsername:username
+                                         password:password];
 }
 
 - (void)logout {
-    self.authToken = nil;
-    [self _rememberToken];
-    [self _useToken];
-    RKPostNotification(kATAuthChangedNotification);
+    return [self.authentication logout];
+}
+
+- (void)signupWithUsername:(NSString *)username email:(NSString *)email password:(NSString *)password {
+    return [self.authentication signupWithUsername:username
+                                             email:email
+                                          password:password];
+}
+
+- (NSDictionary *)currentUser {
+    return self.authentication.currentUser;
 }
 
 /*****************************************************************************/
@@ -280,11 +247,6 @@ NSString * const kATCurrentUserDefaultsKey = @"ATCurrentUser";
     
     NSLog(@"%@", [self.metaContext valueForKey:@"_objects"]);
 }
-
-/*****************************************************************************/
-#pragma mark - Authentication
-/*****************************************************************************/
-
 
 
 

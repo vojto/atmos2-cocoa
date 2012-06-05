@@ -20,6 +20,7 @@
 #import "ATMessageClient.h"
 #import "ATResourceClient.h"
 #import "ATObjectURI.h"
+#import "ATAuthentication.h"
 
 @class ATAppContext;
 @class ATMetaContext;
@@ -49,28 +50,18 @@ extern NSString * const kATAuthChangedNotification;
 @property (nonatomic, retain) ATMappingHelper *mappingHelper;
 @property (nonatomic, retain) ATMessageClient *messageClient;
 @property (nonatomic, retain) ATResourceClient *resourceClient;
-@property (nonatomic, retain) NSString *authToken;
-@property (nonatomic, retain) NSDictionary *currentUser;
+@property (nonatomic, retain) ATAuthentication *authentication;
 
 #pragma mark - Lifecycle
 - (id)initWithAppContext:(NSManagedObjectContext *)context;
-
 - (void)close;
 
 #pragma mark - Authentication
 - (BOOL)isLoggedIn;
-/**
- Will make HTTP request to login, get the token, then it will set the token
- as header.
- 
- This method is tailor-made for atmos2-server. Eventually it should be customizable,
- but when using custom API, developer might just implement custom authentication
- mechanizm. */
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password;
-- (void)_rememberToken;
-- (void)_restoreToken;
-- (void)_useToken;
 - (void)logout;
+- (void)signupWithUsername:(NSString *)username email:(NSString *)email password:(NSString *)password;
+- (NSDictionary *)currentUser;
 
 #pragma mark - Resource methods
 - (void)loadRoutesFromResource:(NSString *)resourceName;

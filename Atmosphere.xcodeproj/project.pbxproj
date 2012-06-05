@@ -46,6 +46,8 @@
 		999C96A914F6062E00595FF1 /* ATMetaObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 999C96A714F6062E00595FF1 /* ATMetaObject.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		999C96AC14F60ADD00595FF1 /* ATObjectSaveRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 999C96AA14F60ADD00595FF1 /* ATObjectSaveRequest.h */; };
 		999C96AD14F60ADD00595FF1 /* ATObjectSaveRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 999C96AB14F60ADD00595FF1 /* ATObjectSaveRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		99A90D3A157E747600752EEF /* ATAuthentication.h in Headers */ = {isa = PBXBuildFile; fileRef = 99A90D38157E747600752EEF /* ATAuthentication.h */; };
+		99A90D3B157E747600752EEF /* ATAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 99A90D39157E747600752EEF /* ATAuthentication.m */; };
 		99BDBE371483A0AD00906F37 /* RNUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE351483A0AD00906F37 /* RNUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		99BDBE381483A0AD00906F37 /* RNUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BDBE361483A0AD00906F37 /* RNUtil.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		99BDBE431483A0EF00906F37 /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 99BDBE3D1483A0EF00906F37 /* NSData+Base64.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -133,6 +135,8 @@
 		999C96A714F6062E00595FF1 /* ATMetaObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATMetaObject.m; sourceTree = "<group>"; };
 		999C96AA14F60ADD00595FF1 /* ATObjectSaveRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATObjectSaveRequest.h; sourceTree = "<group>"; };
 		999C96AB14F60ADD00595FF1 /* ATObjectSaveRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATObjectSaveRequest.m; sourceTree = "<group>"; };
+		99A90D38157E747600752EEF /* ATAuthentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATAuthentication.h; sourceTree = "<group>"; };
+		99A90D39157E747600752EEF /* ATAuthentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATAuthentication.m; sourceTree = "<group>"; };
 		99BDBE351483A0AD00906F37 /* RNUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNUtil.h; sourceTree = "<group>"; };
 		99BDBE361483A0AD00906F37 /* RNUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNUtil.m; sourceTree = "<group>"; };
 		99BDBE3D1483A0EF00906F37 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -287,6 +291,8 @@
 				99348BA014F25D5200592123 /* Atmosphere.h */,
 				999834481455AB6C00F1C436 /* ATSynchronizer.h */,
 				999834491455AB6C00F1C436 /* ATSynchronizer.m */,
+				99A90D38157E747600752EEF /* ATAuthentication.h */,
+				99A90D39157E747600752EEF /* ATAuthentication.m */,
 				99C752A614F2899900F543B0 /* ATObjectURI.h */,
 				99C752B414F28AB200F543B0 /* ATObjectURI.m */,
 				992628E614AB9B4D00F0DD79 /* ATMappingHelper.h */,
@@ -401,6 +407,7 @@
 				99759EBD152B59310001DB73 /* SocketIO.h in Headers */,
 				99EDD25015795E6900A748CB /* NSString+ATAdditions.h in Headers */,
 				996DABCC15797193008B18B6 /* ATObjectDeleteRequest.h in Headers */,
+				99A90D3A157E747600752EEF /* ATAuthentication.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,6 +520,7 @@
 				99759EBE152B59310001DB73 /* SocketIO.m in Sources */,
 				99EDD25115795E6900A748CB /* NSString+ATAdditions.m in Sources */,
 				996DABCD15797193008B18B6 /* ATObjectDeleteRequest.m in Sources */,
+				99A90D3B157E747600752EEF /* ATAuthentication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

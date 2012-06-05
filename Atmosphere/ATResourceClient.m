@@ -118,12 +118,18 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
     self.routes = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:resourceName ofType:@"plist"]];
 }
 
-- (void)loadPath:(NSString *)path callback:(RKObjectLoaderDidLoadObjectBlock)callback {
+
+- (RKRequest *)prepareRequest:(NSString *)path {
     RKRequest *request = [self.client requestWithResourcePath:path];
-    request.onDidLoadResponse = callback;
     request.onDidFailLoadWithError = ^(NSError *error) {
-        ASLogWarning(@"Failed to load %@: %@", path, error);
+        ASLogWarning(@"Failed to load request %@: %@", path, error);
     };
+    return request;
+}
+
+- (void)loadPath:(NSString *)path callback:(RKObjectLoaderDidLoadObjectBlock)callback {
+    RKRequest *request = [self prepareRequest:path];
+    request.onDidLoadResponse = callback;
     [request send];
 }
 

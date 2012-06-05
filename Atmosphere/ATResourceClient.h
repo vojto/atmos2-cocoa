@@ -56,6 +56,7 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path);
 #pragma mark - Requests
 - (void)loadRoute:(ATRoute)route params:(NSObject<RKRequestSerializable> *)params delegate:(id)delegate;
 - (void)loadRoutesFromResource:(NSString *)resourceName;
+- (RKRequest *)prepareRequest:(NSString *)path;
 - (void)loadPath:(NSString *)path callback:(RKObjectLoaderDidLoadObjectBlock)callback;
 
 #pragma mark - Routing
