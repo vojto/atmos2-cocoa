@@ -35,8 +35,8 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 
 @synthesize metaContext=_metaContext, appContext=_appContext, mappingHelper=_mappingHelper;
 @synthesize messageClient=_messageClient, resourceClient=_resourceClient;
-@synthesize authKey=_authKey;
 @synthesize delegate;
+@synthesize authToken = _authToken;
 
 /*****************************************************************************/
 #pragma mark - Lifecycle
@@ -54,7 +54,7 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
         self.mappingHelper = [[[ATMappingHelper alloc] init] autorelease];
         self.messageClient = [[[ATMessageClient alloc] initWithSynchronizer:self] autorelease];
         self.resourceClient = [[[ATResourceClient alloc] initWithSynchronizer:self] autorelease];
-        
+
         [self startAutosync];
         [self startSync];
     }
@@ -83,10 +83,13 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
 #pragma mark - Authentication
 /*****************************************************************************/
 
-- (NSString *)authKeyOrNull {
-    return (_authKey ? (id)_authKey : [NSNull null]);
+- (BOOL)isLoggedIn {
+    return !!self.authToken;
 }
 
+- (void)loginWithUsername:(NSString *)username password:(NSString *)password {
+    
+}
 
 /*****************************************************************************/
 #pragma mark - Resource Methods
@@ -225,5 +228,13 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     
     NSLog(@"%@", [self.metaContext valueForKey:@"_objects"]);
 }
+
+/*****************************************************************************/
+#pragma mark - Authentication
+/*****************************************************************************/
+
+
+
+
 
 @end

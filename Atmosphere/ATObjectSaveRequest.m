@@ -33,7 +33,6 @@
     // Options
     NSString *wrapper                   = RKTry(self.object, paramWrapper);
     NSMutableDictionary *routeParams    = RKTry(self.object, routeParams);
-        
     
     // TODO: Refactor this block somewhere else
     if (!routeParams) routeParams = [NSMutableDictionary dictionary];

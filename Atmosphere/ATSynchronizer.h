@@ -37,34 +37,18 @@ extern NSString * const ATDidUpdateObjectNotification;
 
 @interface ATSynchronizer : NSObject {
    
-    /** Helper */
-    ATMappingHelper *_mappingHelper;
-    
-    /** Context */
-    ATMetaContext *_metaContext;
-    ATAppContext *_appContext;
-    
-    /** Networking clients */
-    ATMessageClient *_messageClient;
-    ATResourceClient *_resourceClient;
-
     /** State */
-    NSString *_authKey;
     BOOL _isSyncScheduled;
     
-    /** Delegate */
-    id<ATSynchronizerDelegate> delegate;
 }
 
+@property (assign) id<ATSynchronizerDelegate> delegate;
 @property (nonatomic, retain) ATMetaContext *metaContext;
 @property (nonatomic, retain) ATAppContext *appContext;
 @property (nonatomic, retain) ATMappingHelper *mappingHelper;
 @property (nonatomic, retain) ATMessageClient *messageClient;
 @property (nonatomic, retain) ATResourceClient *resourceClient;
-
-@property (nonatomic, retain) NSString *authKey; // TODO: remove this
-
-@property (assign) id<ATSynchronizerDelegate> delegate;
+@property (nonatomic, retain) NSString *authToken;
 
 #pragma mark - Lifecycle
 - (id)initWithAppContext:(NSManagedObjectContext *)context;
@@ -72,7 +56,15 @@ extern NSString * const ATDidUpdateObjectNotification;
 - (void)close;
 
 #pragma mark - Authentication
-- (NSString *)authKeyOrNull;
+- (BOOL)isLoggedIn;
+/**
+ Will make HTTP request to login, get the token, then it will set the token
+ as header.
+ 
+ This method is tailor-made for atmos2-server. Eventually it should be customizable,
+ but when using custom API, developer might just implement custom authentication
+ mechanizm. */
+- (void)loginWithUsername:(NSString *)username password:(NSString *)password;
 
 #pragma mark - Resource methods
 - (void)loadRoutesFromResource:(NSString *)resourceName;
