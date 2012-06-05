@@ -57,7 +57,7 @@
     // TODO: Refactor the code in a way that will let us remove this reference to meta context.
     // We'll just want to call methods on synchronizer to alter meta context.
     ATSynchronizer *sync = self.resourceClient.sync;
-    ATMetaContext *metaContext = sync.metaContext;
+//    ATMetaContext *metaContext = sync.metaContext;
     ATAppContext *appContext = sync.appContext;
     
     ATObjectURI *uri = [appContext URIOfAppObject:self.object];

@@ -37,6 +37,7 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path);
 - (id)initWithSynchronizer:(ATSynchronizer *)sync;
 - (void)setBaseURL:(NSString *)url;
 - (void)addHeader:(NSString *)name withValue:(NSString *)value;
+- (void)removeHeader:(NSString *)name;
 
 #pragma mark - Fetching objects
 - (void)fetchEntity:(NSString *)entityName;
@@ -52,9 +53,12 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path);
  might be removed from the memory already. */
 - (void)deleteObject:(ATObjectURI *)objectURI;
 
-#pragma mark - Requests & Routing
+#pragma mark - Requests
 - (void)loadRoute:(ATRoute)route params:(NSObject<RKRequestSerializable> *)params delegate:(id)delegate;
 - (void)loadRoutesFromResource:(NSString *)resourceName;
+- (void)loadPath:(NSString *)path callback:(RKObjectLoaderDidLoadObjectBlock)callback;
+
+#pragma mark - Routing
 - (ATRoute)routeForEntity:(NSString *)entity action:(NSString *)action;
 - (ATRoute)routeForEntity:(NSString *)entity action:(NSString *)action params:(NSDictionary *)options;
 - (NSString *)_defaultRouteStringForEntity:(NSString *)entity action:(NSString *)action;

@@ -45,7 +45,7 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
     if ((self = [super init])) {
         self.sync = sync;
         self.client = [[[RKClient alloc] init] autorelease];
-        NSLog(@"Created client: %@", self.client);
+        ASLogInfo(@"Created client: %@", self.client);
         self.IDField = @"_id"; // Default ID field
     }
     
@@ -58,11 +58,15 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
 }
 
 - (void)setBaseURL:(NSString *)url {
-    [self.client setBaseURL:url];
+    [self.client setBaseURL:[RKURL URLWithString:url]];
 }
 
 - (void)addHeader:(NSString *)name withValue:(NSString *)value {
     [self.client.HTTPHeaders setObject:value forKey:name];
+}
+
+- (void)removeHeader:(NSString *)name {
+    [self.client.HTTPHeaders removeObjectForKey:name];
 }
 
 /*****************************************************************************/
@@ -103,7 +107,7 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
 }
 
 /*****************************************************************************/
-#pragma mark - Requests & Routing
+#pragma mark - Requests
 /*****************************************************************************/
 
 - (void)loadRoute:(ATRoute)route params:(NSObject<RKRequestSerializable> *)params delegate:(id)delegate {
@@ -114,7 +118,19 @@ ATRoute ATRouteMake(RKRequestMethod method, NSString *path) {
     self.routes = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:resourceName ofType:@"plist"]];
 }
 
-// TODO: Auto-generate route if none found
+- (void)loadPath:(NSString *)path callback:(RKObjectLoaderDidLoadObjectBlock)callback {
+    RKRequest *request = [self.client requestWithResourcePath:path];
+    request.onDidLoadResponse = callback;
+    request.onDidFailLoadWithError = ^(NSError *error) {
+        ASLogWarning(@"Failed to load %@: %@", path, error);
+    };
+    [request send];
+}
+
+/*****************************************************************************/
+#pragma mark - Routing
+/*****************************************************************************/
+
 - (ATRoute)routeForEntity:(NSString *)entity action:(NSString *)action {
     return [self routeForEntity:entity action:action params:nil];
 }

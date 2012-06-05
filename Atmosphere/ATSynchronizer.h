@@ -25,6 +25,7 @@
 @class ATMetaContext;
 
 extern NSString * const ATDidUpdateObjectNotification;
+extern NSString * const kATAuthChangedNotification;
 
 @class ATSynchronizer;
 
@@ -49,6 +50,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 @property (nonatomic, retain) ATMessageClient *messageClient;
 @property (nonatomic, retain) ATResourceClient *resourceClient;
 @property (nonatomic, retain) NSString *authToken;
+@property (nonatomic, retain) NSDictionary *currentUser;
 
 #pragma mark - Lifecycle
 - (id)initWithAppContext:(NSManagedObjectContext *)context;
@@ -65,6 +67,10 @@ extern NSString * const ATDidUpdateObjectNotification;
  but when using custom API, developer might just implement custom authentication
  mechanizm. */
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password;
+- (void)_rememberToken;
+- (void)_restoreToken;
+- (void)_useToken;
+- (void)logout;
 
 #pragma mark - Resource methods
 - (void)loadRoutesFromResource:(NSString *)resourceName;

@@ -73,7 +73,7 @@ static ATAppContext* _sharedAppContext = nil;
 
 - (NSManagedObject *)objectAtURI:(ATObjectURI *)uri {
     Class managedClass = [self _managedClassForURI:uri];
-    NSManagedObject *managedObject = [managedClass findFirstByAttribute:@"identifier" withValue:uri.identifier];
+    NSManagedObject *managedObject = [managedClass MR_findFirstByAttribute:@"identifier" withValue:uri.identifier];
 
     return managedObject;
 }
@@ -92,7 +92,7 @@ static ATAppContext* _sharedAppContext = nil;
     NSString *className = [entity managedObjectClassName];
     RKAssert(className, @"Entity %@ has no class", uri.entity);
     Class managedClass = NSClassFromString(className);
-    NSEntityDescription *backReferenceToEntity = [managedClass entityDescriptionInContext:self.managedContext];
+    NSEntityDescription *backReferenceToEntity = [managedClass MR_entityDescriptionInContext:self.managedContext];
     RKAssert(backReferenceToEntity, @"Entity class for %@ doesn't return back reference (use entityName, entityInManagedObjectContext:)", entity.name);
     NSPropertyDescription *identifier = [[entity propertiesByName] objectForKey:@"identifier"];
     RKAssert(identifier, @"Entity %@ doesn't have an identifier field. This is required to store primary keys of remote objects.", entity.name);
