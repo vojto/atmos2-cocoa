@@ -79,9 +79,9 @@ Pod::Spec.new do |s|
   #
   s.dependency 'ASIHTTPRequest', '1.8.1'
   s.dependency 'RegexKitLite', '4.0'
-  s.dependency 'RestKit/Network', '0.9.3'
-  s.dependency 'RestKit/ObjectMapping', '0.9.3'
-  s.dependency 'RestKit/ObjectMapping/JSONKit', '0.9.3'
+  s.dependency 'RestKit/Network', '0.10.1'
+  s.dependency 'RestKit/ObjectMapping', '0.10.1'
+  s.dependency 'RestKit/ObjectMapping/JSONKit', '0.10.1'
   s.dependency 'SBJson', '3.0.4'
   s.dependency 'CocoaAsyncSocket', {:git => 'git://github.com/robbiehanson/CocoaAsyncSocket.git'}
   s.dependency 'MagicalRecord', '~> 1.8.3'
