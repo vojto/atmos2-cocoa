@@ -34,6 +34,7 @@ extern NSString * const kATAuthChangedNotification;
  but when using custom API, developer might just implement custom authentication
  mechanizm. */
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password;
+- (void)_wipeIfUserChanged;
 - (void)_rememberToken;
 - (void)_restoreToken;
 - (void)_useToken;

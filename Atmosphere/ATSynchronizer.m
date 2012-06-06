@@ -265,5 +265,22 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     }
 }
 
+/*****************************************************************************/
+#pragma mark - Wiping
+/*****************************************************************************/
+
+- (void)wipe {
+    for (ATMetaObject *meta in [self.metaContext allObjects]) {
+        NSLog(@"Deleting %@", meta);
+        
+        ATObjectURI *uri = meta.uri;
+        
+        NSManagedObject *object = [self.appContext objectAtURI:uri];
+        [self.appContext deleteAppObject:object];
+        [self.metaContext deleteObjectAtURI:uri];
+        
+    }
+}
+
 
 @end

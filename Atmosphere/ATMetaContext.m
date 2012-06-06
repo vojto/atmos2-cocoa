@@ -28,7 +28,9 @@ NSString * const ATObjectEntityName = @"Object";
 
 @synthesize _objects;
 
+/*****************************************************************************/
 #pragma mark - Lifecycle
+/*****************************************************************************/
 
 + (id)restore {
     ATMetaContext *instance = [NSKeyedUnarchiver unarchiveObjectWithFile:[self path]];
@@ -67,7 +69,9 @@ NSString * const ATObjectEntityName = @"Object";
     return [NSString stringWithFormat:@"<ATMetaContext _objects=%@>", [self._objects description]];
 }
 
+/*****************************************************************************/
 #pragma mark - Saving
+/*****************************************************************************/
 
 - (BOOL)save {
     // TODO: Postpone IO!
@@ -76,7 +80,9 @@ NSString * const ATObjectEntityName = @"Object";
     return YES;
 }
 
+/*****************************************************************************/
 #pragma mark Marking objects
+/*****************************************************************************/
 
 - (void)markURIChanged:(ATObjectURI *)uri {
     ATMetaObject *object = [self ensureObjectAtURI:uri];
@@ -113,20 +119,25 @@ NSString * const ATObjectEntityName = @"Object";
     return object;
 }
 
+/*****************************************************************************/
 #pragma mark - Finding objects
+/*****************************************************************************/
+
+- (NSArray *)allObjects {
+    return [self._objects allValues];
+}
 
 - (NSArray *)changedObjects {
     NSMutableArray *objects = [NSMutableArray array];
-    [[self._objects allKeys] enumerateObjectsUsingBlock:^(id key, NSUInteger idx, BOOL *stop) {
-        ATMetaObject *object = [self._objects objectForKey:key];
-        if (object.isChanged == YES) {
-            [objects addObject:object];
-        }
-    }];
+    for (ATMetaObject *object in self.allObjects) {
+        if (object.isChanged == YES) [objects addObject:object];
+    }
     return objects;
 }
 
+/*****************************************************************************/
 #pragma mark - Other tasks
+/*****************************************************************************/
 
 - (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI *)uri {
     ATMetaObject *object = [self objectAtURI:uri];
@@ -141,5 +152,6 @@ NSString * const ATObjectEntityName = @"Object";
     NSString *key = [uri stringValue];
     [self._objects removeObjectForKey:key];
 }
+
 
 @end

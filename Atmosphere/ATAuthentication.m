@@ -16,6 +16,7 @@ NSString * const kATAuthChangedNotification = @"ATAuthChangedNotification";
 
 NSString * const kATAuthTokenDefaultsKey = @"ATAuthToken";
 NSString * const kATCurrentUserDefaultsKey = @"ATCurrentUser";
+NSString * const kATLastUserDefaultsKey = @"ATLastUser";
 
 @implementation ATAuthentication
 
@@ -50,6 +51,7 @@ NSString * const kATCurrentUserDefaultsKey = @"ATCurrentUser";
             self.currentUser = data;
             [self _rememberToken];
             [self _useToken];
+            [self _wipeIfUserChanged];
             ASLogInfo(@"Logged in as %@ (%@)", username, token);
             RKPostNotification(kATAuthChangedNotification);
             [self.sync startSync];
@@ -60,10 +62,20 @@ NSString * const kATCurrentUserDefaultsKey = @"ATCurrentUser";
     }];
 }
 
+- (void)_wipeIfUserChanged {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *currentUsername = [[defaults objectForKey:kATCurrentUserDefaultsKey] objectForKey:@"username"];
+    NSString *lastUsername = [defaults objectForKey:kATLastUserDefaultsKey];
+    if (lastUsername && [lastUsername isEqualToString:currentUsername]) {
+        [self.sync wipe];
+    }
+}
+
 - (void)_rememberToken {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:self.authToken forKey:kATAuthTokenDefaultsKey];
     [defaults setObject:self.currentUser forKey:kATCurrentUserDefaultsKey];
+    [defaults setObject:[self.currentUser objectForKey:@"username"] forKey:kATLastUserDefaultsKey];
 }
 
 - (void)_restoreToken {

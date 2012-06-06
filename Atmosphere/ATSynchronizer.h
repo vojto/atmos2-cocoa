@@ -87,4 +87,7 @@ extern NSString * const ATDidUpdateObjectNotification;
 - (void)handleLoadError:(NSError *)error;
 - (BOOL)verifyResponse:(RKResponse *)response;
 
+#pragma mark - Wiping
+- (void)wipe;
+
 @end

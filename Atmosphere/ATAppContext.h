@@ -53,4 +53,5 @@
 - (void)save:(NSError **)error;
 - (void)obtainPermanentIDsForObjects:(NSArray *)objects error:(NSError **)error;
 
+
 @end

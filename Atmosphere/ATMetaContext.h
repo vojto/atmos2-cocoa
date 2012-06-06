@@ -31,10 +31,12 @@
 - (ATMetaObject *)objectAtURI:(ATObjectURI *)uri;
 - (ATMetaObject *)ensureObjectAtURI:(ATObjectURI *)uri;
 - (ATMetaObject *)createObjectAtURI:(ATObjectURI *)uri;
+- (NSArray *)allObjects;
 - (NSArray *)changedObjects;
 
 #pragma mark - Other tasks
 - (void)changeIDTo:(NSString *)newID atURI:(ATObjectURI *)uri;
 - (void)deleteObjectAtURI:(ATObjectURI *)uri;
+
 
 @end
