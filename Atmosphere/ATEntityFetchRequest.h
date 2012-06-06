@@ -14,6 +14,7 @@
 
 @interface ATEntityFetchRequest : NSObject <RKRequestDelegate>
 
+@property (assign) ATSynchronizer *sync;
 @property (assign) ATResourceClient *resourceClient;
 @property (assign) RKClient *networkClient;
 @property (retain) NSString *entity;

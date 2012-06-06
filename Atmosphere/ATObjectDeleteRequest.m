@@ -13,10 +13,12 @@
 
 @implementation ATObjectDeleteRequest
 
+@synthesize sync = _sync;
 @synthesize resourceClient = _resourceClient, networkClient = _networkClient, objectURI = _objectURI;
 
 - (id)initWithResourceClient:(ATResourceClient *)client objectURI:(ATObjectURI *)objectURI {
     if ((self = [super init])) {
+        self.sync = client.sync;
         self.resourceClient = client;
         self.networkClient = client.client;
         self.objectURI = objectURI;
@@ -35,6 +37,7 @@
 }
 
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
+    if (![self.sync verifyResponse:response]) return;
     ASLogInfo(@"Deleting of object %@ successfuly completed", self.objectURI);
     ATSynchronizer *sync = self.resourceClient.sync;
     ATMetaContext *metaContext = sync.metaContext;

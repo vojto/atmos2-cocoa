@@ -14,12 +14,14 @@
 
 @implementation ATObjectSaveRequest
 
+@synthesize sync = _sync;
 @synthesize resourceClient = _resourceClient, networkClient = _networkClient, options = _options, object = _object;
 
 - (id)initWithResourceClient:(ATResourceClient *)client object:(NSManagedObject *)object options:(NSDictionary *)options {
     if ((self = [super init])) {
         self.resourceClient = client;
         self.networkClient  = client.client;
+        self.sync           = client.sync;
         self.object         = object;
         self.options        = options;
     }
@@ -63,8 +65,7 @@
     ATObjectURI *uri = [appContext URIOfAppObject:self.object];
     NSError *error = nil;
     
-    if ([response statusCode] != 200) {
-        ASLogWarning(@"[ATObjectSaveRequest] Failed: %d (%@)", [response statusCode], [response bodyAsString]);
+    if (![self.sync verifyResponse:response]) {
         return;
     }
     
@@ -90,7 +91,7 @@
 }
 
 - (void)request:(RKRequest *)request didFailLoadWithError:(NSError *)error {
-    NSLog(@"Load failed: %@", error);
+    [self.sync handleLoadError:error];
 }
 
 @end

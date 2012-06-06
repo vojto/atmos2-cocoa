@@ -8,6 +8,8 @@
 
 #import <RestKit/RestKit.h>
 
+extern NSString * const kATAuthChangedNotification;
+
 @class ATSynchronizer;
 @class ATResourceClient;
 
@@ -37,5 +39,8 @@
 - (void)_useToken;
 - (void)logout;
 - (void)signupWithUsername:(NSString *)username email:(NSString *)email password:(NSString *)password;
+
+#pragma mark - Handling errors
+- (void)handleIllegalResponse:(RKResponse *)response;
 
 @end

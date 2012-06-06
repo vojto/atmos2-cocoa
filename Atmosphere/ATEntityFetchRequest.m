@@ -13,12 +13,14 @@
 
 @implementation ATEntityFetchRequest
 
+@synthesize sync = _sync;
 @synthesize resourceClient = _resourceClient, networkClient = _networkClient, entity = _entity;
 
 #pragma mark - Lifecycle
 
 - (id)initWithResourceClient:(ATResourceClient *)client entity:(NSString *)entity {
     if ((self = [super init])) {
+        self.sync = client.sync;
         self.resourceClient = client;
         self.networkClient = client.client;
         self.entity = entity;
@@ -43,10 +45,8 @@
 #pragma mark - Processing results
 
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
-    if ([response statusCode] != 200) {
-        ASLogError(@"[ATEntityFetchRequest] Unexpected response code %d (expecting 200)", [response statusCode]);
-        return;
-    }
+    if (![self.sync verifyResponse:response]) return;
+
     ASLogInfo(@"[ATEntityFetchRequest] Done fetching: %@", [response bodyAsString]);
     id items = [response parsedBody:nil];
     RKAssert([items isKindOfClass:[NSArray class]], @"Expected result to by an array");

@@ -11,9 +11,11 @@
 #import "ATObjectURI.h"
 
 @class ATResourceClient;
+@class ATSynchronizer;
 
 @interface ATObjectDeleteRequest : NSObject <RKRequestDelegate>
 
+@property (assign) ATSynchronizer *sync;
 @property (assign) ATResourceClient *resourceClient;
 @property (assign) RKClient *networkClient;
 @property (retain) ATObjectURI *objectURI;

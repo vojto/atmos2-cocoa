@@ -30,7 +30,6 @@
 // NSString * const ATMessageEntityKey = @"entity";
 
 NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification";
-NSString * const kATAuthChangedNotification = @"ATAuthChangedNotification";
 
 @implementation ATSynchronizer
 
@@ -248,7 +247,23 @@ NSString * const kATAuthChangedNotification = @"ATAuthChangedNotification";
     NSLog(@"%@", [self.metaContext valueForKey:@"_objects"]);
 }
 
+/*****************************************************************************/
+#pragma mark - Handling erros
+/*****************************************************************************/
 
+- (void)handleLoadError:(NSError *)error {
+    ASLogWarning(@"Load failed: %@", error);
+}
+
+- (BOOL)verifyResponse:(RKResponse *)response {
+    if (response.statusCode == 200) {
+        return YES;
+    } else {
+        ASLogWarning(@"Illegal response: %d (%@)", [response statusCode], [response bodyAsString]);
+        [self.authentication handleIllegalResponse:response];
+        return NO;
+    }
+}
 
 
 @end

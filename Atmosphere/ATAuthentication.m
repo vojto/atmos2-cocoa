@@ -12,6 +12,8 @@
 #import "ATSynchronizer.h"
 #import "ATAuthentication.h"
 
+NSString * const kATAuthChangedNotification = @"ATAuthChangedNotification";
+
 NSString * const kATAuthTokenDefaultsKey = @"ATAuthToken";
 NSString * const kATCurrentUserDefaultsKey = @"ATCurrentUser";
 
@@ -97,6 +99,16 @@ NSString * const kATCurrentUserDefaultsKey = @"ATCurrentUser";
         NSLog(@"Sign up completed: %@ %@", response.bodyAsString, [response parsedBody:nil]);
     };
     [request send];
+}
+
+/*****************************************************************************/
+#pragma mark - Handling errors
+/*****************************************************************************/
+
+- (void)handleIllegalResponse:(RKResponse *)response {
+    if (response.statusCode == 401) {
+        [self logout];
+    }
 }
 
 @end

@@ -26,7 +26,6 @@
 @class ATMetaContext;
 
 extern NSString * const ATDidUpdateObjectNotification;
-extern NSString * const kATAuthChangedNotification;
 
 @class ATSynchronizer;
 
@@ -84,5 +83,8 @@ extern NSString * const kATAuthChangedNotification;
 - (void)stopAutosync;
 - (void)_didChangeAppObject:(NSNotification *)notification;
 
+#pragma mark - Handling errors
+- (void)handleLoadError:(NSError *)error;
+- (BOOL)verifyResponse:(RKResponse *)response;
 
 @end

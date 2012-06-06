@@ -8,10 +8,12 @@
 
 #import <RestKit/RestKit.h>
 
+@class ATSynchronizer;
 @class ATResourceClient;
 
 @interface ATObjectSaveRequest : NSObject <RKRequestDelegate>
 
+@property (assign) ATSynchronizer *sync;
 @property (assign) ATResourceClient *resourceClient;
 @property (assign) RKClient *networkClient;
 @property (retain) NSDictionary *options;
