@@ -47,8 +47,14 @@
         NSDate *date = [self _dateFromString:(NSString *)value];
         NSLog(@"Resolved date: %@ -> %@", value, date);
         [self setValue:date forKey:key];
+    } else if (type == NSInteger16AttributeType) {
+        NSNumber *number = [NSNumber numberWithFloat:[value integerValue]];
+        [self setValue:number forKey:key];
     } else if (type == NSFloatAttributeType) {
         NSNumber *number = [NSNumber numberWithFloat:[value floatValue]];
+        [self setValue:number forKey:key];
+    } else if (type == NSBooleanAttributeType) {
+        NSNumber *number = [NSNumber numberWithBool:[value boolValue]];
         [self setValue:number forKey:key];
     } else {
         [self setValue:value forKey:key];

@@ -54,15 +54,16 @@ static ATAppContext* _sharedAppContext = nil;
 }
 
 - (void)save {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(_saveImmediately) withObject:nil afterDelay:0.5];
+}
+
+- (void)_saveImmediately {
     NSError *error = nil;
-    [self save:&error];
+    [self.managedContext save:&error];
     if (error != nil) {
         ASLogError(@"[ATAppContext] Save failed: %@", error);
     }
-}
-
-- (void)save:(NSError **)error {
-    [self.managedContext save:error];
 }
 
 - (void)obtainPermanentIDsForObjects:(NSArray *)objects error:(NSError **)error {

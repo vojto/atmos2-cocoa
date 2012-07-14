@@ -19,7 +19,7 @@
 
 #pragma mark - Saving
 - (BOOL)save;
-
+- (void)_saveImmediately;
 
 #pragma mark - Marking changes
 - (void)markURIChanged:(ATObjectURI *)uri;

@@ -50,7 +50,7 @@
 #pragma mark - Core Data
 - (BOOL)hasChanges;
 - (void)save;
-- (void)save:(NSError **)error;
+- (void)_saveImmediately;
 - (void)obtainPermanentIDsForObjects:(NSArray *)objects error:(NSError **)error;
 
 

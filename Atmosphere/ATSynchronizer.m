@@ -243,8 +243,6 @@ NSString * const ATDidUpdateObjectNotification = @"ATDidUpdateObjectNotification
     }
     [self startSync];
     [self.metaContext save];
-    
-    NSLog(@"%@", [self.metaContext valueForKey:@"_objects"]);
 }
 
 /*****************************************************************************/

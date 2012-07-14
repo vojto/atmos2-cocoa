@@ -74,11 +74,17 @@ NSString * const ATObjectEntityName = @"Object";
 /*****************************************************************************/
 
 - (BOOL)save {
-    // TODO: Postpone IO!
-    ASLogInfo(@"Archiving: %@", [self.class path]);
-    [NSKeyedArchiver archiveRootObject:self toFile:[self.class path]];
+    ASLogDebug(@"Queuing save");
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(_saveImmediately) withObject:nil afterDelay:0.1];
     return YES;
 }
+
+- (void)_saveImmediately {
+    ASLogInfo(@"Saving meta context");
+    [NSKeyedArchiver archiveRootObject:self toFile:[self.class path]];
+}
+
 
 /*****************************************************************************/
 #pragma mark Marking objects
